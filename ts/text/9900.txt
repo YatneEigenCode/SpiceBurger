@@ -1,0 +1,210 @@
+//1-8-2018 jchoy
+pkg= pkg9900= { ver:'1.231' }; //LinkMaker.initForRow
+
+//----
+pkg.CsvBud=function(){
+  new AppTool().inherit( this, AppTool );
+  this.asset= [['name','link','search','note'],['hello'],['phone']];
+  this.getSto= function(){ if (!this.sto)this.sto=new Sto(); return this.sto }
+  this.getAsset= function(fn){
+    if ((!this.getSto().isOk) || (!fn)) return;
+    var sf= this.sto.lo.getItem(fn), aa=[], i=0;
+    if ((sf) && (sf.charAt(0)=='"')) return this.getAssetQ(sf);
+    if (sf) for (var at=sf.split('\n'),x=this.asset=aa; i<at.length; i++)
+      aa.push( at[i].split(',') );
+  }
+  this.getAssetQ= function(sf){
+    for (var i=0,at=sf.split('\n'),x=this.asset=[]; i<at.length; i++)
+      this.asset.push( at[i].substr(1,at[i].length-2).split('","') );
+  }
+  this.saveAsset= function(){
+    if (!this.getSto().isOk) return;
+    var ar=[];
+    for (var i=0,at=this.asset; i<at.length; i++) ar.push('"'+at[i].join('","')+'"');
+    this.sto.lo.setItem( this.fn, ar.join('\n') );
+  }
+  this.assetVal= function(row,col,val){
+    if (row>=this.asset.length) return '';
+    if (typeof(val)!=='undefined') this.asset[row][col]= val;
+    return (col>=this.asset[row].length)? '':this.asset[row][col];
+  }
+}
+pkg.StoTabEnv= function(){
+  new AppTool().inherit( this, CsvBud );
+  this.asset= [];
+  this.fileName= 'tabenv.csv';
+  this.exp= function(so){
+    if (!this.getSto().isOk) return so;
+    var res=so, i1=this.getAsset(this.fileName);
+    for (var i=1, ae=this.asset; i<ae.length; i++)
+      res=res.replace('{'+ae[i][0]+'}',ae[i][1]);
+    return res;
+  }
+}
+pkg.StoTabBud= function(){
+  new AppTool().inherit( this, AppTool );
+  var $t= this;
+  this.stoEnv= new StoTabEnv();
+  if (typeof(TabTmpl) !== 'undefined') this.ttpl= new TabTmpl();
+  this.mpn= function(el,n){
+    for (var i=0,x=this._=el; i<n; i++) this._=this._.parentNode;
+    return this._;
+  }
+  this.vForm= function( ar0 ){
+    var fm=this.addEl('form'), evNm="DOMNodeRemovedFromDocument";
+    fm.parentNode.removeChild(fm).count= ar0.length;
+    fm.clearForm= function(){
+      var res= [];
+      for (var i=0; i<this.count; i++) res.push(this['tb'+i].value);
+      for (var i=0; i<this.count; i++) this['tb'+i].value='';
+      return res;
+    }
+    fm.addEventListener(evNm, function(){$t.onFormHide(this)} );
+    return fm;
+  }
+  this.onFormHide= function(fm){
+    if (this.mpn(fm,3).isAux) 
+      if (!fm.getElementsByTagName('input')[0].disabled) {
+        this.closeForm( this.addEl('br', this.mpn(fm,3).cells[0]) );
+        fm.rowNum= null;
+      }
+  }
+  this.prepForm= function( r0 ){
+    var am, tbl2= this.addEl('table', this.vForm(r0));
+    for (var r,i=0; i<r0.length; i++){
+      (r= tbl2.insertRow(i)).insertCell(0).innerHTML= r0[i].split(':')[0];
+      this.addEl('input',r.insertCell(1)).name= 'tb'+i;
+      if (am=r0[i].match(/:(\d+)/)) this._.size= parseInt(am[1]);
+    }
+    var btn, ce= tbl2.insertRow().insertCell(0);
+    this.prepButton(this.addEl('input',ce.parentNode.insertCell(1)),'Add Row');
+    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'Del Row');
+    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'Add Col');
+    return tbl2.parentNode;
+  }
+  this.prepButton= function( btn, val ){
+    btn.type= "button";
+    btn.value= val;
+    btn.onclick= function(){ $t.doButton(this) }
+  }
+  this.autoLink= function( el, so ) {
+    var sn, sh= this.stoEnv.exp( so );
+    if (this.ttpl) sh= this.ttpl.exp( el, sh, this.asset );
+    el.innerHTML= (sh.match(/^.+\:\/\//))? $t.midcate(sh,15).link(sh) : sh; 
+    if (sh.length>60) el.width="300";
+  }
+  this.midcate= function(s, l2){
+    return (s.length>l2+l2)? [s.substr(0,l2),s.substr(-l2)].join(' ... ') : s; }
+  this.insertAfter= function(nu,ref,par)
+   { par.insertBefore(nu,ref);  par.insertBefore(ref,nu); }
+  this.doButton= function( el ){
+    var tbl=this.mpn(el.form,5), nn=el.form.rowNum+1;
+    while (tbl.rows.length>0) { tbl.rows[0].isAux= null; tbl.deleteRow(0); }
+    if (el.value=="Add Row")
+      this.asset.splice( nn, 0, el.form.clearForm());
+    if (el.value=="Del Row") this.asset.splice( nn-1, 1 );
+    if (el.value=="Add Col") 
+      { this.asset[0].push('New'); tbl.rForm=this.prepForm(this.asset[0]); }
+    this.fillTable( tbl, this.saveAsset(), el.form.rowNum=null );
+  }
+}
+pkg.StoTab=function(){
+  new AppTool().inherit( this, StoTabLo );
+  var $t= this;
+  this.fn= "tabtemp_web.csv";
+  this.webGet= function(url){
+    var $tbl, url=this.stoEnv.exp(url);
+    var i1=this.asset=[['loading...']], ttl= url.split(/[\/\=]/).pop();
+    if (!document.title) document.title= ttl;
+    ($t.lm=new LinkMaker()).wrapCloser($tbl=this.addEl('table'),0,ttl);
+    $t.lm= $t.lm.initForRow();
+    var i2=window.pkg=null, i3=this.fillTable($tbl);
+    this.prepSn().start( url, 'pkg', function(){
+      $t.asset= window.pkg.asset; $tbl.deleteRow(0); $t.fillTable($tbl); } );
+  }
+  this.prepSn= function(){
+    var sn= new SnCurly(); 
+    return [sn, sn.textPkgUrl="{0}", sn.cfgJsLoader=function(){}][0];
+  }
+}
+pkg.StoTabLo=function(){
+  new AppTool().inherit( this, StoTabBud );
+  new AppTool().inherit( this, CsvBud );
+  var $t= this;
+  this.da= new DomAni();
+  this.start= function(at){
+    if (at[1]=='/web') return ['ok',this.webGet( at[2] )][0];
+    var tbl, x=this.getAsset( this.fn= at[1] );
+    ($t.lm=new LinkMaker()).wrapCloser(tbl=this.addEl('table'),0,at[1]);
+    $t.lm= $t.lm.initForRow();
+    return ['ok', this.fillTable(tbl)][0];
+  }
+  this.fillTable= function(tbl){
+    for (var i=0,at=this.asset; i<at.length; i++)
+      for (var j=0,r=tbl.insertRow(i); j<at[i].length; j++)
+        this.autoLink( r.insertCell(j), (i==0)?at[i][j].split(':')[0]:at[i][j] );
+    for (var i=0,at=tbl.rows; i<at.length; i++) this.prepRow(at[i],i);
+    tbl.rows[0].style.backgroundColor= 'lightgray';
+    tbl.border='1';
+    tbl.style.borderCollapse= 'collapse';
+    tbl.rForm= this.prepForm(this.asset[0] );
+  }
+  this.prepRow= function(row,i){
+    this.addEl( 'div',row.insertCell(0) ).innerHTML= i;
+    this._.style.backgroundColor= 'lightgray';
+    this._.onclick= this.rowClick;
+    row.isPrep= true;
+  }
+  this.closeForm= function(el){
+    var ii, tbl= $t.mpn(el,4), ap= tbl.rForm.clearForm();
+    if (tbl.rForm.getElementsByTagName('input')[0].disabled) return;
+    tbl.rForm.getElementsByTagName('input')[0].disabled= true;
+    var isNeed= (ii=tbl.rForm.rowNum) && (ap.join('')!=$t.asset[ii].join(''));
+    isNeed= isNeed && (tbl.rows.length>ii+1) && (tbl.rows[ii+1].isAux);
+    if ((isNeed) || (tbl.rForm.isChgMk)) {
+        for (var r=tbl.rows[ii]; r.cells.length>1;) r.deleteCell(1);
+        for (var j=0; j<ap.length; j++) 
+          $t.autoLink( tbl.rows[ii].insertCell(j+1), $t.assetVal(ii,j,ap[j]) );
+        $t.saveAsset( tbl.deleteRow(ii+1) );
+    }
+    for (var i=0,at=tbl.rows; i<at.length; i++) if (at[i].isAux) tbl.deleteRow(i);
+  }
+  this.rowClick= function(){
+    var tbl= $t.mpn(this,4), i1= $t.closeForm(this);
+    $t.putForm( $t.addEl('tr',tbl).insertCell(), tbl.rForm, this );
+    tbl.rForm.getElementsByTagName('input')[0].disabled= false;
+  }
+  this.toggleMark= function(n2, fm){
+    fm.isChgMk= false;
+    if (n2 != fm.rowNum) return n2;
+    var isMk, mk="<mk />", so= $t.assetVal(n2,0);
+    isMk= (so.indexOf(mk) >= 0);
+    $t.assetVal(n2,0, (isMk)? so.replace(mk,'') : (so+mk) );
+    fm.isChgMk= true;
+    return n2;
+  }
+  this.putForm= function( ce, fm, elc ){
+    var n2= parseInt(elc.innerHTML), i3=this.da.pinchOpen;
+    fm.rowNum= this.toggleMark(n2,fm);
+    this.insertAfter(ce.parentNode,$t.mpn(elc,2), $t.mpn(elc,3));
+    ce.setAttribute( 'colspan', fm.count+1);
+    this.lm.wrapCloser( fm, ce.parentNode.isAux=true );
+    if (i3) {$t.da.pinchOpen(fm.parentNode, ce)
+    } else {ce.appendChild(fm.parentNode)}
+    for (var i=0; i<fm.count; i++) fm['tb'+i].value= $t.assetVal(n2,i);
+  }
+}
+
+pkg.contents=[
+ { name:"pkg.startup"
+   ,text:"defcmd tab StoTab"
+ }
+,{ name:"pkg9900notes"
+   ,text:"v"+pkg.ver
+ }
+]
+pkg.CeStarter9900=function(){
+  var $p=pkg9900;
+  this.start=function(){ new PkgTool().start($p, $p.contents); }
+}
+new PkgTool().start(pkg);

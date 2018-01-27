@@ -1,0 +1,244 @@
+pkg= pkg622={ver:'CETB 1.419'} //missing paren - defcmd /run 1-25-2018 jchoy
+//----
+pkg.HashCmd=function (){
+  this.start=function(){
+    return ['ok', window.onhashchange= function(){
+      new CmdEngine().ce1.ce.parse(unescape(location.hash.replace('#://cmd/',''))); }][0]
+  }
+}
+pkg.LinkMaker= function(){
+  new AppTool().inherit( this, AppTool );
+  this.closerIcon= '[x] ';
+  this.init= function(closerIcon){
+    return [this,this.closerIcon= closerIcon][0];
+  }
+  this.initForRow= function(){ return this.init('[^] '); }
+  this.initForMin= function(){ return this.init('[.] '); }
+  this.start= function(at){
+    if (at[1] == '.') {
+      this.addEl('span').innerHTML= at.slice(2,99).join(' ');
+    } else if (at[1] == '.title') {
+      return ['ok',document.title= at.slice(2,99).join(' ')];
+    } else {
+      this.addEl('a', this.addEl('div')).href= at[1];
+      this._.innerHTML= at[1];
+    }
+    var rs= this._.innerHTML.replace(/\$date/i,new Date().toLocaleString());
+    return ['ok',this._.innerHTML=rs,this.wrapCloser( this._ )][0];
+  }
+  this.wrapCloser= function(el, isBr, title){
+    this.addEl('span',this.addEl('div')).innerHTML=this.closerIcon;
+    this._.onclick= function(){ new DomAni().delEl(this.parentNode) }
+    if (title) this.addEl('span',this._.parentNode).innerHTML= title;
+    if (isBr) this.addEl('br',this._.parentNode);
+    this._.parentNode.appendChild(el);
+  }
+  this.bag= function(){ var LM=LinkMaker; return (LM.bag)? LM.bag : (LM.bag={}) }
+}
+pkg.DomAni= function(){
+  this.delEl=function(el){ el.parentNode.removeChild(el) }
+}
+//----
+pkg.StoEdit= function(){
+  this.start= function(at){
+    var st=new Sto();
+    if (!st.isOk) return 'error';
+    return ['ok', new TaAutoSave().init(at[1]).start( st.lo.getItem(at[1]), null, at[1] )][0];
+  }
+}
+//----
+pkg.EvalJs= function(){
+  new AppTool().inherit( this, AppTool );
+  this.sc= "MyClass=function(){\n  this.start=function(at){\n  }\n}";
+  this.start= function(at){
+    var $st= new Sto();
+    if (at.length>1) this.sc= at[1]+'='+window[at[1]];
+    else if ($st.isOk) this.sc= $st.lo.getItem( "evaljs_data" ) || this.sc;
+    new TaApp().start( this.sc, function(ta){
+      if ($st.isOk) $st.lo.setItem( "evaljs_data", ta.value );
+      if (ta.value.split('\n').pop().toLowerCase() != '//evaljs') return '\nusage: //evaljs';
+      try { eval( ta.value ); } catch (e) { return '\nError '+e.message; }
+      return '-ok';
+    }, at[1]);
+    return 'ok';
+  }
+}
+//----
+;(function(){
+  var $evaljsline_the_one, $f='evaljsline_env', $m='ok';
+  EvalJsLine=function(){
+    this.start=function(at){ 
+      return this.eval(new Sto().lo.getItem($f),'')+this.eval(at.slice(1).join(' '),$m); }
+    this.ejl1= $evaljsline_the_one;
+    this.eval=function(s,mOk){
+      try{ return [mOk,eval(s)][0]; } catch (e){return e.message+'\n'} }
+  }
+  $evaljsline_the_one=new EvalJsLine();
+})()
+pkg.EvalJsLine=EvalJsLine;
+//----
+pkg.TaApp= function(){
+  var $t= this;
+  var $d= document;
+  this.start= function(s, enterFcn, title){
+    if (enterFcn) this.enterFcn=enterFcn;
+    var ta=$d.body.appendChild($d.createElement('div')).appendChild(
+      $d.createElement('textarea'));
+    ta.cols= 40;  ta.onkeypress= this.doTa;
+    ta.onfocus= function(){if (this.rows==2)this.rows=8}
+    new LinkMaker().wrapCloser(ta,1,title);
+    if (s) ta.value=s;
+  }
+  this.doTa= function(ev){
+    for (var n=this.value.split('\n').length; n<20; n=20) this.rows=n+2;
+    if (!$t.enterFcn) {
+    } else if (ev.keyCode != 13) {
+    } else if (this.selectionEnd==this.value.length)
+      this.value+= $t.enterFcn( this );
+  }
+  this.enterFcn= function(ta){  return '\n'; }
+}
+pkg.TaAutoSave= function(){
+  new AppTool().inherit( this, TaApp );
+  var $t= this, $st=new Sto();
+  this.counter= new Counter();
+  this.init= function( storeName ){
+    if ($st.isOk) this.storeName= storeName; return this; }
+  this.doTa= function(ev){
+    var ta= this, x=$t.counter.restart();
+    if ($st.isOk) setTimeout( function(){ $t.saveTa3(ta) }, 3000 );
+  }
+  this.saveTa3= function(ta){
+    if ((this.counter.elapsedTimeMs() < 3000) || (!this.storeName)) return;
+    if (document.contains(ta)) {
+      $st.lo.setItem( this.storeName, ta.value );
+      new GrabBag().start([0,'statbox00','saved '+new Date()]);
+    }
+  }
+}
+//----
+pkg.Sto= Sto= function(){
+  this.isOk= (typeof(Storage) !== "undefined"); 
+  this.lo= (this.isOk)? localStorage : null;
+}
+pkg.StoLog= function(fn){
+  var $t=this;
+  this.cfg= {st:new Sto(), nm:((fn)?fn:'sto.log'), tsPipe:['']};
+  this.chkPipe= function(s){
+    this.cfg.tsPipe.push(s); return (this.cfg.tsPipe.shift()==s)? '':s;
+  }
+  this.log= function(s){
+    var ts= $t.chkPipe(new Date().toLocaleString());
+    var pl, fn=$t.cfg.nm, lo=$t.cfg.st.lo;
+    if ((pl=lo.getItem(fn)) && (ts)) pl= pl.substr(-15999)+'\n'+ts;
+    return [lo.setItem(fn, pl+'\n'+s), s][1];
+  }
+  if (!this.cfg.st.isOk) this.log= function(s){ return s }
+}
+pkg.CmdAutostart= function(){
+  var $t=this;
+  this.init= function(fn){ return[this,this.cfg={sl:new StoLog(fn+'.log'), nc:fn}][0]; }
+  this.init( 'startup' );
+  this.start= function(ce){
+    var st= this.cfg.sl.cfg.st, nc=this.cfg.nc, pl;
+    if (!st.isOk) return;
+    if (pl= st.lo.getItem(nc)) this.parse(ce, pl);
+    else 
+        this.parse(ce, "link . See sample startup\nlink startup_ex.txt\nlink . type 'edit startup' to create startup");
+  }
+  this.parse= function(ce,sf){
+    for (var i=0,at=sf.split('\n'); i<at.length; i++)
+      if (!this.doSleep(ce, at[i], at, i)) { return;
+      } else ce.parse( this.cfg.sl.log(at[i]) );
+  }
+  this.doSleep= function(ce, it, at, i){
+    if (!it.match(/^sleep/i)) return true;
+    var sf= at.slice(i+1).join('\n'), ms=parseInt(it.substr(5))*1000;
+    setTimeout( function(){ $t.parse( ce, sf ); }, ms );
+  }
+}
+//----
+const cmdEngine_theOne= {i:0,ts:new Date(),s:''};
+pkg.CmdEngine= function(){
+  var $t= this;
+  this.assets= {};
+  this.addCmd= function(s, fcn){ this.assets[s]=fcn };
+  this.addCmd( 'link', function(at){ return new LinkMaker().start(at); } );
+  this.addCmd( 'edit', function(at){ return new StoEdit().start(at); } );
+  this.addCmd( 'evaljs', function(at){ return new EvalJs().start(at); } );
+  this.addCmd( 'jsline', function(at){ return new EvalJsLine().start(at); } );
+  this.addCmd( 'loadjsc', function(at){ return new LoadJsc().start(at); } );
+  this.addCmd( 'loadjs', function(at){ return new LoadJs().start(at); } );
+  this.addCmd( 'hashcmd', function(at){return new HashCmd().start(at);});
+  this.ce1= cmdEngine_theOne;
+  this.parse= function(taval){
+    var args= taval.split('\n').pop().split(' '), res=this._='';
+    var fn= (args[0].charAt(0)=='#')? function(){return 'ignored'} : this.assets[args[0]];
+    if (!fn) fn= this.assets[args[0].toLowerCase()];
+    if (fn) this._= this.crWrap( fn(args) );
+    return (fn)? true : false;
+  }
+  this.crWrap= function(s){ return '\n'+s+'\n'; }
+  this.init= function(){
+    if (!this.ce1.ce) this.ce1.ce= this;
+    this.assets['defcmd']= function(at){
+      if (at.length < 3) return 'syntax: defcmd name class';
+      var $cn= at[2];
+      $t.ce1.ce.assets[at[1]]= function(at){ return new window[$cn]().start(at) }
+      if ((at.length>3) && (at[3]=='/run')) $t.ce1.ce.parse(at[1]);
+      return 'ok';
+    }
+    this.addCmd( 'help', function(at){ 
+      var s=''; for (var m in $t.ce1.ce.assets) s+=' '+m;
+      return 'available commands:'+s;
+    } );
+    return this;
+  }
+}
+//-----
+pkg.PkgTool=function(){
+  this.start= function(pkg, at){
+    for (var m in pkg) if (m.match(/^[A-Z]/))
+      window[m]=pkg[m];
+    if (at) for (var i=0,st=new Sto(); (i<at.length) && (st.isOk); i++)
+      st.lo.setItem( at[i].name, at[i].text );
+    if (at) this.ceParse( at[0] );
+  }
+  this.ceParse= function(ci){
+    if (ci.name != 'pkg.startup') return;
+    new CmdAutostart().init('pt').parse(new CmdEngine().init().ce1.ce, ci.text);
+  }
+}
+pkg.LoadJsc=function(){
+  this.start=function(at){
+    var $fn=function(){ new (window['CeStarter'+at[1]])().start(pkg); };
+    return ['Ok',new SnCurly().start( at[1], at[2], $fn )][0];
+  }
+}
+pkg.LoadJs= function(){
+  this.start=function(at){ return ['Ok',new SnLiteLoader().loadJs( at[1] )][0] }
+}
+//----
+pkg.CurlyStarter= function(){
+  new AppTool().inherit( this, AppTool );
+  new AppTool().inherit( this, TaApp );
+  const  $t= this;
+  this.ver= pkg622.ver;
+  $t.ce= new CmdEngine().init().ce1.ce;
+  this.start= function(){
+    this.sl= new StoLog('err.log');
+    window.onerror= function(e,u,l){ $t.sl.log(e) }
+    this.addEl('textarea').cols= 40;
+    this._.onkeypress= this.doTa;
+    document.title=['CETB', $t.addEl('br')][0]; 
+    const autoName= this.cgi('ca','autostart',location);
+    setTimeout( function(){ new CmdAutostart().init(autoName).start($t.ce) }, 400 );
+  }
+  this.enterFcn= function(ta){
+    var s=ta.value.split('\n').pop().toLowerCase();
+    if (s=='ver') return '\n'+this.ver+'\n';
+    if ($t.ce.parse(ta.value)) return $t.ce._;
+    return '\nError - Valid Commands: ver, help \n';
+  }
+}
+new pkg.PkgTool().start(pkg);
