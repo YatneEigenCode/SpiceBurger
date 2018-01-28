@@ -1,4 +1,4 @@
-pkg= pkg622={ver:'CETB 1.419'} //missing paren - defcmd /run 1-25-2018 jchoy
+pkg= pkg622={ver:'CETB 1.421'} //counter 1-27-2018 jchoy
 //----
 pkg.HashCmd=function (){
   this.start=function(){
@@ -98,6 +98,17 @@ pkg.TaApp= function(){
   }
   this.enterFcn= function(ta){  return '\n'; }
 }
+//-----
+pkg.Counter= function(){
+  var data, startDt, $t=this, $now=function(){return new Date()};
+  $t.add= function(key){ data[key]=this.count(key)+1 }
+  $t.count= function(key){ return (data[key])? data[key] : 0;  }
+  $t.elapsedTimeMs= function(){ return $t.dateDif($now(),startDt) }
+  $t.dateDif= function(e,b){ return e.valueOf()-b.valueOf() }
+  $t.restart= function(){ data= {}; startDt= $now(); }
+  $t.restart()
+}
+//-----
 pkg.TaAutoSave= function(){
   new AppTool().inherit( this, TaApp );
   var $t= this, $st=new Sto();
