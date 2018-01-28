@@ -1,4 +1,4 @@
-pkg= pkg622={ver:'CETB 1.421'} //counter 1-27-2018 jchoy
+pkg= pkg622={ver:'CETB 1.422'} //autosave visual cue 1-28-2018 jchoy
 //----
 pkg.HashCmd=function (){
   this.start=function(){
@@ -117,13 +117,14 @@ pkg.TaAutoSave= function(){
     if ($st.isOk) this.storeName= storeName; return this; }
   this.doTa= function(ev){
     var ta= this, x=$t.counter.restart();
+    ta.style.borderStyle= 'dashed';
     if ($st.isOk) setTimeout( function(){ $t.saveTa3(ta) }, 3000 );
   }
   this.saveTa3= function(ta){
     if ((this.counter.elapsedTimeMs() < 3000) || (!this.storeName)) return;
     if (document.contains(ta)) {
       $st.lo.setItem( this.storeName, ta.value );
-      new GrabBag().start([0,'statbox00','saved '+new Date()]);
+      ta.style.borderStyle= 'solid';
     }
   }
 }
