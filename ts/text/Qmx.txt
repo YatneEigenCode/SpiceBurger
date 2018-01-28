@@ -1,8 +1,9 @@
-//1-28-2018 jchoy v0.113 ok
+//1-28-2018 jchoy v0.114 usage
 Qmx=function(){
   this.start=function(at){
+    if (at.length<3) return 'usage: qmx [filename] url{0}';
     var lm, av=new Sto().lo.getItem(at[1]).split('\n');
-    (lm=new LinkMaker()).start('. . test'.split(' '));
+    (lm=new LinkMaker()).start([0,'.',at[2]]);
     const ph=lm._, pat=at.slice(2), div=lm.addEl('div');
     for (var te,i=0; i<av.length; i++) {      
       te=lm.addEl('a', lm.addEl('li',div) );
