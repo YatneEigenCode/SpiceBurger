@@ -1,0 +1,14 @@
+//1-28-2018 jchoy v0.112 qmx
+Qmx=function(){
+  this.start=function(at){
+    var lm, av=new Sto().lo.getItem(at[1]).split('\n');
+    (lm=new LinkMaker()).start('. . test'.split(' '));
+    const ph=lm._, pat=at.slice(2), div=lm.addEl('div');
+    for (var te,i=0; i<av.length; i++) {      
+      te=lm.addEl('a', lm.addEl('li',div) );
+      te.href=te.innerHTML=(pat+'').replace('{0}',av[i]);
+    }
+    ph.parentNode.appendChild(div);
+    return 'dev';
+  }
+}
