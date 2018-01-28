@@ -1,0 +1,14 @@
+//1-28-2018 jchoy LocalTxt
+LocalTxt=function(){
+  this.start=function(at){
+    const $t=this, fn=(at.length>1)? at[1]:'noname'; var lm, inp;
+    (lm=new LinkMaker()).start([0,'.',fn+' <- ']);
+    (inp=lm.addEl('input',lm._.parentNode)).type='file';
+    return ['ok',inp.onchange= function(){$t.useFile(this.files,fn)}][0]
+  }
+  this.useFile= function(files,fn){
+    if (files.length==0) return;
+    var fr, fc= function(evt){ new Sto().lo.setItem(fn, evt.target.result) }
+    [(fr,fr=new FileReader()).onload=fc][0].readAsText(files[0]);
+  }
+}
