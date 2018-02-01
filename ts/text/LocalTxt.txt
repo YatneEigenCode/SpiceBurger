@@ -1,14 +1,31 @@
-//1-28-2018 jchoy LocalTxt
+//2-1-2018 jchoy v0.147 upload and download
 LocalTxt=function(){
+  const lm=new LinkMaker(), $t=this, k='ok';
+  var inp, lk, nm='err.log';
   this.start=function(at){
-    const $t=this, fn=(at.length>1)? at[1]:'noname'; var lm, inp;
-    (lm=new LinkMaker()).start([0,'.',fn+' <- ']);
+    if (at.length>1) nm=at[1];
+    lm.wrapCloser(lk= lm.addEl('a'));
+    lm.addEl('a',lk.parentNode).innerHTML=' {@} ';
+    lm._.onclick= this.updateDL;
+    [lm._,lm._.href='#{@}'][0].onclick();
     (inp=lm.addEl('input',lm._.parentNode)).type='file';
-    return ['ok',inp.onchange= function(){$t.useFile(this.files,fn)}][0]
+    return [k,inp.onchange= function(){$t.useFile(this.files,nm)}][0]
   }
-  this.useFile= function(files,fn){
+  this.useFile= function(files,nm){
     if (files.length==0) return;
-    var fr, fc= function(evt){ new Sto().lo.setItem(fn, evt.target.result) }
-    [(fr,fr=new FileReader()).onload=fc][0].readAsText(files[0]);
+    const fr=new FileReader(), lo=new Sto().lo;
+    fr.onload= function(evt){ lo.setItem(nm, evt.target.result) }
+    fr.readAsText(files[0]);
+  }
+  this.updateDL=function() {
+    var raw, s= "data:text/plain;base64,";
+    lk.style.backgroundColor= 'lightgray';
+    raw=new Sto().lo.getItem(lk.download=nm);
+    lk.innerHTML= $t.nml(nm,raw);
+    lk.href= s + btoa(raw);
+    return false;
+  }
+  this.nml=function(nm,s){
+    return 'Download '+nm+' ('+ ((s)?s.length:0)+' bytes)';
   }
 }
