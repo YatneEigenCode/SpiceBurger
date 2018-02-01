@@ -1,0 +1,17 @@
+//1-31-2018 jchoy
+LocalSave=function(){
+  this.start=function(at) {
+    var s, nm, src, lm=new LinkMaker();
+    src=(at.length>1)?at[1]:'err.log';
+    nm=(at.length>2)?at[2]:src+'.txt';
+    lm.addEl( "a" ).download=nm;
+    s=new Sto().lo.getItem(src);
+    lm._.innerHTML= this.nml(nm,s);
+    s= "base64,"+btoa(s);
+    lm._.href= "data:text/plain;"+s;
+    return ['ok',lm.wrapCloser(lm._)][0]
+  }
+  this.nml=function(nm,s){
+    return nm+' ('+s.length+' bytes)';
+  }
+}
