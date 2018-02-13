@@ -1,0 +1,34 @@
+//2-12-2018 jchoy quick checkbox
+Qbx=function (){
+  const lm=new LinkMaker(), lo=new Sto().lo;
+  this.start=function(at){
+    if (at.length<2) return 'usage: qmx [filename]';
+    var av=lo.getItem(lo.qbxFile=at[1]).split('\n');
+    lm.start([0,'.','qbx',at[1]]);
+    const ph=lm._, div=lm.addEl('div');
+    for (var te,i=0; i<av.length; i++) 
+      this.showItem( i, av[i], lm.addEl('li',div) );
+    return ['ok',ph.parentNode.appendChild(div)][0];
+  }
+  this.showItem= function( i, s, el ){
+    var am= (s.length>4)? [s.substr(0,4),4]: ['',0];
+    if (am[1]==4){
+      this.mkCkbx( i, el, s.substr(am[1]) );
+      if (am[0]=='[x] ') lm._.checked= true;
+    }
+    lm.addEl('span',el).innerHTML=s.substr(am[1]);
+  }
+  this.mkCkbx= function( i, el, s ){
+    lm.addEl('input',el).type='checkbox';
+    lm._.qbxCfg= {i:i, val:s}
+    lm._.onclick= this.doClick;
+  }
+  this.doClick= function(){
+    var av= lo.getItem(lo.qbxFile).split('\n');
+    const cbtx= (this.checked)? '[x] ':'[ ] ', k=this.qbxCfg.i;
+    if (av.length<=k){
+    } else if (av[k].substr(4)==this.qbxCfg.val)
+      av[k]= (cbtx+this.qbxCfg.val);
+    lo.setItem(lo.qbxFile, av.join('\n'));
+  }
+}
