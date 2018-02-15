@@ -1,4 +1,4 @@
-//2-12-2018 jchoy quick checkbox
+//2-14-2018 jchoy autolink for qbx
 Qbx=function (){
   const lm=new LinkMaker(), lo=new Sto().lo;
   this.start=function(at){
@@ -7,16 +7,25 @@ Qbx=function (){
     lm.start([0,'.','qbx',at[1]]);
     const ph=lm._, div=lm.addEl('div');
     for (var te,i=0; i<av.length; i++) 
-      this.showItem( i, av[i], lm.addEl('li',div) );
+      this.showItem( i, av[i], lm.addEl('div',div) );
     return ['ok',ph.parentNode.appendChild(div)][0];
   }
   this.showItem= function( i, s, el ){
     var am= (s.length>4)? [s.substr(0,4),4]: ['',0];
+    am= ((am[0]=='[ ] ') || (am[0]=='[x] '))? am:['',0];
     if (am[1]==4){
       this.mkCkbx( i, el, s.substr(am[1]) );
       if (am[0]=='[x] ') lm._.checked= true;
     }
-    lm.addEl('span',el).innerHTML=s.substr(am[1]);
+    this.showContent( el, s.substr(am[1]) );
+  }
+  this.showContent= function(el, s){
+    const tag= (s.match(/^.+\:\/\//))? 'a':'span';
+    lm.addEl(tag,el).innerHTML=s;
+    lm._.href=s;
+  }
+  this.midcate= function(s, l2){
+    return (s.length>l2+l2)? [s.substr(0,l2),s.substr(-l2)].join(' ... ') : s;
   }
   this.mkCkbx= function( i, el, s ){
     lm.addEl('input',el).type='checkbox';
