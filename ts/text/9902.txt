@@ -1,0 +1,108 @@
+//9-13-2016 jchoy
+pkg=pkg9902= {ver:'v0.248'} //confirm, DomAni.aniScroll
+
+pkg.OurStatus=function (){
+  new AppTool().inherit( this, AppTool );
+  var $t= this;
+  this.hist=[''];
+  this.cfg= {mxl:40, l2:20, w_def:'w_grabBag'};
+  this.start= function(at){
+    this.gName= (at[1]=='*')?$t.cfg.w_def:at[1]; this.pName= at[2];
+    if (at.length>3) this.cfg.mxl= parseInt(at[3]);
+    var outerDiv= $t.addEl( 'div' ), l2=$t.cfg.l2= Math.floor($t.cfg.mxl/2);
+    this.addEl('span', outerDiv).innerHTML= '[x] ';
+    this._.onclick= function(){ outerDiv.parentNode.removeChild(outerDiv) }
+    this.span = this.addEl('span', outerDiv);
+    return ['ok',this.update()][0];
+  }
+  this.midcate= function(s, l2){
+    if (!s) return '';
+    return (s.length>l2+l2)? [s.substr(0,l2),s.substr(-l2)].join(' ... ') : s;
+  }
+  this.update= function(){
+    if (!document.contains(this.span)) return;
+    this.hist.unshift( window[this.gName][this.pName] );
+    if (this.hist.pop() != this.hist[0])
+      new DomAni().odoChange($t.span, $t.midcate($t.hist[0],this.cfg.l2));
+    setTimeout( function(){$t.update()}, 2000 ); 
+  }
+}
+//----
+pkg.DomAni= function(){
+  var $raf=requestAnimationFrame;
+  this.odoChange= function( el, s ){
+    var n=0, z=el.offsetHeight, es=el.style, x= el.parentNode.style.overflow= 'hidden';
+    (function fa(){ es.top=n--; $raf((n>-z)?fa:fm);})(es.position='relative')
+    function fm(){ el.innerHTML=s; fb() }
+    function fb(){ es.top=n++; $raf((n<0)?fb:fz) }
+    function fz(){ es.position='static' }
+  }
+  this.pinchOpen= function( el, pr ){
+    var $ph=pr.appendChild(document.createElement('div')), z=el.offsetHeight;
+    var w=$ph.appendChild(el), v= el.position='relative';
+    var yst= document.body.scrollTop; document.body.scrollTop++;
+    var $saf= (yst==document.body.scrollTop)? z : 0;
+    this.pinchRaf( $ph.style, -5, 1, function(v){return v<z},
+      function(){ pr.insertBefore(el,$ph); pr.removeChild($ph);
+        new DomAni().aniScroll($saf) } );
+  }
+  this.aniScroll= function(saf){
+    var $bod= document.body, n=1, z=document.body.scrollTop+saf;
+    (function fa(){ $bod.scrollTop+=(n++); if ($bod.scrollTop<z) $raf(fa); })()
+  }
+  this.pinchRaf= function( es, dz, za, fc, fz ){
+    var z=za, x= es.overflow= 'hidden';
+    (function fa(){ es.height=z-=dz; $raf( (fc(z))? fa:fz );})()
+  }
+  this.pinchDel= function( el ){
+    var $ph= el.parentNode.insertBefore(document.createElement('div'),el);
+    var dz, z=el.offsetHeight, es=$ph.style, x= $ph.style.overflow= 'hidden';
+    $ph.appendChild(el); dz= (z>20)?5:2; 
+    (function fa(){ es.height=z-=dz; $raf((z>1)?fa:fz);})(el.position='relative')
+    function fz(){ $ph.parentNode.removeChild($ph) }
+  }
+  this.fadeDel= function( el ){
+    this.fadeOut( el, function(){ el.parentNode.removeChild(el) }, el.style.opacity=0.8 ) }
+  this.fadeChange= function( el, s ){
+    this.fadeOut(el, function(){ el.innerHTML=s; $t.fadeIn(el) }, el.style.opacity=1 ); }
+  this.fadeIn= function( el, fnz ){
+    (function fr(){ el.style.opacity-= -.01; $raf((el.style.opacity<1)?fr:fnz) })(); }
+  this.fadeOut= function( el, fnz ){
+    (function fr(){ el.style.opacity-= .01; $raf((el.style.opacity>0)?fr:fnz);})() }
+  this.delEl= function(el){ this.pinchDel(el) }
+}
+//----
+pkg.Sto2Rip= function(){
+  new AppTool().inherit( this, LinkMaker );
+  new AppTool().inherit( this, SnLiteLoader );
+  new AppTool().inherit( this, CsvBud );
+  this.sendPkgUrl= "http://rip.okdaily.com/mad/textStore.php?f=set&i={0}";
+  this.maxlen= 500;
+  this.sto= new Sto();
+  this.start= function (ap){
+    if (!this.sto.isOk) return 'err - old browser not supported';
+    this.getAssetQ( this.sto.lo.getItem(ap[1]) );
+    var len= JSON.stringify(this.asset).length, mx=this.maxlen;
+    if (len>mx) return 'err - size '+len+' over limit '+mx;
+    var isGo= (this.bag()[ap[2]]) ? true : confirm('Are you sure: '+ap[2]);
+    if (isGo) this.sendPkg( {asset:this.asset}, ap[2], null, this.bag()[ap[2]]=1 );
+    return 'ok';
+  }
+}
+
+pkg.contents=[
+ { name:"pkg.startup"
+   ,text:"defcmd statbox OurStatus\ndefcmd saverip Sto2Rip"
+ }
+,{ name:"pkg9902notes"
+   ,text:"v0.223\n8/20/2016\nSto2Rip, DomAni.pinchOpen, delEl"
+ }
+]
+pkg.CeStarter9902=function(){
+  var $p=pkg9902, $su=pkg9902.contents[0];
+  this.start=function(){
+    new PkgTool().start($p, $p.contents);
+    $ce.parse( $su.text );
+  }
+}
+new PkgTool().start(pkg);
