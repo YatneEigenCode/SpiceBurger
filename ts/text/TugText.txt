@@ -1,4 +1,4 @@
-//9-14-2017 jchoy TugText v0.164 loadjs 2580; typo csv filename
+//2-25-2018 jchoy TugText v0.171 TubPubHub modified from 2586 to use tugpubhub_cfg instead of tc_cfg
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -17,6 +17,7 @@ new TugTabText("tugtext").start("Welcome to TugText"
   ,"TODO: a publisher class"
   ,"  list published files like bbs"
   ,""); 
+/*
 new TugTab("tugtab.csv").start( "K,V"
   ,"Welcome Mesage,#://cmd/edit%20tugtext"
   ,"this list,#://cmd/tab%20tugtab.csv"
@@ -27,3 +28,24 @@ new TugTab("tugtab.csv").start( "K,V"
   ,"2584,#://cmd/tc%20loadjs%20{dm}{pa}2584"
   ,"2585,#://cmd/tc%20loadjs%20{dm}{pa}2585"
 )
+*/
+TugPubHub=function(){
+ //publishes to same slot (in cfg)
+ const lo= new Sto().lo, nom='tugpubhub';
+ this.start=function(ap){
+  if (ap.length<2) return "missing parameter #2";
+  var img=new Image();
+  const src= lo.getItem(nom+'_cfg')+this.prepData(ap[1]);
+  const res= (src.length>500)? 'max exceeded: ':'ok: '; 
+  if (res=='ok: ') img.src= src;
+  return [res+src.length, console.log(nom,src)][0];
+ }
+ this.prepData= function(fn){
+  var q=unescape("%22"), cr=unescape("%0d%0a"), s0=lo.getItem(fn);
+  if (s0.indexOf(cr)<0) cr=unescape("%0a");
+  if (s0.indexOf(cr)<0) cr=unescape("%0d");
+  var res= "new TugText("+q+fn+q+").start(" +q 
+    +s0.split(cr).join(q+","+q) +q+");";
+  return "&data="+encodeURIComponent(res);
+ }
+}
