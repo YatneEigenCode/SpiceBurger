@@ -1,0 +1,29 @@
+//9-14-2017 jchoy TugText v0.164 loadjs 2580; typo csv filename
+
+TugTabText= function(fn,cmd){ this.start= function(){
+    var st=new Sto(), cr= unescape("%0d%0a");
+    if (st.isOk) st.lo.setItem( fn, [].slice.call(arguments,0).join(cr) );
+    if (cmd) location.hash= "#://cmd/"+cmd+"%20"+fn;
+  }}
+TugText= function(fn){ new AppTool().inherit( this, TugTabText, fn, "edit" ); }
+TugTab= function(fn){ new AppTool().inherit( this, TugTabText, fn, "tab" ); }
+
+new TugTabText("tugtext").start("Welcome to TugText"
+  ,"This can be used to publish info"
+  ,"Info is packaged into a javascript class"
+  ,"Subscribers use loadjs [url]"
+  ,"Use tab tugtab to see list"
+  ,""
+  ,"TODO: a publisher class"
+  ,"  list published files like bbs"
+  ,""); 
+new TugTab("tugtab.csv").start( "K,V"
+  ,"Welcome Mesage,#://cmd/edit%20tugtext"
+  ,"this list,#://cmd/tab%20tugtab.csv"
+  ,"2580,#://cmd/tc%20loadjs%20{dm}{pa}2580"
+  ,"2581,#://cmd/tc%20loadjs%20{dm}{pa}2581"
+  ,"2582,#://cmd/tc%20loadjs%20{dm}{pa}2582"
+  ,"2583,#://cmd/tc%20loadjs%20{dm}{pa}2583"
+  ,"2584,#://cmd/tc%20loadjs%20{dm}{pa}2584"
+  ,"2585,#://cmd/tc%20loadjs%20{dm}{pa}2585"
+)
