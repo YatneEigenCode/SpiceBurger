@@ -1,11 +1,10 @@
-//2-28-2018 jchoy v0.114 not camera
+//2-28-2018 jchoy v0.115 type=file
 ImgInp= function(){
-  var wid, lm=new LinkMaker();
+  var wid, inp, lm=new LinkMaker();
   this.start=function(at){
     wid= (at.length<=1)? 240: parseInt(at[1]);
     if (isNaN(wid)) wid= 240;
-    var inp= lm.addEl('input');
-    inp.type='file';
+    (inp= lm.addEl('input')).type='file';
     inp.accept='image/*';
     lm.wrapCloser(inp,1,'User Image');
     inp.onchange= this.showImg;
