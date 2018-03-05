@@ -1,17 +1,20 @@
-//3-4-2018 jchoy v0.116 command flags
+//3-4-2018 jchoy v0.117 setOptions
 ImgInp= function(){
   var wid, flags={}, inp, lm=new LinkMaker();
   this.start=function(at){
-    wid= (at.length<=1)? 240: parseInt(at[1]);
-    if (isNaN(wid)) wid= 240;
-    if (at.includes('/grayscale') flags.grayscale= true;
-    if (at.includes('/sepia') flags.sepia= true;
-    if (at.includes('/invert') flags.invert= true;
+    this.setOptions(at);
     (inp= lm.addEl('input')).type='file';
     inp.accept='image/*';
     lm.wrapCloser(inp,1,'User Image');
     inp.onchange= this.showImg;
     return 'ok';
+  }
+  this.setOptions= function(at){
+    wid= (at.length<=1)? 240: parseInt(at[1]);
+    if (isNaN(wid)) wid= 240;
+    if (at.includes('/grayscale')) flags.grayscale= true;
+    if (at.includes('/sepia')) flags.sepia= true;
+    if (at.includes('/invert')) flags.invert= true;
   }
   this.showImg= function(){
     var par=this.parentNode, reader= new FileReader();
