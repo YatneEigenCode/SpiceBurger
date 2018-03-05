@@ -1,9 +1,12 @@
-//3-4-2018 jchoy v0.115 grayscale
+//3-4-2018 jchoy v0.116 command flags
 ImgInp= function(){
-  var wid, inp, lm=new LinkMaker();
+  var wid, flags={}, inp, lm=new LinkMaker();
   this.start=function(at){
     wid= (at.length<=1)? 240: parseInt(at[1]);
     if (isNaN(wid)) wid= 240;
+    if (at.includes('/grayscale') flags.grayscale= true;
+    if (at.includes('/sepia') flags.sepia= true;
+    if (at.includes('/invert') flags.invert= true;
     (inp= lm.addEl('input')).type='file';
     inp.accept='image/*';
     lm.wrapCloser(inp,1,'User Image');
@@ -16,7 +19,9 @@ ImgInp= function(){
       lm.addEl('br',par)
       lm.addEl('img',par).src= reader.result;
       lm._.style.width= wid;
-      lm._.style.grayscale(1);
+      if (flags.grayscale) lm._.style.filter= 'grayscale(1)';
+      if (flags.sepia) lm._.style.filter= 'sepia(1)';
+      if (flags.invert) lm._.style.filter= 'invert(1)';
       lm.addEl('br',par)
       lm.addEl('input',par).size=77;
     }
