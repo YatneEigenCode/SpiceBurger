@@ -1,0 +1,112 @@
+//3-2-2018 jchoy v0.131 RchApp101 wip
+RemoteCmdHost=function(){
+  var dfr, rcc=new RemoteCmdClient().init(), $btn, $t=this; 
+  var lm=new LinkMaker(), ce=new CmdEngine().ce1.ce, lo=new Sto().lo;
+  var ast=("ok|stopped by admin user|error|Remote Cmd Host ").split('|');
+  this.start=function(at){
+    this.init('RchApp101').showUI();
+    this.emit( (dfr= rcc.mkDiffer($t.parse,'host:ready')).prev );
+    listen$();
+  }
+  $t.init= function(cs){
+    this.stateMap= new window[cs]().stateMap;
+    return [this, this.state={code:'ready',client:null}][0]; 
+  }
+  $t.emit= rcc.emit;
+  $t.status=function(s){
+    lm.addEl('div',$btn.parentNode).innerHTML= s;
+  }
+  $t.parse= function(s){
+    var ap=s.split(':');
+    if (ap[0] == 'host') return;
+    var spec = $t.stateMap[$t.state.code];
+    spec[1]( spec[0], ap, $t);  //only passing 2args. not 3
+  }
+  $t.abort= function(cur){
+    if  (cur == 'ready' ) return;  
+    var spec = $t.stateMap[(cur=='endsession')?cur:'abort'];
+    spec[1]( spec[0], [], $t);
+  } 
+  $t.showUI= function(){
+    lm.addEl('button').innerHTML='Stop';
+    ($btn=lm._).onclick= this.userStop;
+    lm.wrapCloser($btn,1,ast[3]+parseInt(rcc.cfg.url.match(/\d+/)) );
+    //$t.div=$btn.parentNode;
+  }
+  var listen$= function(){
+    dfr.write(lo.getItem(rcc.cacheName()));
+    if (dfr.count % 10 == 0) console.log($t.state.code,dfr.count);
+    if  (dfr.count >100) {
+      dfr.count=0;
+      $t.abort($t.state.code);
+    }
+    if (dfr.count % 10 == 0)
+      ce.parse('loadjs '+rcc.cfg.url+'&f=text&r='+Math.random() );
+    if (!rcc.isStop) setTimeout(listen$, rcc.cfg.ms);
+  }
+  this.userStop= function(){
+    rcc.isStop = this.disabled= true;
+    lm.addEl('div',this.parentNode).innerHTML= ast[1];
+  }
+}
+//-----
+RemoteCmdClient= function(){
+  var $t=this, lo= new Sto().lo;
+  var ast="ok|rcc_cfg|sent|rcc_cache".split('|')
+  $t.cfg= {ms:200, url:'localhost'}
+  $t.start=function(at){
+    this.init();
+    if (at.length>1) $t.emit(at[1])
+    return ast[(at.length>1)?2:0]
+  }
+  $t.init= function(){ $t.cfg.url= lo.getItem(ast[1]); return $t }
+  $t.cacheName=function(){return ast[3]}
+  $t.emit= function(s){
+    var url= 'new RccText("'+$t.cacheName()+'").start("'+s+'")';
+    url= $t.cfg.url +'&f=set&data='+encodeURIComponent(url)
+    if (url.length<500) new Image().src= url;
+  }
+  $t.mkDiffer=function(cb,s0) {
+    var res={ prev:((s0)?s0:''), count:1 }
+    return [res.write=function (s){
+       this.count= (this.prev!=s)? 1 : this.count+1;           
+       if  (this.prev!=s) cb(this.prev=s);
+    }, res][1];
+  }
+}
+RccText=function(fn){ new AppTool().inherit( this, TugTabText, fn ); }
+//-----
+RchApp101=function(){
+//TODO:score.standings.winning-numbers.pdfslot
+//clear prev sessions
+  var ffReg$= function( next, ap, rch ){
+    rch.state.client= ap[0];
+    ffDef$( next, ap, rch );
+  }
+  var ffReset$= function( next, ap, rch ){
+    rch.state.client= null;
+    rch.status( rch.state.code= next );
+    rch.emit( 'host:'+next );
+  }
+  var ffDef$= function( next, ap, rch ){
+    if (ap[0]!=rch.state.client) return; //ignore
+    rch.state.code= next;     
+    rch.emit( 'host:'+next+'/'+rch.state.client );
+    rch.status(rch.state.client+':'+ap[1]);
+  }
+  this.stateMap= {
+      ready: ['command', ffReg$],
+      command:['data', ffDef$],
+      data:['enddata', ffDef$],
+      enddata:['endsession', ffDef$], 
+      abort:['endsession', ffReset$], 
+      endsession:['ready', ffReset$]
+  }
+}
+
+var cee=new CmdEngine().ce1.ce;
+cee.parse('defcmd rch RemoteCmdHost');
+cee.parse('defcmd rcc RemoteCmdClient');
+cee.parse('link #://cmd/rch');
+cee.parse('link #://cmd/=');
+cee.parse('loadjs ts/text/TugText.txt');
