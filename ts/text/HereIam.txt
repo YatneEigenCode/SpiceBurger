@@ -1,0 +1,16 @@
+//3-11-2018 jchoy visually broadcast color sequence
+HereIam=function(){
+  var div, $h=100, lm=new LinkMaker();
+  var $as="ok,Here I am".split(",");
+  var ac="red,green,yellow,blue".split(",");
+  this.start=function(at){
+    (div= lm.addEl("div")).innerHTML ="+";
+    lm.wrapCloser(div,1,$as[1]);
+    div.style.backgroundColor=ac[0];
+    return ['ok',setHeight$()][0];
+  }
+  var setHeight$=function (){
+    div.style.height =($h =2*$h);
+    div.onclick= setHeight$
+  }
+}
