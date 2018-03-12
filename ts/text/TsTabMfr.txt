@@ -1,0 +1,42 @@
+//2620
+//3-11-2018 jchoy v0.119 TsTabClient, window.parent
+TsTabMfr= function(){
+  var $t=this, $val, lm=new LinkMaker();
+  var $as=("x|/mad/textStore.php?f=set"
+    +"|Ts Tab Mfr |error|</description>").split("|");
+  var $pkg= {asset:[["A","B"],["",""]]}
+  this.start=function(parmName){
+    if (lm.cgi(parmName,"",location)=="go")
+      $t.writeNewSlot();
+  }
+  $t.writeNewSlot= function(){
+    var val= "pkg="+JSON.stringify($pkg);
+    new Image().src= $as[1]+"&data="+encodeURIComponent(val);
+    setTimeout(this.getTsNum$, 1000);
+  }
+  var parseXhrResp$= function(){
+    var at=this.responseText.split("<title>id</title><description>");
+    lm.addEl("div").innerHTML= $val= (at.length<2)? $as[3]: at[1].split($as[4])[0];
+    window.parent.postMessage({newslot:$val},"*");
+    lm.wrapCloser(lm._, 1,$as[2]);
+  }
+  $t.getTsNum$= function(){
+    var url=$as[1].split("?")[0], x=new XMLHttpRequest();
+    [x, x.onload=parseXhrResp$, x.open("GET",url)][0].send();
+  }
+}
+TsTabClient= function(){
+  var $t=this, lo=new Sto().lo, lm=new LinkMaker();
+  var $as=("ttc_cfg|Ts Tab Client |error").split("|");
+  this.start= function(at){
+    lm.addEl("iframe").src= lo.getItem($as[0]);
+    lm.wrapCloser(lm._, 1, $as[1]);
+    window.addEventListener( "message", this.gotResult$, false );
+    return "ok";
+  }
+  this.gotResult$ = function(event){
+    console.log( lm.addEl("div").innerHTML= event.data.newslot );
+    lm.wrapCloser( lm._ );
+  }
+}
+new TsTabMfr().start("ttm");
