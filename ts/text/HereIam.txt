@@ -1,16 +1,20 @@
-//3-11-2018 jchoy visually broadcast color sequence
+//3-11-2018 jchoy v0.113 timer to rotate color
 HereIam=function(){
-  var div, $h=100, lm=new LinkMaker();
-  var $as="ok,Here I am".split(",");
+  var div, $h=100, $n=60, lm=new LinkMaker();
+  var $as="ok,Here I am,Bigger".split(",");
   var ac="red,green,yellow,blue".split(",");
   this.start=function(at){
-    (div= lm.addEl("div")).innerHTML ="+";
+    if (at.length>2) ac=at.slice(1).reverse();
+    (div= lm.addEl("div")).innerHTML =$as[2];
     lm.wrapCloser(div,1,$as[1]);
-    div.style.backgroundColor=ac[0];
-    return ['ok',setHeight$()][0];
+    return ['ok', chgColor$(), setHeight$()][0];
   }
   var setHeight$=function (){
     div.style.height =($h =2*$h);
     div.onclick= setHeight$
+  }
+  var chgColor$= function(){
+    div.style.backgroundColor=ac[$n % ac.length];
+    if (--$n > 0) setTimeout( chgColor$, 500 );
   }
 }
