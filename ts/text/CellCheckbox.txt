@@ -1,0 +1,79 @@
+//3-12-2018 jchoy v0.151 stoTabExtend
+CellAlign=function(mod){
+  this.align="textAlign";
+  this.enhance=function(el,so,aa){
+    el.style[this.align]=mod;
+    return so;
+  }
+}
+CellVAlign= function(mod){
+  this.align="verticalAlign";
+  this.enhance= new CellAlign(mod).enhance;
+}
+CellCheckbox=function(){
+  var $pipe=[], lm= new LinkMaker();
+  this.enhance=function(el,so,aa,trigger){
+    el.cellcheckbox_rc= getCellRC$(el);
+    if ((so.indexOf("[x]")>=0) || (so.indexOf("[ ]")>=0)) {
+      $pipe.push( el );
+      setTimeout( delayEnh$, 100 );
+    }
+    return [so, $pipe.asset=aa, $pipe.trigger=trigger][0];
+  }
+  var delayEnh$= function(){
+    var box, cell= $pipe.shift();
+    var isMark= (cell.innerHTML.indexOf("[x]")>=0);
+    cell.innerHTML= cell.innerHTML.replace( (isMark)?"[x]":"[ ]","" );
+    (box= lm.addEl( 'input', cell )).type="checkbox";
+    box.checked = isMark
+    box.onclick= togcheck;
+  }
+  var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
+  var togcheck= function(){
+    var rc= this.parentNode.cellcheckbox_rc;
+    $pipe.asset[rc.r][rc.c] = togReplace($pipe.asset[rc.r][rc.c],"[ ]","[x]");
+    $pipe.trigger();
+  }
+  var togReplace= function(val, s0, s1){
+    return (val.indexOf(s0)>=0) ? val.replace(s0,s1) : val.replace(s1,s0); 
+  }
+}
+//-----
+stoTabExtend= function( cow ){
+  var $belt= cow.belt= {hht:{}, addon:{}};
+  var $as= ["basic","plain"]; 
+  (cow.ttpl={}).exp= function(el,so,aa){
+    var rc= $belt.getCellRC(el);
+    if ((rc.r==0) || (chkHdr$(aa,rc.c)==$as[0])) return so;
+    try { return $belt.addon['c'+rc.c].enhance(el,so,aa,saveTrigger$);
+    } catch (e) { return $as[0] }
+  }
+  var saveTrigger$= function(){ cow.saveAsset() }
+  $belt.stoEnv= cow.stoEnv;
+  $belt.getCellRC= function(el){
+    var par= el.parentNode, off=(el.parentNode.isPrep)?1:0;
+    return {c:par.cells.length-1-off, r:par.parentNode.rows.length-1};
+  }
+  var chkHdr$= function(aa,ic){
+    var at, cic, hd;
+    if (!$belt.hht[cic='c'+ic]) {
+      hd= (ic<aa[0].length)? aa[0][ic] : $as[0];
+      if ( (at=hd.split(':')).length<2 )
+        return $belt.hht[cic]=$as[0];
+      hdrCls$( at[1],cic );
+    }
+    return $belt.hht[cic];
+  }
+  var hdrCls$= function(prop,cic){
+    var clsName= $belt.stoEnv.exp( "{:"+prop+"}" );
+    if (window[clsName])
+      $belt.addon[cic]= new window[clsName](prop);
+    $belt.hht[cic]= (window[clsName])? clsName : $as[0];
+  }
+  return cow;
+}
+//-----
+StoTabLoDev=function(){
+  new AppTool().inherit( this, StoTabLo );
+  if (typeof(stoTabExtend) != "undefined") stoTabExtend( this );
+}
