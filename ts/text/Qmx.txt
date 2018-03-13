@@ -1,4 +1,4 @@
-//2-25-2018 jchoy v0.121 $in-line
+//3/12-2018 jchoy v0.123 fix #19 midcate
 Qmx=function(){
   this.start=function(at){
     if (at.length<3) return 'usage: qmx [filename|$] url{0} [$v1] [$v2...]';
@@ -8,9 +8,12 @@ Qmx=function(){
     const ph=lm._, pat=at.slice(2,3), div=lm.addEl('div');
     for (var te,i=0; i<av.length; i++) {      
       te=lm.addEl('a', lm.addEl('li',div) );
-      te.href=te.innerHTML=(pat+'').replace('{0}',av[i]);
+      te.href=(pat+'').replace('{0}',av[i]);
+      te.innerHTML= this.midcate(te.href, 15);
     }
     return ['ok',ph.parentNode.appendChild(div)][0];
   }
+  this.midcate= function(s, l2){
+    return (s.length>l2+l2)? [s.substr(0,l2),s.substr(-l2)].join(' ... ') : s; }
 }
 
