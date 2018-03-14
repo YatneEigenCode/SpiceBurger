@@ -1,5 +1,5 @@
-//1-8-2018 jchoy
-pkg= pkg9900= { ver:'1.231' }; //LinkMaker.initForRow
+//3-13-2018 jchoy
+pkg= pkg9900= { ver:'1.232' }; //stoTabExtend(), use when available
 
 //----
 pkg.CsvBud=function(){
@@ -130,6 +130,8 @@ pkg.StoTab=function(){
 pkg.StoTabLo=function(){
   new AppTool().inherit( this, StoTabBud );
   new AppTool().inherit( this, CsvBud );
+  if (typeof(stoTabExtend)!="undefined") 
+    stoTabExtend(this);
   var $t= this;
   this.da= new DomAni();
   this.start= function(at){
