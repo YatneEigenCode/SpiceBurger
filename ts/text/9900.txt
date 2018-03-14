@@ -1,5 +1,5 @@
 //3-13-2018 jchoy
-pkg= pkg9900= { ver:'1.232' }; //stoTabExtend(), use when available
+pkg= pkg9900= { ver:'1.232' }; //stoTabExtend(), use when available fix #14,15
 
 //----
 pkg.CsvBud=function(){
