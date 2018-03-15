@@ -1,4 +1,4 @@
-//2-25-2018 jchoy TugText v0.171 TubPubHub modified from 2586 to use tugpubhub_cfg instead of tc_cfg
+//3-14-2018 jchoy TugText v0.181 EncryptFile
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -48,4 +48,15 @@ TugPubHub=function(){
     +s0.split(cr).join(q+","+q) +q+");";
   return "&data="+encodeURIComponent(res);
  }
+}
+EncryptFile= function(){
+  if (typeof(extendSimpleEncr)!="undefined") extendSimpleEncr(this);
+  this.start= function(at){
+    var asset, lo= new Sto().lo;
+    if (!this.encrypt) return "no encryption installed";
+    if (at.length<4) return "usage: encfile [/d|/e] key filename";
+    if (!(asset=lo.getItem(at[3]))) return 'empty file';
+    lo.setItem( at[3], this.encrypt( at[2], asset, at[1]=="/d" ) );
+    return 'ok';
+  }
 }
