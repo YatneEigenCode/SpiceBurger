@@ -1,5 +1,6 @@
-//3-14-2018 jchoy v1.112 SimpleEncr using XOR
+//3-14-2018 jchoy v1.113 fix extender
 SimpleEncr=function (){
+  var $t= this;
   this.start=function(at){
     if (at.length<4) return "xci [/e|/d] key val";
     return this.encrypt( at[2], at.slice(3).join(" "), at[1]=="/d" );
@@ -17,12 +18,12 @@ SimpleEncr=function (){
   this._factory= function(){ return this.__mfr(0) }
   this._extender= function(){ return this.__mfr(1) }
   this.__mfr= function(c){
-    if (c==1) return function(cow){ cow.encrypt=this.encrypt }
+    if (c==1) return function(cow){ cow.encrypt=$t.encrypt }
     return function(){ return new SimpleEncr() }
   }
 }
 //simpleEncrMfr= new SimpleEncr()._factory();  //use instead of new
-//extendSimpleEncr= new SimpleEncr()._extender();
+extendSimpleEncr= new SimpleEncr()._extender();
 //js usage: if (typeof(extendSimpleEncr)!="undefined") extendSimpleCncr(this);
 //console.log(simpleEncrMfr().encrypt('hop','this is a beast'))
 //console.log(simpleEncrMfr().encrypt('hop','HAcZG08ZG08RSA0VCRwE',1))
