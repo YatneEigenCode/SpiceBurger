@@ -1,4 +1,4 @@
-//3-12-2018 jchoy v0.151 stoTabExtend
+//3-14-2018 jchoy v0.152 CellCheckboxYellow
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -10,8 +10,13 @@ CellVAlign= function(mod){
   this.align="verticalAlign";
   this.enhance= new CellAlign(mod).enhance;
 }
-CellCheckbox=function(){
+CellCheckboxYellow= function(){
+  var ccb= new CellCheckbox( ["white","yellow"] );
+  this.enhance= function(a,b,c,d){ return ccb.enhance(a,b,c,d) }
+}
+CellCheckbox=function (hlc){
   var $pipe=[], lm= new LinkMaker();
+  var hiliteColors= (hlc)? hlc : [];
   this.enhance=function(el,so,aa,trigger){
     el.cellcheckbox_rc= getCellRC$(el);
     if ((so.indexOf("[x]")>=0) || (so.indexOf("[ ]")>=0)) {
@@ -26,13 +31,18 @@ CellCheckbox=function(){
     cell.innerHTML= cell.innerHTML.replace( (isMark)?"[x]":"[ ]","" );
     (box= lm.addEl( 'input', cell )).type="checkbox";
     box.checked = isMark
-    box.onclick= togcheck;
+    box.onclick= [togcheck, alignBgColor(box)][0];
   }
   var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
   var togcheck= function(){
     var rc= this.parentNode.cellcheckbox_rc;
+    alignBgColor(this);
     $pipe.asset[rc.r][rc.c] = togReplace($pipe.asset[rc.r][rc.c],"[ ]","[x]");
     $pipe.trigger();
+  }
+  var alignBgColor= function(box){
+    if (hiliteColors.length<2) return;
+    box.parentNode.style.background= hiliteColors[ (box.checked)? 1:0];
   }
   var togReplace= function(val, s0, s1){
     return (val.indexOf(s0)>=0) ? val.replace(s0,s1) : val.replace(s1,s0); 
