@@ -1,15 +1,15 @@
-//3/12-2018 jchoy v0.123 fix #19 midcate
+//3-14-2018 jchoy v0.124 fix #19 midcate hu
 Qmx=function(){
   this.start=function(at){
     if (at.length<3) return 'usage: qmx [filename|$] url{0} [$v1] [$v2...]';
-    var lm, av= at.slice(3,99);
+    var lm, hu, av= at.slice(3,99);
     if (at[1]!='$') av=new Sto().lo.getItem(at[1]).split('\n');
     (lm=new LinkMaker()).start([0,'.',at[2]]);
     const ph=lm._, pat=at.slice(2,3), div=lm.addEl('div');
     for (var te,i=0; i<av.length; i++) {      
       te=lm.addEl('a', lm.addEl('li',div) );
-      te.href=(pat+'').replace('{0}',av[i]);
-      te.innerHTML= this.midcate(te.href, 15);
+      te.href= hu= (pat+'').replace('{0}',av[i]);
+      te.innerHTML= this.midcate(hu, 15);
     }
     return ['ok',ph.parentNode.appendChild(div)][0];
   }
