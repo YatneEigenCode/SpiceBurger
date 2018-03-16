@@ -1,4 +1,4 @@
-//3-14-2018 jchoy TugText v0.181 EncryptFile
+//3-16-2018 jchoy TugText v0.191 RsuPub
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -31,9 +31,10 @@ new TugTab("tugtab.csv").start( "K,V"
 */
 TugPubHub=function(){
  //publishes to same slot (in cfg)
- const lo= new Sto().lo, nom='tugpubhub';
+ var lo= new Sto().lo;
  this.start=function(ap){
   if (ap.length<2) return "missing parameter #2";
+  var nom= (ap.length>2)? ap[2] : "tugpubhub";
   var img=new Image();
   const src= lo.getItem(nom+'_cfg')+this.prepData(ap[1]);
   const res= (src.length>500)? 'max exceeded: ':'ok: '; 
@@ -49,6 +50,26 @@ TugPubHub=function(){
   return "&data="+encodeURIComponent(res);
  }
 }
+RsuPub=function(){
+  new AppTool().inherit( this, TugPubHub );
+  var lo= new Sto().lo;
+  this.prepData= function(fn){
+    var q=unescape("%22"), s0=lo.getItem(fn);
+    var res= "new RsuParse().start(" +q +s0 +q+");";
+    return "&data="+encodeURIComponent(res);
+  }
+}
+RsuParse= function(){
+  extendSimpleEncr( this );
+  this.start= function(s){
+    console.log('rsuparse start',s);
+    var key= new AppTool().cgi("dk","$3cr3t",location);
+    var sd= this.encrypt( key, s, 1 );
+    console.log('rsuparse decrypt',key,sd);
+    new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
+  }
+}
+//-----
 EncryptFile= function(){
   if (typeof(extendSimpleEncr)!="undefined") extendSimpleEncr(this);
   this.start= function(at){
