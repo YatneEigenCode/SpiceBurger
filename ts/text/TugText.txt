@@ -1,4 +1,4 @@
-//3-16-2018 jchoy TugText v0.191 RsuPub
+//3-16-2018 jchoy TugText v0.192 RsuParse.launch
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -50,22 +50,17 @@ TugPubHub=function(){
   return "&data="+encodeURIComponent(res);
  }
 }
-RsuPub=function(){
-  new AppTool().inherit( this, TugPubHub );
-  var lo= new Sto().lo;
-  this.prepData= function(fn){
-    var q=unescape("%22"), s0=lo.getItem(fn);
-    var res= "new RsuParse().start(" +q +s0 +q+");";
-    return "&data="+encodeURIComponent(res);
-  }
-}
+//-----
 RsuParse= function(){
   extendSimpleEncr( this );
+  new AppTool().inherit( this, SnLiteLoader );
+  this.launch= function(at){
+    var rca=this.cgi("rca","",location);
+    if (rca) this.loadJs( "ts/dat/"+rca+".txt" );
+  }
   this.start= function(s){
-    console.log('rsuparse start',s);
-    var key= new AppTool().cgi("dk","$3cr3t",location);
+    var key= this.cgi("dk","$3cr3t",location);
     var sd= this.encrypt( key, s, 1 );
-    console.log('rsuparse decrypt',key,sd);
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
 }
