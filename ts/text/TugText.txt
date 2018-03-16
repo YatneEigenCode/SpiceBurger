@@ -1,4 +1,4 @@
-//3-16-2018 jchoy TugText v0.192 RsuParse.launch
+//3-16-2018 jchoy TugText v0.193 moved RsuParse (to rsu.txt)
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -49,20 +49,6 @@ TugPubHub=function(){
     +s0.split(cr).join(q+","+q) +q+");";
   return "&data="+encodeURIComponent(res);
  }
-}
-//-----
-RsuParse= function(){
-  extendSimpleEncr( this );
-  new AppTool().inherit( this, SnLiteLoader );
-  this.launch= function(at){
-    var rca=this.cgi("rca","",location);
-    if (rca) this.loadJs( "ts/dat/"+rca+".txt" );
-  }
-  this.start= function(s){
-    var key= this.cgi("dk","$3cr3t",location);
-    var sd= this.encrypt( key, s, 1 );
-    new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
-  }
 }
 //-----
 EncryptFile= function(){
