@@ -1,3 +1,5 @@
+//3-16-18 jchoy v0.128 RsuParse.launch, usage
+//-----
 RsuParse= function(){
   var $t= this;
   new AppTool().inherit( this, SnLiteLoader );
@@ -16,5 +18,5 @@ RsuParse= function(){
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
 }
-
+//usage: index.htm?cts=622,rsu&rca=rsu100&dk=$3cr3t
 new RsuParse().launch();
