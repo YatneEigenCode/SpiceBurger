@@ -1,0 +1,20 @@
+RsuParse= function(){
+  var $t= this;
+  new AppTool().inherit( this, SnLiteLoader );
+  this.launch= function(at){
+    this.loadJs( "ts/text/SimpleEncr.txt" );
+    var rca=this.cgi("rca","",location);
+    if (rca) setTimeout( function(){
+      $t.loadJs( "ts/dat/"+rca+".txt" );
+    }, 700 );
+  }
+  this.start= function(s){
+    extendSimpleEncr( this );
+    var key= this.cgi("dk","$3cr3t",location);
+    var sd= this.encrypt( key, s, 1 );
+    document.body.innerHTML= "";
+    new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
+  }
+}
+
+new RsuParse().launch();
