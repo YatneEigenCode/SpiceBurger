@@ -1,4 +1,4 @@
-//3-16-18 jchoy v0.131 fix typo rsuLaunch.f$
+//3-16-18 jchoy v0.132 check decryption
 //-----
 RsuParse= function(){
   var $t= this;
@@ -14,6 +14,7 @@ RsuParse= function(){
     extendSimpleEncr( this );
     var key= this.cgi("dk","$3cr3t",location);
     var sd= this.encrypt( key, s, 1 );
+    if (sd.indexOf('link') != 0) return;
     document.body.innerHTML= "";
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
@@ -23,6 +24,6 @@ var rsuLaunch= { f$:function(){
   if (typeof(CmdEngine) != "undefined")
     new RsuParse().launch()
   else if (rsuLaunch.n-- > 0)
-    setTimeout( rsuLaunch.f$, 300, console.log('rsu',n) );
+    setTimeout( rsuLaunch.f$, 100, console.log('rsu',n) );
 }, n:10 };
 rsuLaunch.f$();
