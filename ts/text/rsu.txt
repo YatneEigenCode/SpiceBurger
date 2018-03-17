@@ -1,4 +1,4 @@
-//3-17-18 jchoy v0.137 remove RsuRun and streamline rsuLaunch
+//3-17-18 jchoy v0.138 undef test cannot be in func
 //-----
 RsuParse= function(){
   var $t= this;
@@ -21,7 +21,7 @@ RsuParse= function(){
 }
 //usage: index.htm?cts=622,rsu&rca=rsu100&dk=$3cr3t
 var rsuLaunch= { f$:function(){
-  if (rsuLaunch.test(CmdEngine)) return new RsuParse().launch()
+  if (typeof(CmdEngine)!="undefined") return new RsuParse().launch()
   if (rsuLaunch.max-- > 0) setTimeout( rsuLaunch.f$, 300 );
-}, test:function(c){return typeof(c)!="undefined"}, max:20 };
+}, max:20 };
 rsuLaunch.f$();
