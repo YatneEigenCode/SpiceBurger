@@ -19,6 +19,15 @@ RsuParse= function(){
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
 }
+//—
+RsuRun= function(){
+  new AppTool().inherit( this, SnLiteLoader );
+  this.start= function(at){
+    var val=this.cgi(at[0],"",location);
+    var res=at.slice(1).join(" ").replace("{0}",val);
+    if (val) new CmdEngine().ce1.ce.parse(res);
+  }
+}
 //usage: index.htm?cts=622,rsu&rca=rsu100&dk=$3cr3t
 var rsuLaunch= { f$:function(){
   if (typeof(CmdEngine) != "undefined")
