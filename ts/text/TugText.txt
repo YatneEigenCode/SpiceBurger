@@ -1,4 +1,4 @@
-//3-16-2018 jchoy TugText v0.193 moved RsuParse (to rsu.txt)
+//3-17-2018 jchoy TugText v0.211 AutoSto2Rip
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -12,10 +12,7 @@ new TugTabText("tugtext").start("Welcome to TugText"
   ,"This can be used to publish info"
   ,"Info is packaged into a javascript class"
   ,"Subscribers use loadjs [url]"
-  ,"Use tab tugtab to see list"
-  ,""
-  ,"TODO: a publisher class"
-  ,"  list published files like bbs"
+  ,"Use tab tugtab.csv to see list"
   ,""); 
 /*
 new TugTab("tugtab.csv").start( "K,V"
@@ -60,5 +57,45 @@ EncryptFile= function(){
     if (!(asset=lo.getItem(at[3]))) return 'empty file';
     lo.setItem( at[3], this.encrypt( at[2], asset, at[1]=="/d" ) );
     return 'ok';
+  }
+}
+//-----
+AutoSto2Rip= function(){
+  new AppTool().inherit( this, LinkMaker );
+  new AppTool().inherit( this, SnLiteLoader );
+  new AppTool().inherit( this, CsvBud );
+  this.sendPkgUrl= new CmdEngine().ce1.autosrurl;
+  this.maxlen= 500;
+  this.sto= new Sto();
+  var $t=this, $fspec= {name:'', ser:'', tsnum:'-1', quiet:0};
+  this.start= function (ap){
+    if (!this.sto.isOk) return 'err - old browser not supported';
+    if (ap. length<3) return 'usage: autosr filename tsnum';
+    $t.initFspec(ap);
+    if ($fspec.ser.length>$t.maxlen) return 'err - size '+len+' >limit '+$t.maxlen;
+
+    ($fspec.div=this.addEl('div')).innerHTML= 'ready to save';
+    this.wrapCloser( this._, 1, 'Auto Saverip '+$fspec.tsnum );
+    return ['ok',setTimeout( this.saveIfNeeded$, 2000 )][0];
+  }
+  this.initFspec= function(ap){
+    $t.getAssetQ( $t.sto.lo.getItem($fspec.name=ap[1]) );
+    $fspec.ser= JSON.stringify($t.asset);
+    $fspec.tsnum= ap[2];
+  }
+  this.saveIfNeeded$= function(){
+    $t.getAssetQ( $t.sto.lo.getItem($fspec.name) );
+    var status=function(s){ $fspec.div.innerHTML=s }
+    var cser= JSON.stringify($t.asset);
+    if (cser.length != $fspec.ser.length)
+      return status('content change not supported');
+    if (cser == $fspec.ser){
+      if (!status('ready to save') && ($fspec.quiet++ > 150))
+        return status('abandoned due to inactivity');
+    } else {
+      status( 'saved', $fspec.quiet= 0, $fspec.ser=cser );
+      $t.sendPkg( {asset:$t.asset}, $fspec.tsnum );
+    }
+    setTimeout( $t.saveIfNeeded$, 2000 );
   }
 }
