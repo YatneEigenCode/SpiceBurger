@@ -1,4 +1,4 @@
-//3-16-18 jchoy v0.129 rsuLaunch.f$
+//3-16-18 jchoy v0.131 fix typo rsuLaunch.f$
 //-----
 RsuParse= function(){
   var $t= this;
@@ -23,6 +23,6 @@ var rsuLaunch= { f$:function(){
   if (typeof(CmdEngine) != "undefined")
     new RsuParse().launch()
   else if (rsuLaunch.n-- > 0)
-    setTimeout( rsulaunch.f$, 300 );
+    setTimeout( rsuLaunch.f$, 300, console.log('rsu',n) );
 }, n:10 };
 rsuLaunch.f$();
