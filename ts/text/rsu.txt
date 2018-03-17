@@ -1,4 +1,4 @@
-//3-16-18 jchoy v0.135 remove debug msgs
+//3-17-18 jchoy v0.137 remove RsuRun and streamline rsuLaunch
 //-----
 RsuParse= function(){
   var $t= this;
@@ -19,20 +19,9 @@ RsuParse= function(){
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
 }
-//—
-RsuRun= function(){
-  new AppTool().inherit( this, SnLiteLoader );
-  this.start= function(at){
-    var val=this.cgi(at[0],"",location);
-    var res=at.slice(1).join(" ").replace("{0}",val);
-    if (val) new CmdEngine().ce1.ce.parse(res);
-  }
-}
 //usage: index.htm?cts=622,rsu&rca=rsu100&dk=$3cr3t
 var rsuLaunch= { f$:function(){
-  if (typeof(CmdEngine) != "undefined")
-    new RsuParse().launch()
-  else if (rsuLaunch.n-- > 0)
-    setTimeout( rsuLaunch.f$, 300 );
-}, n:20 };
+  if (rsuLaunch.test(CmdEngine)) return new RsuParse().launch()
+  if (rsuLaunch.max-- > 0) setTimeout( rsuLaunch.f$, 300 );
+}, test:function(c){return typeof(c)!="undefined"}, max:20 };
 rsuLaunch.f$();
