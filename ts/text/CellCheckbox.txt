@@ -1,4 +1,4 @@
-//3-14-2018 jchoy v0.152 CellCheckboxYellow fix #15
+//3-16-2018 jchoy v0.153 enable CellCheckboxYellow by default
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -60,6 +60,7 @@ stoTabExtend= function( cow ){
   }
   var saveTrigger$= function(){ cow.saveAsset() }
   $belt.stoEnv= cow.stoEnv;
+  $belt.stoEnv.asset.push( [":checkbox","CellCheckboxYellow"] );
   $belt.getCellRC= function(el){
     var par= el.parentNode, off=(el.parentNode.isPrep)?1:0;
     return {c:par.cells.length-1-off, r:par.parentNode.rows.length-1};
