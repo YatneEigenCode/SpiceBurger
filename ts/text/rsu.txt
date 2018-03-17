@@ -1,4 +1,4 @@
-//3-16-18 jchoy v0.128 RsuParse.launch, usage
+//3-16-18 jchoy v0.129 rsuLaunch.f$
 //-----
 RsuParse= function(){
   var $t= this;
@@ -19,4 +19,10 @@ RsuParse= function(){
   }
 }
 //usage: index.htm?cts=622,rsu&rca=rsu100&dk=$3cr3t
-new RsuParse().launch();
+var rsuLaunch= { f$:function(){
+  if (typeof(CmdEngine) != "undefined")
+    new RsuParse().launch()
+  else if (rsuLaunch.n-- > 0)
+    setTimeout( rsulaunch.f$, 300 );
+}, n:10 };
+rsuLaunch.f$();
