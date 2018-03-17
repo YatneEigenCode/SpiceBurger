@@ -1,4 +1,4 @@
-//3-16-18 jchoy v0.132 check decryption
+//3-16-18 jchoy v0.135 remove debug msgs
 //-----
 RsuParse= function(){
   var $t= this;
@@ -24,6 +24,6 @@ var rsuLaunch= { f$:function(){
   if (typeof(CmdEngine) != "undefined")
     new RsuParse().launch()
   else if (rsuLaunch.n-- > 0)
-    setTimeout( rsuLaunch.f$, 100, console.log('rsu',n) );
-}, n:10 };
+    setTimeout( rsuLaunch.f$, 300 );
+}, n:20 };
 rsuLaunch.f$();
