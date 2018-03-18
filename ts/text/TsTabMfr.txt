@@ -1,5 +1,5 @@
 //2620
-//3-17-2018 jchoy v0.126 evaluate $val
+//3-17-2018 jchoy v0.131 TsDatGw
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
   var $as=("x|/mad/textStore.php?f=set"
@@ -26,6 +26,24 @@ TsTabMfr= function(){
     [x, x.onload=parseXhrResp$, x.open("GET",url)][0].send();
   }
 }
+//-----
+TsDatGw= function(){
+  var $t=this, $val, ut=new SnLiteLoader();
+  var $as=("x|/mad/textStore.php?f=text%i=|z").split("|");
+  this.start=function(parmName){
+    if (ut.cgi(parmName,"",location)=="go")
+      $t.webGet( ut.cgi(parmName+"num","",location) );
+  }
+  $t.webGet= function(num){
+    var url=$as[1]+num, x=new XMLHttpRequest();
+    [x, x.onload=$t.postResp$, x.open("GET",url)][0].send();
+  }
+  $t.postResp$= function(){
+    $val= JSON.parse(this.responseText);
+    window.parent.postMessage( $val,"*" );
+  }
+}
+//-----
 TsTabClient= function(){
   var $t=this, lo=new Sto().lo, lm=new LinkMaker();
   var $as=("ttc_cfg|Ts Tab Client |error").split("|");
@@ -41,3 +59,4 @@ TsTabClient= function(){
   }
 }
 new TsTabMfr().start("ttm");
+new TsDatGw().start("tgw");
