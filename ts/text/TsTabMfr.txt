@@ -1,7 +1,7 @@
 //2620
-//3-17-2018 jchoy v0.121 use AppTool instead of LinkMaker to work in CT
+//3-17-2018 jchoy v0.122 use SnLiteLoader instead of LinkMaker to work in CT
 TsTabMfr= function(){
-  var $t=this, $val, ut=new AppTool();
+  var $t=this, $val, ut=new SnLiteLoader();
   var $as=("x|/mad/textStore.php?f=set"
     +"|Ts Tab Mfr |error|</description>").split("|");
   var $pkg= {asset:[["A","B"],["",""]]}
