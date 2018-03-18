@@ -1,12 +1,12 @@
 //2620
-//3-11-2018 jchoy v0.119 TsTabClient, window.parent
+//3-17-2018 jchoy v0.121 use AppTool instead of LinkMaker to work in CT
 TsTabMfr= function(){
-  var $t=this, $val, lm=new LinkMaker();
+  var $t=this, $val, ut=new AppTool();
   var $as=("x|/mad/textStore.php?f=set"
     +"|Ts Tab Mfr |error|</description>").split("|");
   var $pkg= {asset:[["A","B"],["",""]]}
   this.start=function(parmName){
-    if (lm.cgi(parmName,"",location)=="go")
+    if (ut.cgi(parmName,"",location)=="go")
       $t.writeNewSlot();
   }
   $t.writeNewSlot= function(){
@@ -16,9 +16,9 @@ TsTabMfr= function(){
   }
   var parseXhrResp$= function(){
     var at=this.responseText.split("<title>id</title><description>");
-    lm.addEl("div").innerHTML= $val= (at.length<2)? $as[3]: at[1].split($as[4])[0];
+    //lm.addEl("div").innerHTML= $val= (at.length<2)? $as[3]: at[1].split($as[4])[0];
     window.parent.postMessage({newslot:$val},"*");
-    lm.wrapCloser(lm._, 1,$as[2]);
+    //lm.wrapCloser(lm._, 1,$as[2]);
   }
   $t.getTsNum$= function(){
     var url=$as[1].split("?")[0], x=new XMLHttpRequest();
