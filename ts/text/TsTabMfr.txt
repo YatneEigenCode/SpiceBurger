@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.136 applyFilter
+//3-18-2018 jchoy v0.137 restart, isBusy
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -52,29 +52,30 @@ TsDataGw= function(){
   }
 }
 //-----
-TsDataGwListener= function(filter){
+TsDataGwListener= function(){
   var $t=this, ut=new SnLiteLoader();
   ut.inherit( this, TsDataGw );
   this.cur= {n:0, max:150, prevFmId:''}
   $t.cur.num= ut.cgi(parmName+"num","",location);
-  $t.webGet$= function(){ $t.webGet( $t.cur.num ); }
+  $t.webGet$= function(){ $t.cur.isBusy=1; $t.webGet( $t.cur.num ); }
   $t.postResp$= function(){
     var val= JSON.parse(this.responseText);
     var tc=$t.cur, fmId= val.fm+"|"+val.pid;
-    if (tc.prevFmId != [fmId, tc.n++][0]) {
+    if (tc.prevFmId != [fmId, tc.n++, tc.isBusy=0][0]) {
       tc.prevFmId= [fmId, tc.n=0][0]
-      if ($t.cur.filter) $t.applyFilter(val)
-      else window.parent.postMessage( val, $t.as[0] );
+      if ($t.applyFilter(val)) window.parent.postMessage( val, $t.as[0] );
     }
     if (tc.n < tc.max) setTimeout( $t.webGet$, 2000 );
   }
-  $t.initFilter= function(ft){
-    return [$t, $t.cur.filter= ft][0];
+  window.addEventListener( "message", $t.restart$ );
+  $t.restart$= function(evt){ if (($t.cur.n=0) || (!$t.cur.isBusy)) $t.webGet$() }
+  $t.filterParam= function(parmName){
+    if ($t.cur.tmp=ut.cgi(parmName,"",location))
+      $t.cur.filter= {key:parmName, val:$t.cur.tmp}
   }
   $t.applyFilter= function(val){
-    for (var m in $t.cur.filter)
-      if (val[m] == $t.cur.filter[m]
-        window.parent.postMessage( val, $t.as[0] );
+    if (!$t.cur.filter) return true;
+    return (val[$t.cur.filter.key] == $t.cur.filter.value)
   }
 }
 //-----
@@ -95,5 +96,5 @@ TsTabClient= function(){
 new TsTabMfr().start("ttm");
 new TsDataGw().start("tdg");
 new TsDataGwListener().start("tgtg");
-new TsDataGwListener().initFilter({"to":"host"}).start("tgtgf");
+new TsDataGwListener().filterParam("to").start("tgtgf");
 new TsTextGw().start("ttg");
