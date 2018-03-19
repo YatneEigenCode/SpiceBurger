@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.137 restart, isBusy
+//3-18-2018 jchoy v0.138 initFilter needs to return object
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -69,9 +69,10 @@ TsDataGwListener= function(){
   }
   window.addEventListener( "message", $t.restart$ );
   $t.restart$= function(evt){ if (($t.cur.n=0) || (!$t.cur.isBusy)) $t.webGet$() }
-  $t.filterParam= function(parmName){
+  $t.initFilter= function(parmName){
     if ($t.cur.tmp=ut.cgi(parmName,"",location))
       $t.cur.filter= {key:parmName, val:$t.cur.tmp}
+    return $t;
   }
   $t.applyFilter= function(val){
     if (!$t.cur.filter) return true;
@@ -95,6 +96,5 @@ TsTabClient= function(){
 }
 new TsTabMfr().start("ttm");
 new TsDataGw().start("tdg");
-new TsDataGwListener().start("tgtg");
-new TsDataGwListener().filterParam("to").start("tgtgf");
+new TsDataGwListener().initFilter("to").start("tgtg");
 new TsTextGw().start("ttg");
