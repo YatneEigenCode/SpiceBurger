@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.141 TgnNode
+//3-18-2018 jchoy v0.142 digit4, remove quotes
 RemoteCmdHost=function(){
   var dfr, rcc=new RemoteCmdClient().init(), $btn, $t=this; 
   var lm=new LinkMaker(), ce=new CmdEngine().ce1.ce, lo=new Sto().lo;
@@ -103,14 +103,14 @@ RchApp101=function(){
       endsession:['ready', ffReset$]
   }
 }
-//-----
 TdgNode=function (){
-  var $t=this, $mid=1001, $tbl;
+  var $t=this, $tbl, $pid=new Date().valueOf();
   var lm=new LinkMaker(), lo= new Sto().lo;
   var ast="ok|tdg_cfg|sent|*".split('|')
   $t.cfg= {ms:200}
   $t.start=function(at){
     if (at.length<2) return 'usage: tdgn self';
+    $pid=$t.digit4($pid);
     return [ast[0], this.init( at[1] ), this.prepUI()][0];
   }
   $t.prepUI= function(){
@@ -120,13 +120,17 @@ TdgNode=function (){
     lm.addEl( 'input', $tbl.rows[1].cells[0] ).type='button';
     [lm._,lm._.value='go'][0].onclick= this.handleClick$;
     lm.wrapCloser( $tbl, 1, 'Tdgw Node' );
+    $t.prepGw( $tbl.parentNode );
   }
   $t.init= function(self){
     $t.cfg.url= lo.getItem(ast[1]);
-    return [$t, $t.cfg.self= self, $t.prepGw()][0];
+    return [$t, $t.cfg.self= self][0];
   }
-  $t.prepGw= function(){
-    lm.addEl('iframe').src= "http://rip.okdaily.com/f/toy/lipao-ce/ct.htm?://&js=619&tgtg=go&tgtgnum=2637&to=host&run=loadjs%20http://spiceburger.okdaily.com/ts/text/TsTabMfr.txt?z4";
+  $t.prepGw= function(par){
+    lm.addEl('iframe',par).src= "http://rip.okdaily.com/f/toy/lipao-ce/ct.htm?://&js=619&tgtg=go&tgtgnum=2637&to=host&run=loadjs%20http://spiceburger.okdaily.com/ts/text/TsTabMfr.txt?z4";
+    lm._.width = lm._.height= 3;
+    lm._.style.display= "none";
+    $t.gw= lm._.contentWindow;
     window.addEventListener( "message", $t.handleMsg$ );
   }
   $t.handleMsg$= function(evt){
@@ -138,10 +142,13 @@ TdgNode=function (){
     var to= (at.length>1)? at[0] : "*";
     var msg= (at.length>1)? at.slice(1).join(":") : $txbox.value;
     $t.emit( to, msg );
+    $t.gw.postMessage( ".","*" );
   }
+  $t.digit4= function(n){var k=1000;return ((n-k) % 9000)+k}
   $t.emit= function(to, msg){
-    var val= {to:to, from:$t.cfg.self, msg:msg, pid:$mid++};
-    val= JSON.stringify(val);
+    msg= msg.replace(/['"]/g,"_");
+    var val= {to:to, from:$t.cfg.self, msg:msg, pid:$pid}
+    val= [JSON.stringify(val), $pid=$t.digit4(++$pid)][0];
     url= $t.cfg.url +'&f=set&data='+encodeURIComponent(val)
     if (url.length<500) new Image().src= url;
     else console.log( 'message length >500' );
