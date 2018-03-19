@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.135 TsDataGwListener
+//3-18-2018 jchoy v0.136 applyFilter
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -52,7 +52,7 @@ TsDataGw= function(){
   }
 }
 //-----
-TsDataGwListener= function(){
+TsDataGwListener= function(filter){
   var $t=this, ut=new SnLiteLoader();
   ut.inherit( this, TsDataGw );
   this.cur= {n:0, max:150, prevFmId:''}
@@ -63,9 +63,18 @@ TsDataGwListener= function(){
     var tc=$t.cur, fmId= val.fm+"|"+val.pid;
     if (tc.prevFmId != [fmId, tc.n++][0]) {
       tc.prevFmId= [fmId, tc.n=0][0]
-      window.parent.postMessage( val, $t.as[0] );
+      if ($t.cur.filter) $t.applyFilter(val)
+      else window.parent.postMessage( val, $t.as[0] );
     }
     if (tc.n < tc.max) setTimeout( $t.webGet$, 2000 );
+  }
+  $t.initFilter= function(ft){
+    return [$t, $t.cur.filter= ft][0];
+  }
+  $t.applyFilter= function(val){
+    for (var m in $t.cur.filter)
+      if (val[m] == $t.cur.filter[m]
+        window.parent.postMessage( val, $t.as[0] );
   }
 }
 //-----
@@ -86,4 +95,5 @@ TsTabClient= function(){
 new TsTabMfr().start("ttm");
 new TsDataGw().start("tdg");
 new TsDataGwListener().start("tgtg");
+new TsDataGwListener().initFilter({"to":"host"}).start("tgtgf");
 new TsTextGw().start("ttg");
