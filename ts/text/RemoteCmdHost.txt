@@ -1,4 +1,4 @@
-//3-2-2018 jchoy v0.131 RchApp101 wip
+//3-18-2018 jchoy v0.141 TgnNode
 RemoteCmdHost=function(){
   var dfr, rcc=new RemoteCmdClient().init(), $btn, $t=this; 
   var lm=new LinkMaker(), ce=new CmdEngine().ce1.ce, lo=new Sto().lo;
@@ -103,8 +103,54 @@ RchApp101=function(){
       endsession:['ready', ffReset$]
   }
 }
+//-----
+TdgNode=function (){
+  var $t=this, $mid=1001, $tbl;
+  var lm=new LinkMaker(), lo= new Sto().lo;
+  var ast="ok|tdg_cfg|sent|*".split('|')
+  $t.cfg= {ms:200}
+  $t.start=function(at){
+    if (at.length<2) return 'usage: tdgn self';
+    return [ast[0], this.init( at[1] ), this.prepUI()][0];
+  }
+  $t.prepUI= function(){
+    $tbl= lm.addEl('table');
+    $tbl.insertRow(0).insertCell(0).innerHTML="...";
+    $txbox= lm.addEl( 'input', $tbl.insertRow(1).insertCell(0) );
+    lm.addEl( 'input', $tbl.rows[1].cells[0] ).type='button';
+    [lm._,lm._.value='go'][0].onclick= this.handleClick$;
+    lm.wrapCloser( $tbl, 1, 'Tdgw Node' );
+  }
+  $t.init= function(self){
+    $t.cfg.url= lo.getItem(ast[1]);
+    return [$t, $t.cfg.self= self, $t.prepGw()][0];
+  }
+  $t.prepGw= function(){
+    lm.addEl('iframe').src= "http://rip.okdaily.com/f/toy/lipao-ce/ct.htm?://&js=619&tgtg=go&tgtgnum=2637&to=host&run=loadjs%20http://spiceburger.okdaily.com/ts/text/TsTabMfr.txt?z4";
+    window.addEventListener( "message", $t.handleMsg$ );
+  }
+  $t.handleMsg$= function(evt){
+    console.log( "handleMsg", evt.data );
+    $tbl.rows[0].cells[0].innerHTML= evt.data.msg;
+  }
+  $t.handleClick$= function(){
+    var at= $txbox.value.split(":");
+    var to= (at.length>1)? at[0] : "*";
+    var msg= (at.length>1)? at.slice(1).join(":") : $txbox.value;
+    $t.emit( to, msg );
+  }
+  $t.emit= function(to, msg){
+    var val= {to:to, from:$t.cfg.self, msg:msg, pid:$mid++};
+    val= JSON.stringify(val);
+    url= $t.cfg.url +'&f=set&data='+encodeURIComponent(val)
+    if (url.length<500) new Image().src= url;
+    else console.log( 'message length >500' );
+  }
+}
+cee=cmdEngine_theOne.ce;
+cee.parse('defcmd tgn TdgNode');
+cee.parse('link #://cmd/tgn%20host');
 
-var cee=new CmdEngine().ce1.ce;
 cee.parse('defcmd rch RemoteCmdHost');
 cee.parse('defcmd rcc RemoteCmdClient');
 cee.parse('link #://cmd/rch');
