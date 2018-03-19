@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.138 initFilter needs to return object
+//3-18-2018 jchoy v0.139 TsDataGwListener.start
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -56,7 +56,11 @@ TsDataGwListener= function(){
   var $t=this, ut=new SnLiteLoader();
   ut.inherit( this, TsDataGw );
   this.cur= {n:0, max:150, prevFmId:''}
-  $t.cur.num= ut.cgi(parmName+"num","",location);
+  this.start=function(parmName){
+    if (!ut.cgi(parmName,"",location)=="go") return;
+    $t.webGet( $t.cur.num= ut.cgi(parmName+"num","2637",location));
+    window.addEventListener( "message", $t.restart$ );
+  }
   $t.webGet$= function(){ $t.cur.isBusy=1; $t.webGet( $t.cur.num ); }
   $t.postResp$= function(){
     var val= JSON.parse(this.responseText);
@@ -67,7 +71,6 @@ TsDataGwListener= function(){
     }
     if (tc.n < tc.max) setTimeout( $t.webGet$, 2000 );
   }
-  window.addEventListener( "message", $t.restart$ );
   $t.restart$= function(evt){ if (($t.cur.n=0) || (!$t.cur.isBusy)) $t.webGet$() }
   $t.initFilter= function(parmName){
     if ($t.cur.tmp=ut.cgi(parmName,"",location))
