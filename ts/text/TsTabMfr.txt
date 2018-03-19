@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.139 TsDataGwListener.start
+//3-18-2018 jchoy v0.141 typo ampersand in TsDataGw
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -37,7 +37,7 @@ TsTextGw= function(){
 //-----
 TsDataGw= function(){
   var $t=this, $val, ut=new SnLiteLoader();
-  this.as= "*|/mad/textStore.php?f=text%i=".split("|");
+  this.as= "*|/mad/textStore.php?f=text&i=".split("|");
   this.start=function(parmName){
     if (ut.cgi(parmName,"",location)=="go")
       $t.webGet( ut.cgi(parmName+"num","",location) );
