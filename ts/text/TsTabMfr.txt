@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.142 debug, fixed go logic
+//3-18-2018 jchoy v0.143 debug filter
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -60,12 +60,11 @@ TsDataGwListener= function(){
     if (ut.cgi(parmName,"",location) != "go") return;
     console.log("tdg listener started ");
     $t.webGet( $t.cur.num= ut.cgi(parmName+"num","2637",location));
-    console.log("webget dispatched", $t.cur.num);
     window.addEventListener( "message", $t.restart$ );
   }
   $t.webGet$= function(){ $t.cur.isBusy=1; $t.webGet( $t.cur.num ); }
   $t.postResp$= function(){
-    console.log("xhr response", $t.cur.n);
+    if ($t.cur.n % 10 == 0) console.log("xhr response", $t.cur.n);
     var val= JSON.parse(this.responseText);
     var tc=$t.cur, fmId= val.fm+"|"+val.pid;
     if (tc.prevFmId != [fmId, tc.n++, tc.isBusy=0][0]) {
@@ -81,7 +80,8 @@ TsDataGwListener= function(){
     return $t;
   }
   $t.applyFilter= function(val){
-    console.log("applying filter", val[$t.cur.filter.key]);
+    console.log("applying filter", val[$t.cur.filter.key], $t.cur.filter.value, 
+      val[$t.cur.filter.key] == $t.cur.filter.value);
     if (!$t.cur.filter) return true;
     return (val[$t.cur.filter.key] == $t.cur.filter.value)
   }
