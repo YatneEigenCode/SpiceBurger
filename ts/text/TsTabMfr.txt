@@ -1,4 +1,4 @@
-//3-18-2018 jchoy v0.143 debug filter
+//3-18-2018 jchoy v0.145 typo val
 //2620
 TsTabMfr= function(){
   var $t=this, $val, ut=new SnLiteLoader();
@@ -58,7 +58,6 @@ TsDataGwListener= function(){
   this.cur= {n:0, max:150, prevFmId:''}
   this.start=function(parmName){
     if (ut.cgi(parmName,"",location) != "go") return;
-    console.log("tdg listener started ");
     $t.webGet( $t.cur.num= ut.cgi(parmName+"num","2637",location));
     window.addEventListener( "message", $t.restart$ );
   }
@@ -80,10 +79,10 @@ TsDataGwListener= function(){
     return $t;
   }
   $t.applyFilter= function(val){
-    console.log("applying filter", val[$t.cur.filter.key], $t.cur.filter.value, 
-      val[$t.cur.filter.key] == $t.cur.filter.value);
+    console.log("applying filter", val[$t.cur.filter.key], $t.cur.filter.val, 
+      val[$t.cur.filter.key] == $t.cur.filter.val);
     if (!$t.cur.filter) return true;
-    return (val[$t.cur.filter.key] == $t.cur.filter.value)
+    return (val[$t.cur.filter.key] == $t.cur.filter.val)
   }
 }
 //-----
