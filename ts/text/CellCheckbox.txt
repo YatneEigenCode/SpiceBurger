@@ -1,4 +1,4 @@
-//3-16-2018 jchoy v0.154 enable CellCheckboxYellow by default
+//3-22-2018 jchoy v0.156 checkbox in first position
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -30,7 +30,7 @@ CellCheckbox=function (hlc){
     var isMark= (cell.innerHTML.indexOf("[x]")>=0);
     cell.innerHTML= cell.innerHTML.replace( (isMark)?"[x]":"[ ]","" );
     (box= lm.addEl( 'input', cell )).type="checkbox";
-    box.checked = isMark
+    cell.insertBefore(box, cell.firstChild).checked = isMark
     box.onclick= [togcheck, alignBgColor(box)][0];
   }
   var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
