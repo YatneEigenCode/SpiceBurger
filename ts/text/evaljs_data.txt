@@ -1,0 +1,35 @@
+//don't put domain specific code here
+
+imgPost$= (function(){
+  var $p={ms:2000, cur:null, proto:"imgpost://",
+    stop:"#stopimgpost"}
+  return function(url){ var isStop;
+    for (var i=0,z=k=-1, at=document.images; i<at.length; i++)
+      if (at[i].src.indexOf($p.stop)>0) isStop=true;
+      else if (at[i].src.indexOf($p.proto)==0) $p.cur=at[i];
+    if ($p.cur) {
+      //setup iframe
+      //send messages to iframe to build form and submit
+    }
+    soloTimeout( imgPost$, $p.ms );
+  }
+})();
+//imgPost$();
+messagePost= function(){
+  //listen inside iframe for messages from parent frame
+  //set up form and submit using post method
+  //parent 
+}
+toiu=function(s){return (typeof(window[s])=="undefined")}
+//if (!toiu("goo")) goo()
+soloTimeout= (function(){  var $p={ai:[]}
+  var spawn$= function(){
+    //???
+  }
+  return function(f,ms){
+    if (!f) spawn$();
+    while ($p.ai.length>0) clearTimeout( $p.ai.pop() );
+    $p.ai.push( setTimeout( f, ms ) );    
+  }
+})();
+//soloTimeout(f,ms)  or  (st=soloTimeout())(f,ms)
