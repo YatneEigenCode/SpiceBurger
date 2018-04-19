@@ -1,5 +1,3 @@
-//don't put domain specific code here
-
 imgPost$= (function(){
   var $p={ms:2000, cur:null, proto:"imgpost://",
     stop:"#stopimgpost"}
@@ -20,16 +18,47 @@ messagePost= function(){
   //set up form and submit using post method
   //parent 
 }
-toiu=function(s){return (typeof(window[s])=="undefined")}
-//if (!toiu("goo")) goo()
-soloTimeout= (function(){  var $p={ai:[]}
-  var spawn$= function(){
-    //???
-  }
-  return function(f,ms){
-    if (!f) spawn$();
-    while ($p.ai.length>0) clearTimeout( $p.ai.pop() );
-    $p.ai.push( setTimeout( f, ms ) );    
-  }
+//-----
+soloTimeout= (function(){
+  var mfr$= function(){         var $p={ai:[]}
+    return function(f,ms){
+      if (!f) return mfr$();
+      while ($p.ai.length>0) clearTimeout( $p.ai.pop() );
+      $p.ai.push( setTimeout( f, ms ) );    
+    }
+  }; return mfr$();
 })();
 //soloTimeout(f,ms)  or  (st=soloTimeout())(f,ms)
+fwRug= {
+  soloTimeout: soloTimeout
+  ,dkw:{ a:'appendChild',c:'createElement',D:document }
+  ,toiu: function(s){return (typeof(window[s])=="undefined")}
+  ,addEl: function(tag,par){ var k=this.dkw; 
+    return this._=((par)?par:k.D.body)[k.a](k.D[k.c](tag)) }
+  ,cgi: function(k,def,qy){
+    var at=(qy+"").split(new RegExp("[\&\?]"+k+"="));
+    return (at.length==1)?def:at[1].split("&")[0];
+  }
+}
+flopi.soloTimeout()( function(){console.log(521)}, 3000 );
+//-----
+flopi= (function(){
+  return Object.assign( {
+    c: new Sto().lo
+    ,z: {data:{},getItem:function(n){return this.data[n]},
+        setItem:function(n,v){this.data[n]=v}}
+    ,lm: new LinkMaker()
+    ,wc: function(){ this.lm.wrapCloser(this._); }
+    ,ceDiv: function(s){ this.addEl('div').innerHTML=s; this.wc(); }
+  }, fwRug );
+})();
+flopi.ceDiv('test flopi 3');
+
+//peer network drive- only name/timestamp are stored online
+
+objasgn=function(o,csv,etc){
+  for(var i=0,at=csv.split(","); i<at.length; i++)
+    if (i+2<arguments.length) o[at[i]]=arguments[i+2];
+}
+//objasgn(div.style,s3,90,80,"yellow");
+//evaljs-ok
