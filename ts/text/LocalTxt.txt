@@ -1,17 +1,15 @@
-//2-1-2018 jchoy v0.147 upload and download
+//4–21-2018 jchoy v0.151 flopi
 LocalTxt=function(){
-  const lm=new LinkMaker(), $t=this, k='ok';
-  var inp, lk, nm='err.log';
+  var fl=flopi, $t=this, k='ok', inp, lk, nm='err.log';
   this.start=function(at){
-    if (at.length>1) nm=at[1];
-    lm.wrapCloser(lk= lm.addEl('a'));
-    lm.addEl('a',lk.parentNode).innerHTML=' {@} ';
-    lm._.onclick= this.updateDL;
-    [lm._,lm._.href='#{@}'][0].onclick();
-    (inp=lm.addEl('input',lm._.parentNode)).type='file';
-    return [k,inp.onchange= function(){$t.useFile(this.files,nm)}][0]
+    var x, g='onchange', y= (at.length>1)? nm=at[1]:nm;
+    lk=fl.addEl('a',fl.ceDiv(''));
+    (x=fl.addEl('a',lk.parentNode)).onclick= $t.updateDL;
+    [x,x.innerHTML=' {@} ',x.href='#{@}'][0].onclick();
+    (inp=fl.addEl('input',lk.parentNode)).type='file';
+    return [k,inp[g]= function(){$t.useFi(this.files,nm)}][0]
   }
-  this.useFile= function(files,nm){
+  this.useFi= function(files,nm){
     if (files.length==0) return;
     const fr=new FileReader(), lo=new Sto().lo;
     fr.onload= function(evt){ lo.setItem(nm, evt.target.result) }
@@ -20,12 +18,44 @@ LocalTxt=function(){
   this.updateDL=function() {
     var raw, s= "data:text/plain;base64,";
     lk.style.backgroundColor= 'lightgray';
-    raw=new Sto().lo.getItem(lk.download=nm);
-    lk.innerHTML= $t.nml(nm,raw);
-    lk.href= s + btoa(raw);
-    return false;
+    lk.innerHTML= $t.nml(nm,raw=fl.c.getItem(lk.download=nm));
+    return [false, lk.href= s + btoa(raw)][0];
   }
   this.nml=function(nm,s){
     return 'Download '+nm+' ('+ ((s)?s.length:0)+' bytes)';
   }
 }
+
+//-----
+fwRug= {
+  dkw:{ a:'appendChild',c:'createElement',D:document }
+  ,toiu: function(s){return (typeof(window[s])=="undefined")}
+  ,addEl: function(tag,pa)
+    { var k=this.dkw; return this._=((pa)?pa:k.D.body)[k.a](k.D[k.c](tag)) }
+  ,cgi: function(k,def,qy){
+    var at=(qy+"").split(new RegExp("[\&\?]"+k+"="));
+    return (at.length==1)?def:at[1].split("&")[0];
+  }
+}
+//-----
+flopi= (function(){
+  var rs= Object.assign( {
+    nop: function(){}
+    ,z: {data:{},getItem:function(n){return this.data[n]},
+        setItem:function(n,v){this.data[n]=v}}
+    ,soloTimeout: (function(){
+      var mfr$= function(){    var $p={cto:function(){clearTimeout(this.ai.pop())},ai:[]};
+        return function(f,ms){ if (!f) return mfr$();
+          for (var x=$p.ai.unshift( setTimeout(f,ms) ); $p.ai.length>1; $p.cto());  }
+      }; return mfr$();
+    })()
+    ,ins: function(o){ var $t=this;
+      for (var m in o) if (!$t.toiu(o[m])) $t[m]=new window[o[m]](); }
+  }, fwRug );
+  rs.ceDiv= function(s){ var x; rs.addEl('div').innerHTML=s;
+    if (rs.lm) rs.lm.wrapCloser(x=rs._); return x; }
+  return [rs,rs.c= (rs.toiu('Sto'))? rs.z : new Sto().lo][0];
+})();
+flopi.ins( {lm:'LinkMaker',ca:'CmdAutostart',ce2:'CmdEngine'} );
+if (flopi.ce2) flopi.ce=flopi.ce2.ce1.ce;
+//flopi.soloTimeout()( 'flopi.ceDiv(747)', 3000 );
