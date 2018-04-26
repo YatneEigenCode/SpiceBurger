@@ -1,4 +1,4 @@
-//4-25-2018 jchoy v0.118 font size
+//4-25-2018 jchoy v0.119 font size 18 basis
 ImgInp= function(){
   var wid, flags={}, inp, lm=new LinkMaker();
   this.start=function(at){
@@ -26,8 +26,8 @@ ImgInp= function(){
       if (flags.sepia) lm._.style.filter= 'sepia(1)';
       if (flags.invert) lm._.style.filter= 'invert(1)';
       lm.addEl('br',par)
-      lm.addEl('input',par).size= 50*240/wid;
-      lm._.style.fontSize= wid*30/240;
+      lm.addEl('input',par).size= 65*240/wid;
+      lm._.style.fontSize= wid*18/240;
     }
     if (this.files.length>0) reader.readAsDataURL(this.files[0]);
   }
