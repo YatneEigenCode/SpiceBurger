@@ -1,4 +1,4 @@
-//3-22-2018 jchoy v0.156 checkbox in first position
+//5-1-2018 jchoy v0.157 CellHilite
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -47,6 +47,27 @@ CellCheckbox=function (hlc){
   var togReplace= function(val, s0, s1){
     return (val.indexOf(s0)>=0) ? val.replace(s0,s1) : val.replace(s1,s0); 
   }
+}
+//-----
+CellHilite=function (){
+  var $pipe=[], lm= new LinkMaker();
+  var hiliteColors= ["white","yellow"];
+  this.enhance=function(el,so,aa,trigger){
+    el.cellcheckbox_rc= getCellRC$(el);
+    if ((so.indexOf("*")>=0)) {
+      $pipe.push( el );
+      setTimeout( delayEnh$, 100 );
+    }
+    return [so, $pipe.asset=aa, $pipe.trigger=trigger][0];
+  }
+  var delayEnh$= function(){
+    var cell= $pipe.shift();
+    var isMark= cell.innerHTML.indexOf("*")>=0;
+    if (hiliteColors.length>1)
+      cell.style.background= hiliteColors[ (isMark)? 1:0];
+    cell.style.background= hiliteColors[1];
+  }
+  var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
 }
 //-----
 stoTabExtend= function( cow ){
