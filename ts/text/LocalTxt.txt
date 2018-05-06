@@ -1,4 +1,4 @@
-//5-6-2018 jchoy v0.152 flopi.m
+//5-6-2018 jchoy v0.153 mStyle
 LocalTxt=function(){
   var fl=flopi, $t=this, k='ok', inp, lk, nm='err.log';
   this.start=function(at){
@@ -54,7 +54,11 @@ flopi= (function(){
       for (var m in o) if (!$t.toiu(o[m])) $t[m]=new window[o[m]](); }
   }, fwRug );
   rs.ceDiv= function(s){ var x; rs.addEl('div').innerHTML=s;
-    if (rs.lm) rs.lm.wrapCloser(x=rs._); return x; }
+    if (rs.lm) rs.lm.wrapCloser(x=rs._); return rs.mStyle(x); }
+  rs.mStyle= function(div){
+    if (!rs.m.ceDivStyle) return div;
+    return [div,Object.assign(div.style, rs.m.ceDivStyle)][0];
+  }
   return [rs,rs.c= (rs.toiu('Sto'))? rs.z : new Sto().lo][0];
 })();
 flopi.ins( {lm:'LinkMaker',ca:'CmdAutostart',ce2:'CmdEngine'} );
