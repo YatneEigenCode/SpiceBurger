@@ -1,4 +1,4 @@
-//4–21-2018 jchoy v0.151 flopi
+//5-6-2018 jchoy v0.152 flopi.m
 LocalTxt=function(){
   var fl=flopi, $t=this, k='ok', inp, lk, nm='err.log';
   this.start=function(at){
@@ -41,6 +41,7 @@ fwRug= {
 flopi= (function(){
   var rs= Object.assign( {
     nop: function(){}
+    ,m:{}
     ,z: {data:{},getItem:function(n){return this.data[n]},
         setItem:function(n,v){this.data[n]=v}}
     ,soloTimeout: (function(){
