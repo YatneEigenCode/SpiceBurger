@@ -1,4 +1,4 @@
-//3-17-2018 jchoy TugText v0.211 AutoSto2Rip
+//5-12-2018 jchoy TugText v0.311 WMPost
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -34,9 +34,12 @@ TugPubHub=function(){
   var nom= (ap.length>2)? ap[2] : "tugpubhub";
   var img=new Image();
   const src= lo.getItem(nom+'_cfg')+this.prepData(ap[1]);
-  const res= (src.length>500)? 'max exceeded: ':'ok: '; 
+  var len;
+  const res= ((len=src.length)>500)? 'max exceeded: ':'ok: '; 
   if (res=='ok: ') img.src= src;
-  return [res+src.length, console.log(nom,src)][0];
+  if (res=='ok: ') return [res+len, console.log(nom,src)][0];
+  if (flopi.cgi("wmp","",src)!="")
+    return ["ok: "+len,new WMPost().hitUrl(src)][0]  
  }
  this.prepData= function(fn){
   var q=unescape("%22"), cr=unescape("%0d%0a"), s0=lo.getItem(fn);
