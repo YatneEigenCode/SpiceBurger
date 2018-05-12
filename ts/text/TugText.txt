@@ -1,4 +1,4 @@
-//5-12-2018 jchoy TugText v0.312 declare img, len
+//5-12-2018 jchoy TugText v0.313 fix non-wmp>500 msg
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -37,8 +37,8 @@ TugPubHub=function(){
   
   if (res=='ok: ') (img=new Image()).src= src;
   if (res=='ok: ') return [res+len, console.log(nom,src)][0];
-  if (flopi.cgi("wmp","",src)!="")
-    return ["ok: "+len,new WMPost().hitUrl(src)][0]  
+  if flopi.cgi("wmp","",src)=="") return res;
+  return ["ok: "+len, new WMPost().hitUrl(src)][0];  
  }
  this.prepData= function(fn){
   var q=unescape("%22"), cr=unescape("%0d%0a"), s0=lo.getItem(fn);
