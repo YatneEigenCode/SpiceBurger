@@ -1,0 +1,44 @@
+//5-12-2018 jchoy v0.214 unescape, textarea
+WMPost= function(){
+  //post a form defined via windows message
+  var $o= new WMsgPost(flopi);
+  this.start= function(at){return $o.start(at)}
+  this.hitUrl= function(url){ $o.hitUrl(url) }
+}
+WMsgPost= function(fpi){
+  var $t=this, as=["message","valid verbs: hit, catch",
+    "usage: wmpost hit url"];
+  this.start= function(at){
+    if (at.length<2) return as[1];
+    if (at[1]=="catch"){
+      window.addEventListener(as[0],handler$);
+      fpi.ceDiv("WMPost ready");
+      return "ok";
+    }
+    if (at[1]!="hit") return as[1];
+    return (at.length<3)? as[2] : this.hitUrl(at[2]);
+  }
+  this.hitUrl= function(url){
+    var at=url.split(/[&?](.*?)=/);
+    var res={parms:{},host:at.shift()};
+    while (at.length>1)
+      res.parms[at.shift()]=at.shift();
+    return ["ok",this.hitJson(res)][0];
+  }
+  this.hitJson= function(json){
+    var fr, fn, any="*", pkg=json;
+    (fr=fpi.addEl("iframe",fpi.ceDiv(""))).src="?ca=suwmp&";
+    fn= function(){ fr.contentWindow.postMessage(pkg,any) }
+    setTimeout( fn, 2100 );
+  }
+  var handler$= function(evt){
+    var _, fm= fpi.addEl("form");
+    fm.method="POST";
+    fm.action=evt.data.host;
+    for (var m in evt.data.parms){
+      (_= fpi.addEl("textarea",fm)).name=m;
+      _.value= unescape(evt.data.parms[m]);
+    }
+    fm.submit();
+  }
+}
