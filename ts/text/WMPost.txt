@@ -1,4 +1,4 @@
-//5-12-2018 jchoy v0.214 unescape, textarea
+//5-12-2018 jchoy v0.215 4100ms
 WMPost= function(){
   //post a form defined via windows message
   var $o= new WMsgPost(flopi);
@@ -29,7 +29,7 @@ WMsgPost= function(fpi){
     var fr, fn, any="*", pkg=json;
     (fr=fpi.addEl("iframe",fpi.ceDiv(""))).src="?ca=suwmp&";
     fn= function(){ fr.contentWindow.postMessage(pkg,any) }
-    setTimeout( fn, 2100 );
+    setTimeout( fn, 4100 );
   }
   var handler$= function(evt){
     var _, fm= fpi.addEl("form");
