@@ -1,4 +1,4 @@
-//5-12-2018 jchoy TugText v0.311 WMPost
+//5-12-2018 jchoy TugText v0.312 declare img, len
 
 TugTabText= function(fn,cmd){ this.start= function(){
     var st=new Sto(), cr= unescape("%0d%0a");
@@ -31,12 +31,11 @@ TugPubHub=function(){
  var lo= new Sto().lo;
  this.start=function(ap){
   if (ap.length<2) return "missing parameter #2";
-  var nom= (ap.length>2)? ap[2] : "tugpubhub";
-  var img=new Image();
+  var img, len, nom= (ap.length>2)? ap[2] : "tugpubhub";
   const src= lo.getItem(nom+'_cfg')+this.prepData(ap[1]);
-  var len;
   const res= ((len=src.length)>500)? 'max exceeded: ':'ok: '; 
-  if (res=='ok: ') img.src= src;
+  
+  if (res=='ok: ') (img=new Image()).src= src;
   if (res=='ok: ') return [res+len, console.log(nom,src)][0];
   if (flopi.cgi("wmp","",src)!="")
     return ["ok: "+len,new WMPost().hitUrl(src)][0]  
