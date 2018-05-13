@@ -1,4 +1,4 @@
-//5-12-2018 jchoy v0.215 4100ms
+//5-12-2018 jchoy v0.311 saverip
 WMPost= function(){
   //post a form defined via windows message
   var $o= new WMsgPost(flopi);
@@ -40,5 +40,24 @@ WMsgPost= function(fpi){
       _.value= unescape(evt.data.parms[m]);
     }
     fm.submit();
+  }
+}
+//-----
+SaveRip= function(){
+  new AppTool().inherit( this, CsvBud );
+  this.sendPkgUrl= flopi.c.getItem("saverip_cfg");
+  this.start= function (ap){
+    this.getAssetQ( flopi.c.getItem(ap[1]) );
+    var mx=99000, len= JSON.stringify(this.asset).length;
+    if (len>mx) return 'err - size '+len+' over limit '+mx;
+    var isGo= (flopi.m[ap[2]]) ? true : confirm('Are you sure: '+ap[2]);
+    if (isGo){
+      flopi.m[ap[2]]="Y";
+      var url=this.sendPkgUrl.replace("{0}",ap[2])+"&data="
+        +encodeURIComponent("pkg="+JSON.stringify({asset:this.asset}) );
+      console.log("wmpost "+url);
+      new WMPost().hitUrl( url );
+    }
+    return (isGo)? "ok" : "cancelled";
   }
 }
