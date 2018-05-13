@@ -1,5 +1,5 @@
-//9-13-2016 jchoy
-pkg=pkg9902= {ver:'v0.248'} //confirm, DomAni.aniScroll
+//5-12-2018 jchoy
+pkg=pkg9902= {ver:'v0.249'} //remove Sto2Rip
 
 pkg.OurStatus=function (){
   new AppTool().inherit( this, AppTool );
@@ -71,24 +71,7 @@ pkg.DomAni= function(){
     (function fr(){ el.style.opacity-= .01; $raf((el.style.opacity>0)?fr:fnz);})() }
   this.delEl= function(el){ this.pinchDel(el) }
 }
-//----
-pkg.Sto2Rip= function(){
-  new AppTool().inherit( this, LinkMaker );
-  new AppTool().inherit( this, SnLiteLoader );
-  new AppTool().inherit( this, CsvBud );
-  this.sendPkgUrl= "http://rip.okdaily.com/mad/textStore.php?f=set&i={0}";
-  this.maxlen= 500;
-  this.sto= new Sto();
-  this.start= function (ap){
-    if (!this.sto.isOk) return 'err - old browser not supported';
-    this.getAssetQ( this.sto.lo.getItem(ap[1]) );
-    var len= JSON.stringify(this.asset).length, mx=this.maxlen;
-    if (len>mx) return 'err - size '+len+' over limit '+mx;
-    var isGo= (this.bag()[ap[2]]) ? true : confirm('Are you sure: '+ap[2]);
-    if (isGo) this.sendPkg( {asset:this.asset}, ap[2], null, this.bag()[ap[2]]=1 );
-    return 'ok';
-  }
-}
+//pkg.Sto2Rip has been replaced by WMPost.txt/SaveRip
 
 pkg.contents=[
  { name:"pkg.startup"
