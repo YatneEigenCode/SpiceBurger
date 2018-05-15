@@ -1,14 +1,19 @@
-//3-17-18 jchoy v0.138 undef test cannot be in func
+//5-14-18 jchoy v0.139 optionA
 //-----
 RsuParse= function(){
   var $t= this;
   new AppTool().inherit( this, SnLiteLoader );
   this.launch= function(at){
     this.loadJs( "ts/text/SimpleEncr.txt" );
+    this.optionA("a","LocalTxt");
+    this.optionA("a","WMPost");
     var rca=this.cgi("rca","",location);
     if (rca) setTimeout( function(){
       $t.loadJs( "ts/dat/"+rca+".txt" );
     }, 700 );
+  }
+  this.optionA= function(pm,fi){
+    if (this.cgi(pm,"",location)) this.loadJs( "ts/text/"+fi+".txt" );
   }
   this.start= function(s){
     extendSimpleEncr( this );
@@ -19,7 +24,7 @@ RsuParse= function(){
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
 }
-//usage: index.htm?cts=622,rsu&rca=rsu100&dk=$3cr3t
+//usage: index.htm?cts=622,rsu&rca=rsu100&a=1&dk=$3cr3t
 var rsuLaunch= { f$:function(){
   if (typeof(CmdEngine)!="undefined") return new RsuParse().launch()
   if (rsuLaunch.max-- > 0) setTimeout( rsuLaunch.f$, 300 );
