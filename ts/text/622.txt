@@ -1,11 +1,12 @@
-pkg= pkg622={ver:'CETB 1.423'} //CeSpawn 1-28-2018 jchoy
+pkg= pkg622={ver:'CETB 1.424'} //ce1.isHashChanged 5-17-2018 jchoy
 //----
-pkg.HashCmd=function (){
-  this.start=function(){
-    return ['ok', window.onhashchange= function(){
-      new CmdEngine().ce1.ce.parse(unescape(location.hash.replace('#://cmd/',''))); }][0]
-  }
+window.onhashchange= function(){
+  var ce1= new CmdEngine().ce1;
+  ce1.ce.parse(unescape(location.hash.replace('#://cmd/',''))); 
+  ce1.isHashChanged=1;
 }
+setTimeout( "if (!new CmdEngine().ce1.isHashChanged) location=\"#://noop\"", 5000 );
+
 pkg.LinkMaker= function(){
   new AppTool().inherit( this, AppTool );
   this.closerIcon= '[x] ';
