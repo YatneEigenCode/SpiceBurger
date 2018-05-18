@@ -1,4 +1,4 @@
-pkg= pkg622={ver:'CETB 1.424'} //ce1.isHashChanged 5-17-2018 jchoy
+pkg= pkg622={ver:'CETB 1.425'} //no hashcmd cmd 5-18-2018 jchoy
 //----
 window.onhashchange= function(){
   var ce1= new CmdEngine().ce1;
@@ -182,7 +182,6 @@ pkg.CmdEngine= function(){
   this.addCmd( 'jsline', function(at){ return new EvalJsLine().start(at); } );
   this.addCmd( 'loadjsc', function(at){ return new LoadJsc().start(at); } );
   this.addCmd( 'loadjs', function(at){ return new LoadJs().start(at); } );
-  this.addCmd( 'hashcmd', function(at){return new HashCmd().start(at);});
   this.addCmd( 'ce', function(at){return new CeSpawn().start(at);});
   this.ce1= cmdEngine_theOne;
   this.parse= function(taval){
