@@ -1,6 +1,6 @@
-//3-11-2018 jchoy v0.113 timer to rotate color
+//6-3-2018 jchoy v0.114 default to 900 cycles (7.5 minutes)
 HereIam=function(){
-  var div, $h=100, $n=60, lm=new LinkMaker();
+  var div, $h=100, $n=900, lm=new LinkMaker();
   var $as="ok,Here I am,Bigger".split(",");
   var ac="red,green,yellow,blue".split(",");
   this.start=function(at){
