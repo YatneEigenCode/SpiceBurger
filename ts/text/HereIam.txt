@@ -1,4 +1,4 @@
-//6-3-2018 jchoy v0.121 /c to build color sequence
+//6-3-2018 jchoy v0.123 background color
 HereIam=function(){
   var div, $h=100, $n=900, lm=new LinkMaker();
   var $as="ok,Here I am,Bigger".split(",");
@@ -17,8 +17,13 @@ HereIam=function(){
     for (var i=0; i<cl.length; i++){
       flopi.addEl("span",div).innerHTML=cl[i];
       flopi._.style.margin= "8 8 8 8";
-      flopi._.onclick=function(){ ac.unshift(this.innerHTML) }
-    }
+      flopi._.style.backgroundColor= cl[i];
+      flopi._.onclick=function(){
+        var $e=this, x=ac.unshift(this.innerHTML);
+        $e.style.color= "white";
+        setTimeout( function(){$e.style.color="black"}, 400 );
+      }
+    }//for
     return "~ok";
   }
   var setHeight$=function (){
