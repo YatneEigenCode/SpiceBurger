@@ -1,4 +1,4 @@
-//6-3-2018 jchoy v0.123 background color
+//6-4-2018 jchoy v0.124 restart on click
 HereIam=function(){
   var div, $h=100, $n=900, lm=new LinkMaker();
   var $as="ok,Here I am,Bigger".split(",");
@@ -16,19 +16,21 @@ HereIam=function(){
     ac= ["black"];
     for (var i=0; i<cl.length; i++){
       flopi.addEl("span",div).innerHTML=cl[i];
-      flopi._.style.margin= "8 8 8 8";
+      flopi._.style.padding= "0 8 0 8";
       flopi._.style.backgroundColor= cl[i];
       flopi._.onclick=function(){
         var $e=this, x=ac.unshift(this.innerHTML);
         $e.style.color= "white";
         setTimeout( function(){$e.style.color="black"}, 400 );
+        if ($n==0) chgColor$( $n=900  );
       }
     }//for
-    return "~ok";
+    return "ok";
   }
   var setHeight$=function (){
     div.style.height =($h =2*$h);
     div.onclick= setHeight$
+    if ($n==0) chgColor$( $n=900  );
   }
   var chgColor$= function(){
     div.style.backgroundColor=ac[$n % ac.length];
