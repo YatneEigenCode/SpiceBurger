@@ -2,6 +2,11 @@ put cgi data in window.postMessage to parent window
 <br />
 <script>
 //3-23-2019 jchoy
-var data= "boo";
-window.parent.postMessage( data, "*" );
+function tf(url){
+  var at= url.split(/[&?](.*?)=/);
+  var data= (at.length<3)? "ping" : at[2];
+  var redm= "*";  //optionally decode from url
+  window.parent.postMessage( decodeURIComponent(data), redm );
+};
+tf(location+"");
 </script>
