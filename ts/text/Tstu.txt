@@ -1,0 +1,20 @@
+//3-23-2019 jchoy Tstu
+Tstu= function(){
+  new AppTool().inherit( this, AppTool );
+  var fr, as=["message","iframe","ok","once",
+    "usage: tstu [tinyurl]"];
+  this.start= function (ap){
+    window.addEventListener(as[0],handler$);
+    (fr=flopi.addEl(as[1],flopi.ceDiv(""))).src=ap[1];
+    return (ap.length>1)? as[2] : as[4];
+  }
+  var handler$= function(e){
+    window.removeEventListener(as[0],handler$);
+    if (as[3]!="once") return;
+    console.log(e.data, as[3]="");
+    flopi.c.setItem("tstuTest", e.data);
+  }
+} 
+//https://tinyurl.com/y47xnxa5
+//http://spiceburger.okdaily.com/cgi2pm.html?data=the.tst.universe.can.be.used.to.store.obscured.data.in.plain.sight
+//evaljs-ok
