@@ -1,0 +1,7 @@
+put cgi data in window.postMessage to parent window
+<br />
+<script>
+//3-23-2019 jchoy
+var data= "boo";
+window.parent.postMessage( data, "*" );
+</script>
