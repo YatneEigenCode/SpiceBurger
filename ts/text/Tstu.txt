@@ -1,4 +1,4 @@
-//3-23-2019 jchoy v0.117 don't use flopi
+//3-23-2019 jchoy v0.118 th()
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -7,8 +7,13 @@ Tstu= function(){
   this.start= function (ap){
     if (ap.length>2) as[3]=ap[2];
     window.addEventListener(as[0],handler$);
-    (fr=$t.addEl(as[1])).src=ap[1];
+    (fr=$t.addEl(as[1])).src=$t.th(ap[1]);
     return (ap.length>1)? as[2] : as[4];
+  }
+  this.th= function(url){
+    var res= url.replace(/^$t/,"http://tinyurl.com/");
+    res= res.replace(/^\$g/,"http://goo.gl/");
+    return res.replace(/^\$b/,"http://bit.ly/");
   }
   var handler$= function(e){
     window.removeEventListener(as[0],handler$);
