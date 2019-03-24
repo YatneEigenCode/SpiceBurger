@@ -1,10 +1,10 @@
-//3-23-2019 jchoy Tstu
+//3-23-2019 jchoy v0.116 Tstu
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
     "usage: tstu [tinyurl] [filename]"];
   this.start= function (ap){
-    if (ap.length>2) as[3]=ap[3];
+    if (ap.length>2) as[3]=ap[2];
     window.addEventListener(as[0],handler$);
     (fr=flopi.addEl(as[1],flopi.ceDiv(""))).src=ap[1];
     return (ap.length>1)? as[2] : as[4];
