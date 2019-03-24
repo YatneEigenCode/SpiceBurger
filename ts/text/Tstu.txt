@@ -1,4 +1,4 @@
-//3-23-2019 jchoy v0.118 th()
+//3-23-2019 jchoy v0.119 th()
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -11,7 +11,7 @@ Tstu= function(){
     return (ap.length>1)? as[2] : as[4];
   }
   this.th= function(url){
-    var res= url.replace(/^$t/,"http://tinyurl.com/");
+    var res= url.replace(/^\$t/,"http://tinyurl.com/");
     res= res.replace(/^\$g/,"http://goo.gl/");
     return res.replace(/^\$b/,"http://bit.ly/");
   }
