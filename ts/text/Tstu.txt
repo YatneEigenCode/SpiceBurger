@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.126  Sto()   
+     //3-24-2019 jchoy v0.127 debug
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -6,7 +6,7 @@ Tstu= function(){
   var $t=this;
   this.start= function (ap){  
     if (ap.length>2) as[3]=ap[2];
-    new Sto().lo.setItem(as[3],"");     //todo: sto.delWbak()
+    //new Sto().lo.setItem(as[3],"");     //todo: sto.delWbak()
     window.addEventListener(as[0],handler$);
     (fr=$t.addEl(as[1])).src=$t.th(ap[1]);
     return (ap.length>1)? as[2] : as[4];
