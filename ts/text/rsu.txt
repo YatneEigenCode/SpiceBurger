@@ -1,4 +1,4 @@
-//3-23-2019 jchoy v0.156 startTca(tca), ttry
+//3-24-2019 jchoy v0.157 use tca value
 //-----
 RsuParse= function(){
   var $t= this;
@@ -23,7 +23,7 @@ RsuParse= function(){
   this.startTca= function(tca){
     console.log("tca-."+tca);
     this.ttry( function(){return typeof(Tstu)!="undefined"},
-      function(){new Tstu().start(["","$t/y47xnxa5"])}, 20);
+      function(){new Tstu().start(["",tca])}, 20);
   }
   this.start= function(s){
     extendSimpleEncr( this );
@@ -34,22 +34,12 @@ RsuParse= function(){
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
   this.ttry=function(isReady,run,max){
-    console.log( "ittry.init" );
-    var ittry= { f$:function(){
+    var ittry= { max: max, f$:function(){
       if (isReady()) return run();
-      console.log( "ttry."+ittry.max );
-      if (ittry.max-- > 0) setTimeout( ittry.f$, 300 );
-    }, max: max};
+      if (ittry.max-- > 0) setTimeout( ittry.f$, 300 ); } };
     ittry.f$();
   }
 }
 //usage: index.htm?cts=622,rsu&rca=rsu100&a=1&dk=$3cr3t
-/*
-var rsuLaunch= { f$:function(){
-  if (typeof(CmdEngine)!="undefined") return new RsuParse().launch()
-  if (rsuLaunch.max-- > 0) setTimeout( rsuLaunch.f$, 300 );
-}, max:20 };
-rsuLaunch.f$();
-*/
 new RsuParse().ttry( function(){return typeof(CmdEngine)!="undefined"},
   function(){new RsuParse().launch()}, 21);
