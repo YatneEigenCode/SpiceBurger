@@ -1,11 +1,13 @@
-put cgi data in window.postMessage to parent window
+Pass cgi data to parent window via postMessage. v0.115 
 <br />
 <script>
-//3-23-2019 jchoy
+//3-25-2019 jchoy v0.115 addDiv
 function tf(url){
-  var at= url.split(/[&?](.*?)=/);
+  var at= url.split(/[&?](.*?)=/), D=document;
   var data= (at.length<3)? "ping" : at[2];
-  var redm= "*";  //optionally decode from url
+  var redm= "*", ad=["appendChild","createElement"];  //optionally decode from url
+  var addDiv= function(s){ D.body[ad[0]]((D.[ad[1]]("div")).innerHTML=s;}
+  addDiv(decodeURIComponent(data),addDiv("Payload:"));
   window.parent.postMessage( decodeURIComponent(data), redm );
 };
 tf(location+"");
