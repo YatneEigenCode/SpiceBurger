@@ -1,4 +1,4 @@
-//3-23-2019 jchoy v0.154 startTca, ttry, debug2
+//3-23-2019 jchoy v0.156 startTca(tca), ttry
 //-----
 RsuParse= function(){
   var $t= this;
@@ -15,13 +15,13 @@ RsuParse= function(){
       $t.loadJs( "ts/dat/"+rca+".txt" );
     }, 700 )
     else if (tca)
-      this.startTca();
+      this.startTca(tca);
   }
   this.optionA= function(pm,fi){
     if (this.cgi(pm,"",location)) this.loadJs( "ts/text/"+fi+".txt" );
   }
-  this.startTca= function(s){
-    console.log("tca.."+tca);
+  this.startTca= function(tca){
+    console.log("tca-."+tca);
     this.ttry( function(){return typeof(Tstu)!="undefined"},
       function(){new Tstu().start(["","$t/y47xnxa5"])}, 20);
   }
