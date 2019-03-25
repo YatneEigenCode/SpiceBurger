@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.157 use tca value
+//3-24-2019 jchoy v0.158 startTcaR
 //-----
 RsuParse= function(){
   var $t= this;
@@ -23,7 +23,15 @@ RsuParse= function(){
   this.startTca= function(tca){
     console.log("tca-."+tca);
     this.ttry( function(){return typeof(Tstu)!="undefined"},
-      function(){new Tstu().start(["",tca])}, 20);
+      function(){new Tstu().start(["",tca,"sutca"]);$t.startTcaR()}, 20);
+  }
+  this.startTcaR= function(){
+    console.log("tca2");
+    this.ttry( function(){return (new Sto().lo.getItem("sutca"))?true:false},
+      function(){ 
+        var sd= new Sto().lo.getItem("sutca");
+        new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
+      }, 30);
   }
   this.start= function(s){
     extendSimpleEncr( this );
