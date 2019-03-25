@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.158 startTcaR
+//3-24-2019 jchoy v0.159 ceParse
 //-----
 RsuParse= function(){
   var $t= this;
@@ -28,16 +28,16 @@ RsuParse= function(){
   this.startTcaR= function(){
     console.log("tca2");
     this.ttry( function(){return (new Sto().lo.getItem("sutca"))?true:false},
-      function(){ 
-        var sd= new Sto().lo.getItem("sutca");
-        new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
-      }, 30);
+      function(){ $t.ceParse( new Sto().lo.getItem("sutca") ); }, 30);
   }
   this.start= function(s){
     extendSimpleEncr( this );
     var key= this.cgi("dk","$3cr3t",location);
     var sd= this.encrypt( key, s, 1 );
     if (sd.indexOf('link') != 0) return;
+    this.ceParse(sd);
+  }
+  this.ceParse= function(sd){
     document.body.innerHTML= "";
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
