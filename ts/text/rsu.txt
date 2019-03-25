@@ -1,4 +1,4 @@
-//5-14-18 jchoy v0.141 optionA/t
+//3-23-2019 jchoy v0.151 optionA/u
 //-----
 RsuParse= function(){
   var $t= this;
@@ -8,10 +8,15 @@ RsuParse= function(){
     this.optionA("a","LocalTxt");
     this.optionA("a","WMPost");
     this.optionA("t","9900");
+    this.optionA("u","Tstu");
     var rca=this.cgi("rca","",location);
+    var tca=this.cgi("tca","",location);
     if (rca) setTimeout( function(){
       $t.loadJs( "ts/dat/"+rca+".txt" );
-    }, 700 );
+    }, 700 )
+    else if (tca) {
+      console.log("tca."+tca);
+    }
   }
   this.optionA= function(pm,fi){
     if (this.cgi(pm,"",location)) this.loadJs( "ts/text/"+fi+".txt" );
