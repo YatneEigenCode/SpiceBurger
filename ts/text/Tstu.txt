@@ -1,24 +1,24 @@
-//3-23-2019 jchoy v0.121 tinyurl.barfs.on.//
+//3-24-2019 jchoy v0.124 drop support for goo.gl
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
     "usage: tstu [tinyurl] [saveto]"];
-  var $t=this;
+  var $t=this, sto$=new Sto().lo;
   this.start= function (ap){
     if (ap.length>2) as[3]=ap[2];
+    sto$.setItem(as[3],"");     //todo: sto.delWbak()
     window.addEventListener(as[0],handler$);
     (fr=$t.addEl(as[1])).src=$t.th(ap[1]);
     return (ap.length>1)? as[2] : as[4];
   }
   this.th= function(url){
-    var res= url.replace(/^\$t/,"http://tinyurl.com");
-    res= res.replace(/^\$g/,"http://goo.gl/");
-    return res.replace(/^\$b/,"http://bit.ly/");
+    var res= as=["http://tinyurl.com","http://bit.ly/"],
+    return url.replace(/^\$t/,as[0]).replace(/^\$b/,as[1]);
   }
   var handler$= function(e){
     window.removeEventListener(as[0],handler$);
     if (!as[3]) return;
-    new Sto().lo.setItem(as[3], e.data);
+    sto$.setItem(as[3], e.data);
     console.log(e.data, as[3]="");
     fr.parentNode.removeChild(fr);
   }
@@ -26,4 +26,3 @@ Tstu= function(){
 //http://tinyurl.com/y4be26gs
 //https://tinyurl.com/y47xnxa5
 //http://spiceburger.okdaily.com/cgi2pm.html?data=the.tst.universe.can.be.used.to.store.obscured.data.in.plain.sight
-//evaljs-ok
