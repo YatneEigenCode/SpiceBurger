@@ -1,4 +1,4 @@
-//3-23-2019 jchoy v0.153 startTca, ttry, debug
+//3-23-2019 jchoy v0.154 startTca, ttry, debug2
 //-----
 RsuParse= function(){
   var $t= this;
@@ -34,11 +34,13 @@ RsuParse= function(){
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
   this.ttry=function(isReady,run,max){
+    console.log( "ittry.init" );
     var ittry= { f$:function(){
       if (isReady()) return run();
       console.log( "ttry."+ittry.max );
       if (ittry.max-- > 0) setTimeout( ittry.f$, 300 );
     }, max: max};
+    ittry.f$();
   }
 }
 //usage: index.htm?cts=622,rsu&rca=rsu100&a=1&dk=$3cr3t
