@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.124 drop support for goo.gl
+//3-24-2019 jchoy v0.125 sto$, fix typo
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -12,7 +12,7 @@ Tstu= function(){
     return (ap.length>1)? as[2] : as[4];
   }
   this.th= function(url){
-    var res= as=["http://tinyurl.com","http://bit.ly/"],
+    var res= as=["http://tinyurl.com","http://bit.ly/"];
     return url.replace(/^\$t/,as[0]).replace(/^\$b/,as[1]);
   }
   var handler$= function(e){
