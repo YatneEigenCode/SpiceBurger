@@ -1,8 +1,9 @@
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+<style type="text/css">
+.c1 {fontsize:6; color:gray}
+</style>  
 <body>
-  Pass cgi data to parent window via postMessage. v0.118
-  <br />
-  &nbsp;
+  <div class="c1" hint="Pass cgi data to parent window via postMessage.">Msg [v0.119]:</div>
 </body>
 <script>
 //3-25-2019 jchoy addDiv
@@ -11,7 +12,7 @@ function tf(url){
   var data= (at.length<3)? "ping" : at[2];
   var redm= "*", ad=["appendChild","createElement"];  //optionally decode from url
   var addDiv= function(s){ D.body[ad[0]](D[ad[1]]("div")).innerHTML=s;}
-  addDiv(decodeURIComponent(data),addDiv("Payload:"));
+  addDiv(decodeURIComponent(data));
   window.parent.postMessage( decodeURIComponent(data), redm );
 };
 tf(location+"");
