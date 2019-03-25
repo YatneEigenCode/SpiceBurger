@@ -1,4 +1,4 @@
-//3-23-2019 jchoy v0.151 optionA/u
+//3-23-2019 jchoy v0.152 startTca, ttry
 //-----
 RsuParse= function(){
   var $t= this;
@@ -14,12 +14,16 @@ RsuParse= function(){
     if (rca) setTimeout( function(){
       $t.loadJs( "ts/dat/"+rca+".txt" );
     }, 700 )
-    else if (tca) {
-      console.log("tca."+tca);
-    }
+    else if (tca)
+      this.startTca();
   }
   this.optionA= function(pm,fi){
     if (this.cgi(pm,"",location)) this.loadJs( "ts/text/"+fi+".txt" );
+  }
+  this.startTca= function(s){
+    console.log("tca.."+tca);
+    this.ttry( function(){return typeof(Tstu)!="undefined"},
+      function(){new Tstu().start(["","$t/y47xnxa5"])}, 20);
   }
   this.start= function(s){
     extendSimpleEncr( this );
@@ -29,10 +33,20 @@ RsuParse= function(){
     document.body.innerHTML= "";
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
+  this.ttry=function(isReady,run,max){
+    var ittry= { f$:function(){
+      if (isReady()) return run();
+      if (ittry.max-- > 0) setTimeout( ittry.f$, 300 );
+    }, max: max};
+  }
 }
 //usage: index.htm?cts=622,rsu&rca=rsu100&a=1&dk=$3cr3t
+/*
 var rsuLaunch= { f$:function(){
   if (typeof(CmdEngine)!="undefined") return new RsuParse().launch()
   if (rsuLaunch.max-- > 0) setTimeout( rsuLaunch.f$, 300 );
 }, max:20 };
 rsuLaunch.f$();
+*/
+new RsuParse().ttry( function(){return typeof(CmdEngine)!="undefined"},
+  function(){new RsuParse().launch()}, 21);
