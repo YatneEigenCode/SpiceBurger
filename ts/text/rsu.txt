@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.159 ceParse
+//3-24-2019 jchoy v0.161 ttry rca
 //-----
 RsuParse= function(){
   var $t= this;
@@ -11,9 +11,9 @@ RsuParse= function(){
     this.optionA("u","Tstu");
     var rca=this.cgi("rca","",location);
     var tca=this.cgi("tca","",location);
-    if (rca) setTimeout( function(){
-      $t.loadJs( "ts/dat/"+rca+".txt" );
-    }, 700 )
+    if (rca)
+      this.ttry( function(){return typeof(SimpleEncr)!="undefined"},
+        function(){$t.loadJs( "ts/dat/"+rca+".txt" )}, 20);
     else if (tca)
       this.startTca(tca);
   }
@@ -21,7 +21,6 @@ RsuParse= function(){
     if (this.cgi(pm,"",location)) this.loadJs( "ts/text/"+fi+".txt" );
   }
   this.startTca= function(tca){
-    console.log("tca-."+tca);
     this.ttry( function(){return typeof(Tstu)!="undefined"},
       function(){new Tstu().start(["",tca,"sutca"]);$t.startTcaR()}, 20);
   }
@@ -33,11 +32,10 @@ RsuParse= function(){
   this.start= function(s){
     extendSimpleEncr( this );
     var key= this.cgi("dk","$3cr3t",location);
-    var sd= this.encrypt( key, s, 1 );
-    if (sd.indexOf('link') != 0) return;
-    this.ceParse(sd);
+    this.ceParse( this.encrypt( key, s, 1 ));
   }
   this.ceParse= function(sd){
+    if (sd.indexOf('link') != 0) return;
     document.body.innerHTML= "";
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
   }
