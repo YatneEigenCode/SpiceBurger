@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.129   del.file.first
+//3-26-2019 jchoy v0.131 TuPrep
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -21,6 +21,12 @@ Tstu= function(){
     new Sto().lo.setItem(as[3], e.data);
     console.log(e.data, as[3]="");
     fr.parentNode.removeChild(fr);
+  }
+}
+TuPrep= function(){
+  this.start=function(ap){
+    if (ap.length<2) return "usage: tup [filename]";
+    return encodeURIComponent(new Sto().lo.getItem(ap[1]));
   }
 }
 //http://tinyurl.com/y4be26gs
