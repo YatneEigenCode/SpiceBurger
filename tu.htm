@@ -2,7 +2,7 @@
 Forwarding...<br />
 </body>
 <script>
-//3-28-2019 jchoy v0.113 spice
+//3-28-2019 jchoy v0.114 spice
 var as=["http://spiceburger.okdaily.com/"];
 var pail=["?cts=622,rsu&u=1&t=1&tca=$b/2CDTAAU",
 "http://spiceburger.okdaily.com/?cts=622,rsu&u=1&t=1&tca=$b/2OxhDGa",
@@ -11,7 +11,7 @@ var pail=["?cts=622,rsu&u=1&t=1&tca=$b/2CDTAAU",
 function start(){
   var i, cgi= (location+'').split('?').pop();
   if ((i=parseInt(cgi))<pail.length)
-    location= ((pail[i].indexOf("://")>-1)? "" : as[0])+pail[i]);
+    location= ((pail[i].indexOf("://")>-1)? "" : as[0]) +pail[i];
   else 
     document.body.innerHTML= "Invalid request";
 }
