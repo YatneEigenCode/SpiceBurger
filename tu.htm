@@ -1,0 +1,15 @@
+<body>
+Forwarding...<br />
+</body>
+<script>
+var pail=["?cts=622,rsu&u=1&t=1&tca=$b/2CDTAAU",
+"http://spiceburger.okdaily.com/?cts=622,rsu&u=1&t=1&tca=$b/2OxhDGa"]
+function start(){
+  var i, cgi= (location+'').split('?').pop();
+  if ((i=parseInt(cgi))<pail.length)
+    location= pail[i]
+  else 
+    document.body.innerHTML= "Invalid requst";
+}
+start();
+</script>
