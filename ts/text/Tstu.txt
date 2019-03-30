@@ -1,4 +1,4 @@
-//3-26-2019 jchoy v0.131 TuPrep
+//3-30-2019 jchoy v0.132 tuprep_cfg
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -24,9 +24,12 @@ Tstu= function(){
   }
 }
 TuPrep= function(){
+  var as=["tuprep_cfg", "usage: tup [filename]"];
   this.start=function(ap){
-    if (ap.length<2) return "usage: tup [filename]";
-    return encodeURIComponent(new Sto().lo.getItem(ap[1]));
+    var sp, lo= new Sto().lo;
+    sp= lo.getItem(as[0]);
+    if (ap.length<2) return as[1];
+    return ((sp)?sp:"")+encodeURIComponent(lo.getItem(ap[1]));
   }
 }
 //http://tinyurl.com/y4be26gs
