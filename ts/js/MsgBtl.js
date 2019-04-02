@@ -1,4 +1,4 @@
-//4-1-2019 jchoy v0.112 MsgBtl, Msg5do, Btem
+//4-1-2019 jchoy v0.113 show, initStyle
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
@@ -31,6 +31,8 @@ MsgBtl = function(fido,sto){
   this.start= function(){
     this.lastId= this.hogTums();
     fido.start(this.lastId).map( this.restock );
+    if (this.pail.length>0) this.pail[0].initStyle();
+    this.pail.map( function(o){o.show()} );
   }
   this.restock= function( msg ){
     var em= new Btem($t.sto).fill(msg);
@@ -48,14 +50,28 @@ MsgBtl = function(fido,sto){
   }
 }
 Btem= function(sto){
-  this.jo= {lore:"",meta:{},id:""};
+  this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
-  var as= ["tum/"];
+  var as= ["tum/","appendChild","createElement", "div","btem","innerHTML"];
+  var D=document;
   this.delem= function(){
+  }
+  this.initStyle= function(){
+    var sheet = D[as[2]]('style')
+    sheet[as[5]]= ".btem {border: 1px solid gray; border-radius: 5px;}";
+    D.body[as[1]](sheet);
+  }
+  this.show= function(){
+    console.log( 'show', this.jo.id );
+    var el=D.body[as[1]](D[as[2]](as[3]));
+    el.innerHTML= this.jo.body;
+    el.className= as[4];
   }
   this.getId= function(){ return this.jo.id }
   this.fill= function(msg){
-    return [this, this.jo.lore= msg][0];
+    console.log( 'fill', msg );
+    Object.assign(this.jo, msg);
+    return this;
   }
   this.ice= function(num){
     this.sto.setItem(as[0]+num, JSON.stringify(this.jo));
