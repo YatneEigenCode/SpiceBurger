@@ -1,4 +1,4 @@
-//4-1-2019 jchoy v0.114 showCtl, del
+//4-2-2019 jchoy v0.115 toggle controls
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
@@ -52,14 +52,15 @@ MsgBtl = function(fido,sto){
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
-  var as= ["tum/","appendChild","createElement", "div","btem","innerHTML","btcl"];
+  var as= ["tum/","appendChild","createElement", "div","btem","innerHTML","bctl"];
   var D=document;
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
     var sheet = D[as[2]]('style');
     var bdr="border: 1px solid gray; border-radius: 5px;";
-    sheet[as[5]]= ".btem {"+bdr+"}\n"
-      +".bctl {"+bdr+"background-color: gray}";
+    sheet[as[5]]= "."+as[4]+" {"+bdr+"margins:0 2 0 2}\n"
+      +"."+as[6]+" {"+bdr+"background-color:#DDBBBB;"
+      +"margins:0 2 0 2; width:8%; text-align:center}";
     D.body[as[1]](this.css=sheet);
   }
   this.show= function(btl){
@@ -72,6 +73,8 @@ Btem= function(sto){
   }
   this.showCtl= function(btl){
     console.log( 'showCtl' );
+    var ao= this.getElementsByClassName(as[6]);
+    if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var ctl=this[as[1]](D[as[2]](as[3]));
     ctl.innerHTML= "X";
     ctl.className= as[6];
