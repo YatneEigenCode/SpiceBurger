@@ -1,4 +1,4 @@
-//4-1-2019 jchoy v0.113 show, initStyle
+//4-1-2019 jchoy v0.114 showCtl, del
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
@@ -32,7 +32,7 @@ MsgBtl = function(fido,sto){
     this.lastId= this.hogTums();
     fido.start(this.lastId).map( this.restock );
     if (this.pail.length>0) this.pail[0].initStyle();
-    this.pail.map( function(o){o.show()} );
+    this.pail.map( function(o){o.show($t)} );
   }
   this.restock= function( msg ){
     var em= new Btem($t.sto).fill(msg);
@@ -52,20 +52,38 @@ MsgBtl = function(fido,sto){
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
-  var as= ["tum/","appendChild","createElement", "div","btem","innerHTML"];
+  var as= ["tum/","appendChild","createElement", "div","btem","innerHTML","btcl"];
   var D=document;
-  this.delem= function(){
-  }
   this.initStyle= function(){
-    var sheet = D[as[2]]('style')
-    sheet[as[5]]= ".btem {border: 1px solid gray; border-radius: 5px;}";
-    D.body[as[1]](sheet);
+    if (this.css) this.rmNode(this.css);
+    var sheet = D[as[2]]('style');
+    var bdr="border: 1px solid gray; border-radius: 5px;";
+    sheet[as[5]]= ".btem {"+bdr+"}\n"
+      +".bctl {"+bdr+"background-color: gray}";
+    D.body[as[1]](this.css=sheet);
   }
-  this.show= function(){
+  this.show= function(btl){
     console.log( 'show', this.jo.id );
-    var el=D.body[as[1]](D[as[2]](as[3]));
+    var el= this.el=D.body[as[1]](D[as[2]](as[3]));
     el.innerHTML= this.jo.body;
     el.className= as[4];
+    el.onclick= this.showCtl;
+    el.ado= [this,btl];
+  }
+  this.showCtl= function(btl){
+    console.log( 'showCtl' );
+    var ctl=this[as[1]](D[as[2]](as[3]));
+    ctl.innerHTML= "X";
+    ctl.className= as[6];
+    ctl.onclick= this.ado[0].del;
+  }
+  this.del= function(){
+    console.log( 'del', this.innerHTML );
+    var el=this.parentNode;
+    this.parentNode.ado[0].rmNode(this.parentNode);
+  }
+  this.rmNode= function(el){
+    el.parentNode.removeChild(el);
   }
   this.getId= function(){ return this.jo.id }
   this.fill= function(msg){
