@@ -1,4 +1,4 @@
-//4-2-2019 jchoy v0.115 toggle controls
+//4-2-2019 jchoy v0.116 iceDel
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
@@ -46,7 +46,15 @@ MsgBtl = function(fido,sto){
     }
     return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"";
   }
-  this.delem= function(){
+  this.delem= function(em){
+    var k= -1;
+    for (var i=0; i<$t.pail.length; i++)
+      if (em == $t.pail[i]) k=i;
+    if (k < 0) return;
+    $t.pail.splice(k,1);
+    new Btem($t.sto).iceDel($t.pail.length);
+    for (var i=k; i<$t.pail.length-1; i++)
+      $t.pail[i].ice(i);
   }
 }
 Btem= function(sto){
@@ -83,7 +91,8 @@ Btem= function(sto){
   this.del= function(){
     console.log( 'del', this.innerHTML );
     var el=this.parentNode;
-    this.parentNode.ado[0].rmNode(this.parentNode);
+    el.ado[0].rmNode(el);
+    el.ado[1].delem(el.ado[0]);
   }
   this.rmNode= function(el){
     el.parentNode.removeChild(el);
@@ -96,6 +105,10 @@ Btem= function(sto){
   }
   this.ice= function(num){
     this.sto.setItem(as[0]+num, JSON.stringify(this.jo));
+  }
+  this.iceDel= function(num){
+    console.log( 'icedel '+as[0]+num );
+    this.sto.setItem(as[0]+num, "");
   }
   this.thaw= function(num){
     var raw= this.sto.getItem(as[0]+num);
