@@ -1,4 +1,4 @@
-//4-3-2019 jchoy v0.117 unique test data
+//4-3-2019 jchoy v0.118 filter for new messages
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
@@ -7,10 +7,14 @@ Msg5do = function(){
   this.start= function(mid){
     var key= prompt('unique prefix');
     var res=[],dt= new Date().valueOf();
-    for (var pv,i=5,s="chi sin "+key; i>2; i--){
+    var rd= "QZWXYK.".charAt(Math.random()*6);
+    for (var pv,i=5,isn=1,s=rd+key; i>2; i--){
       pv= key+(i-1);
-      res.push( this.bldJo(meh,[s+i,dt+i*1000,pv],key+i));
+      if (key+i == mid) isn=0;
+      if (isn)
+        res.push(this.bldJo(meh,[s+i,dt+i*1000,pv],key+i));
     }
+    if (res.length>this.max) res.length=this.max;
     return res.reverse();
   }
   this.bldJo= function(meh, dat, id){
@@ -44,7 +48,6 @@ MsgBtl = function(fido,sto){
       var em= new Btem($t.sto).thaw(i);
       if (em) this.pail.push(em);
       if (!em) i= -9;
-//if (i>2) i=-99;
     }
     return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"";
   }
