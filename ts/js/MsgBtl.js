@@ -1,19 +1,17 @@
-//4-2-2019 jchoy v0.116 iceDel
+//4-3-2019 jchoy v0.117 unique test data
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
   this.start= function(mid){
-    var res= [], pail= {
-        "qwe123d" :
-      ["and I cannot lie", 1554170636026,"qwe123c"],
-        "qwe123c" :
-      ["I like big data", 1554170625026,"qwe123b"]
+    var key= prompt('unique prefix');
+    var res=[],dt= new Date().valueOf();
+    for (var pv,i=5,s="chi sin "+key; i>2; i--){
+      pv= key+(i-1);
+      res.push( this.bldJo(meh,[s+i,dt+i*1000,pv],key+i));
     }
-    for (var m in pail)
-      res.push( this.bldJo(meh,pail[m],m) )
-    return res;
+    return res.reverse();
   }
   this.bldJo= function(meh, dat, id){
     var res={};
@@ -32,17 +30,21 @@ MsgBtl = function(fido,sto){
     this.lastId= this.hogTums();
     fido.start(this.lastId).map( this.restock );
     if (this.pail.length>0) this.pail[0].initStyle();
-    this.pail.map( function(o){o.show($t)} );
+    this.pail.map( function(o,i){
+      console.log(i); o.show($t)} );
   }
   this.restock= function( msg ){
     var em= new Btem($t.sto).fill(msg);
     $t.pail.push( em.ice($t.pail.length) );
+    console.log( 'pail.len',$t.pail.length );
   }
   this.hogTums= function(){
+    console.log( 'hogTums' );
     for (var em,i=this.pail.length; i>=0; i++){
       var em= new Btem($t.sto).thaw(i);
       if (em) this.pail.push(em);
       if (!em) i= -9;
+//if (i>2) i=-99;
     }
     return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"";
   }
@@ -60,7 +62,7 @@ MsgBtl = function(fido,sto){
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
-  var as= ["tum/","appendChild","createElement", "div","btem","innerHTML","bctl"];
+  var as= ["tub/","appendChild","createElement", "div","btem","innerHTML","bctl"];
   var D=document;
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
@@ -104,7 +106,9 @@ Btem= function(sto){
     return this;
   }
   this.ice= function(num){
+    console.log( 'ice ',as[0]+num );
     this.sto.setItem(as[0]+num, JSON.stringify(this.jo));
+    return this;
   }
   this.iceDel= function(num){
     console.log( 'icedel '+as[0]+num );
@@ -113,6 +117,7 @@ Btem= function(sto){
   this.thaw= function(num){
     var raw= this.sto.getItem(as[0]+num);
     this.jo= (raw)? JSON.parse(raw) : {};
+    console.log( 'thaw ',num,this.jo.id );
     return (raw)? this: null;
   }
 }
