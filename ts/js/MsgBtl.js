@@ -1,4 +1,4 @@
-//4-3-2019 jchoy v0.119 style changes
+//4-3-2019 jchoy v0.121 fix boundary in delem
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
@@ -59,7 +59,8 @@ MsgBtl = function(fido,sto){
     if (k < 0) return;
     $t.pail.splice(k,1);
     new Btem($t.sto).iceDel($t.pail.length);
-    for (var i=k; i<$t.pail.length-1; i++)
+console.log('delem',$t.pail.length);
+    for (var i=k; i<$t.pail.length; i++)
       $t.pail[i].ice(i);
   }
 }
