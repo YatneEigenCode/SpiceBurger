@@ -1,10 +1,10 @@
-//4-3-2019 jchoy v0.121 fix boundary in delem
+//4-3-2019 jchoy v0.124 use callback to restock
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
-  this.start= function(mid){
+  this.start= function(mid,fn){
     var key= "qwe56"; //prompt('unique prefix');
     var res=[],dt= new Date().valueOf();
     var rd= "QZWXYK.".charAt(Math.random()*6);
@@ -15,7 +15,7 @@ Msg5do = function(){
         res.push(this.bldJo(meh,[s+i,dt+i*1000,pv],key+i));
     }
     if (res.length>this.max) res.length=this.max;
-    return res.reverse();
+    fn( res.reverse() );
   }
   this.bldJo= function(meh, dat, id){
     var res={};
@@ -33,15 +33,18 @@ MsgBtl = function(fido,sto){
   this.start= function(){
     this.lastId= this.hogTums();
     console.log( 'start lastId', this.lastId );
-    fido.start(this.lastId).map( this.restock );
-    if (this.pail.length>0) this.pail[0].initStyle();
-    this.pail.map( function(o,i){
-      console.log(i); o.show($t)} );
+    fido.start(this.lastId, function(r){$t.restock(r)} );
+    //fido.start(this.lastId).map( this.restock );
   }
-  this.restock= function( msg ){
-    var em= new Btem($t.sto).fill(msg);
-    $t.pail.push( em.ice($t.pail.length) );
+  this.restock= function( am ){
+    for (var i=0; i<am.length; i++){
+      var em= new Btem($t.sto).fill(am[i]);
+      $t.pail.push( em.ice($t.pail.length) );
+    }
     console.log( 'pail.len',$t.pail.length );
+    if ($t.pail.length>0) $t.pail[0].initStyle();
+    $t.pail.map( function(o,i){
+      console.log(i); o.show($t)} );
   }
   this.hogTums= function(){
     console.log( 'hogTums' );
