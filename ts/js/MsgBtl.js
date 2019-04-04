@@ -1,24 +1,48 @@
-//4-4-2019 jchoy v0.126 fox.ttry, m5tst_cfg
+//4-4-2019 jchoy v0.127 fetCh
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
+  $t.tag= "#default", $t.tuHost= "$b/";
+  $t.res= {a:[], f:function(){console.log('no res fcn')} };
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
   var as=["tmp/m5do","m5tst_cfg"];
   this.start= function(mid,fn){
+    $t.res.f= fn;
     //first get pointer to list head from tsrw
     sto.setItem( as[0], "" );
     sto.setItem( as[0], sto.getItem(as[1]) );
+    $t.res= [];
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
-      function(){$t.startHd()}, 20, $t.startAb );
+      function(){$t.startHd()}, 20,
+      function(){$t.fetAb()} );
     //new Tstu().start(["",prev,as[0]]);
     //this.startSim(mid,fn);
   }
-  this.startAb= function(){ fn([]) }
+  this.fetAb= function(){
+    $t.res.a.unshift({body:"comm error"}); //TODO: a is undefined
+    $t.res.f($t.res.a);
+  }
   this.startHd= function(){
-    console.log( 'startHd.');
-    console.log( 'startHd..', sto.getItem(as[0]));
+    console.log( 'startHd..', sto.getItem(as[0]) );
+    var id0, at= sto.getItem(as[0]).split("\n");
+    for (var ap,i=0; i<at.length; i++){
+      ap= at[i].split(',');
+      if (ap[0]==this.tag) id0=ap[1]; 
+    }
+    sto.setItem( as[0], "" );
+    new Tstu().start(["",this.tuHost+id0,as[0]]);
+    if (id0) fox.ttry(
+      function(){return (sto.getItem(as[0]))?1:0},
+      function(){$t.fetCh()}, 20,
+      function(){$t.fetAb()} );
+  }
+  this.fetCh= function(){
+    //detect endpoint
+    console.log( 'fetCh' );
+    console.log( 'fetCh..', sto.getItem(as[0]) );
+    $t.res.a.unshift( JSON.parse(sto.getItem(as[0])) );
   }
   this.startSim= function(mid,fn){
     var key= "qwe56"; //prompt('unique prefix');
