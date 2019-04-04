@@ -1,11 +1,11 @@
-//4-3-2019 jchoy v0.118 filter for new messages
+//4-3-2019 jchoy v0.119 style changes
 Msg5do = function(){
   this.max= 10;
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
   this.start= function(mid){
-    var key= prompt('unique prefix');
+    var key= "qwe56"; //prompt('unique prefix');
     var res=[],dt= new Date().valueOf();
     var rd= "QZWXYK.".charAt(Math.random()*6);
     for (var pv,i=5,isn=1,s=rd+key; i>2; i--){
@@ -32,6 +32,7 @@ MsgBtl = function(fido,sto){
   this.pail= []; this.sto= sto;
   this.start= function(){
     this.lastId= this.hogTums();
+    console.log( 'start lastId', this.lastId );
     fido.start(this.lastId).map( this.restock );
     if (this.pail.length>0) this.pail[0].initStyle();
     this.pail.map( function(o,i){
@@ -71,9 +72,11 @@ Btem= function(sto){
     if (this.css) this.rmNode(this.css);
     var sheet = D[as[2]]('style');
     var bdr="border: 1px solid gray; border-radius: 5px;";
-    sheet[as[5]]= "."+as[4]+" {"+bdr+"margins:0 2 0 2}\n"
+    sheet[as[5]]= "."+as[4]+" {"+bdr+"margins:0 2 0 2;"
+      +"width:60%; margin-left:20%; padding-left:2px}\n"
       +"."+as[6]+" {"+bdr+"background-color:#DDBBBB;"
-      +"margins:0 2 0 2; width:8%; text-align:center}";
+      +"margins:0 2 0 2; width:8%; text-align:center;"
+      +"margin-left:45%}";
     D.body[as[1]](this.css=sheet);
   }
   this.show= function(btl){
