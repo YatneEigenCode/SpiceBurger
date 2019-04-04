@@ -1,4 +1,4 @@
-//4-4-2019 jchoy v0.127 fetCh
+//4-4-2019 jchoy v0.128 fetAb
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -9,11 +9,10 @@ Msg5do = function(){
           ,["prev","String"]];
   var as=["tmp/m5do","m5tst_cfg"];
   this.start= function(mid,fn){
-    $t.res.f= fn;
+    $t.res.f= fn;  $t.res.a=[];
     //first get pointer to list head from tsrw
     sto.setItem( as[0], "" );
     sto.setItem( as[0], sto.getItem(as[1]) );
-    $t.res= [];
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.startHd()}, 20,
       function(){$t.fetAb()} );
@@ -43,6 +42,7 @@ Msg5do = function(){
     console.log( 'fetCh' );
     console.log( 'fetCh..', sto.getItem(as[0]) );
     $t.res.a.unshift( JSON.parse(sto.getItem(as[0])) );
+    $t.res.f($t.res.a);
   }
   this.startSim= function(mid,fn){
     var key= "qwe56"; //prompt('unique prefix');
