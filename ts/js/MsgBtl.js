@@ -1,10 +1,26 @@
-//4-3-2019 jchoy v0.124 use callback to restock
+//4-4-2019 jchoy v0.126 fox.ttry, m5tst_cfg
 Msg5do = function(){
   this.max= 10;
+  var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
+  var as=["tmp/m5do","m5tst_cfg"];
   this.start= function(mid,fn){
+    //first get pointer to list head from tsrw
+    sto.setItem( as[0], "" );
+    sto.setItem( as[0], sto.getItem(as[1]) );
+    fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
+      function(){$t.startHd()}, 20, $t.startAb );
+    //new Tstu().start(["",prev,as[0]]);
+    //this.startSim(mid,fn);
+  }
+  this.startAb= function(){ fn([]) }
+  this.startHd= function(){
+    console.log( 'startHd.');
+    console.log( 'startHd..', sto.getItem(as[0]));
+  }
+  this.startSim= function(mid,fn){
     var key= "qwe56"; //prompt('unique prefix');
     var res=[],dt= new Date().valueOf();
     var rd= "QZWXYK.".charAt(Math.random()*6);
@@ -25,6 +41,16 @@ Msg5do = function(){
     if (id) res.id= id;
     return res;
   }
+}
+Msg5do.fox= {
+  ttry: function(testGo,run,max,runExp){
+    var tto= { max: max, f$:function(){
+      if (testGo()) return run();
+      if (tto.max<=0) return runExp();
+      if (tto.max-- > 0) setTimeout(tto.f$, 300); } };
+    tto.f$();
+  }
+  ,x:0
 }
 //new MsgBtl( new Msg5do(), new Sto().lo );
 MsgBtl = function(fido,sto){
@@ -67,6 +93,7 @@ console.log('delem',$t.pail.length);
       $t.pail[i].ice(i);
   }
 }
+//---
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
