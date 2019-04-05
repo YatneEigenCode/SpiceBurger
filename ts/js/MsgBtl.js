@@ -1,8 +1,8 @@
-//4-4-2019 jchoy v0.129 fetHd
+//4-5-2019 jchoy v0.131 $r as tuhost
 Msg5do = function(){
   this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
-  $t.tag= "#default", $t.tuHost= "$t/";
+  $t.tag= "#default", $t.tuHost= "$r";  //"$t/";
   //refused to display (load) in a frame because
   //btly server set X-Frame-Options to deny
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
