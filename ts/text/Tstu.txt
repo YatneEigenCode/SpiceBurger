@@ -1,4 +1,4 @@
-//3-30-2019 jchoy v0.132 tuprep_cfg
+//4-5-2019 jchoy v0.134 $r rippy
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -12,8 +12,8 @@ Tstu= function(){
     return (ap.length>1)? as[2] : as[4];
   }
   this.th= function(url){
-    var as=["http://tinyurl.com","http://bit.ly/"];
-    return url.replace(/^\$t/,as[0]).replace(/^\$b/,as[1]);
+    var as=["http://tinyurl.com","http://bit.ly/","http://spiceburger.okdaily.com/tu.htm?"];
+    return url.replace(/^\$t/,as[0]).replace(/^\$b/,as[1]).replace(/^\$r/,as[2]);
   }
   var handler$= function(e){
     window.removeEventListener(as[0],handler$);
@@ -32,6 +32,7 @@ TuPrep= function(){
     return ((sp)?sp:"")+encodeURIComponent(lo.getItem(ap[1]));
   }
 }
+//http://spiceburger.okdaily.com/tu.htm?2789
 //http://tinyurl.com/y4be26gs
 //https://tinyurl.com/y47xnxa5
 //http://spiceburger.okdaily.com/cgi2pm.html?data=the.tst.universe.can.be.used.to.store.obscured.data.in.plain.sight
