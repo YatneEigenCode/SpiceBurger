@@ -1,35 +1,40 @@
-//4-4-2019 jchoy v0.128 fetAb
+//4-4-2019 jchoy v0.129 fetHd
 Msg5do = function(){
-  this.max= 10;
+  this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
-  $t.tag= "#default", $t.tuHost= "$b/";
+  $t.tag= "#default", $t.tuHost= "$t/";
+  //refused to display (load) in a frame because
+  //btly server set X-Frame-Options to deny
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
   var as=["tmp/m5do","m5tst_cfg"];
-  this.start= function(mid,fn){
-    $t.res.f= fn;  $t.res.a=[];
+  this.start= function(tid,fn){
+    $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
     //first get pointer to list head from tsrw
     sto.setItem( as[0], "" );
     sto.setItem( as[0], sto.getItem(as[1]) );
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
-      function(){$t.startHd()}, 20,
+      function(){$t.fetHd()}, 20,
       function(){$t.fetAb()} );
     //new Tstu().start(["",prev,as[0]]);
     //this.startSim(mid,fn);
   }
   this.fetAb= function(){
-    $t.res.a.unshift({body:"comm error"}); //TODO: a is undefined
+    $t.res.a.unshift({body:"comm error"});
+ //TODO: res.a is undefined
     $t.res.f($t.res.a);
   }
-  this.startHd= function(){
+  this.fetHd= function(){
     console.log( 'startHd..', sto.getItem(as[0]) );
     var id0, at= sto.getItem(as[0]).split("\n");
     for (var ap,i=0; i<at.length; i++){
       ap= at[i].split(',');
       if (ap[0]==this.tag) id0=ap[1]; 
     }
+    if ($t.res.tid==id0)
+      return $t.res.f([]);
     sto.setItem( as[0], "" );
     new Tstu().start(["",this.tuHost+id0,as[0]]);
     if (id0) fox.ttry(
@@ -38,11 +43,21 @@ Msg5do = function(){
       function(){$t.fetAb()} );
   }
   this.fetCh= function(){
-    //detect endpoint
-    console.log( 'fetCh' );
     console.log( 'fetCh..', sto.getItem(as[0]) );
-    $t.res.a.unshift( JSON.parse(sto.getItem(as[0])) );
-    $t.res.f($t.res.a);
+    var jo= JSON.parse(sto.getItem(as[0]));
+    $t.res.a.unshift( jo );
+    if (($t.res.tid==jo.prev) ||
+        (jo.prev=="") ||
+        ($t.res.a.length>=$t.max)
+       )
+         return $t.res.f($t.res.a);
+
+    sto.setItem( as[0], "" );
+    new Tstu().start(["",$t.tuHost+jo.prev,as[0]]);
+    if (jo.prev) fox.ttry(
+      function(){return (sto.getItem(as[0]))?1:0},
+      function(){$t.fetCh()}, 20,
+      function(){$t.fetAb()} );
   }
   this.startSim= function(mid,fn){
     var key= "qwe56"; //prompt('unique prefix');
@@ -160,7 +175,10 @@ Btem= function(sto){
   this.rmNode= function(el){
     el.parentNode.removeChild(el);
   }
-  this.getId= function(){ return this.jo.id }
+  this.getId= function(){ 
+    console.log( 'getId ', this.jo.id );
+    return this.jo.id;
+  }
   this.fill= function(msg){
     console.log( 'fill', msg );
     Object.assign(this.jo, msg);
