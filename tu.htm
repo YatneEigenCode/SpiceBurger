@@ -2,7 +2,7 @@
 Forwarding...<br />
 </body>
 <script>
-//4-5-2019 jchoy v0.115 rip tu via sutu/rsu
+//4-6-2019 jchoy v0.116 echo back invalid param, add cmt for rip tu via sutu/rsu
 var as=["http://spiceburger.okdaily.com/"];
 var pail=["?cts=622,rsu&u=1&t=1&tca=$b/2CDTAAU",
 "?cts=622,rsu&u=1&t=1&tca=$b/2OxhDGa",
@@ -13,11 +13,12 @@ function start(){
   var i, cgi= (location+'').split('?').pop();
   i=parseInt(cgi);
   if (i>2000)
-    location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";  //TODO: fix nested script issue #31
+    location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
+         //just make sure content is formatted as js parseable
   else if (i<pail.length)
     location= ((pail[i].indexOf("://")>-1)? "" : as[0]) +pail[i];
   else 
-    document.body.innerHTML= "Invalid request";
+    document.body.innerHTML= "Invalid request: "+i;
 }
 start();
 </script>
