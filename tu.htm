@@ -13,7 +13,7 @@ function start(){
   var i, cgi= (location+'').split('?').pop();
   i=parseInt(cgi);
   if (i>2000)
-    location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
+    location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";  //TODO: fix nested script issue #31
   else if (i<pail.length)
     location= ((pail[i].indexOf("://")>-1)? "" : as[0]) +pail[i];
   else 
