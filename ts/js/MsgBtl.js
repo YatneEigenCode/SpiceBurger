@@ -1,4 +1,4 @@
-//4-5-2019 jchoy v0.131 $r as tuhost
+//4-6-2019 jchoy v0.132 fetId to detect endpoint
 Msg5do = function(){
   this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -18,11 +18,9 @@ Msg5do = function(){
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetHd()}, 20,
       function(){$t.fetAb()} );
-    //new Tstu().start(["",prev,as[0]]);
-    //this.startSim(mid,fn);
   }
-  this.fetAb= function(){
-    $t.res.a.unshift({body:"comm error"});
+  this.fetAb= function(fetId){
+    $t.res.a.unshift({body:"comm error for "+fetId});
  //TODO: res.a is undefined
     $t.res.f($t.res.a);
   }
@@ -39,12 +37,13 @@ Msg5do = function(){
     new Tstu().start(["",this.tuHost+id0,as[0]]);
     if (id0) fox.ttry(
       function(){return (sto.getItem(as[0]))?1:0},
-      function(){$t.fetCh()}, 20,
-      function(){$t.fetAb()} );
+      function(){$t.fetCh(id0)}, 20,
+      function(){$t.fetAb(id0)} );
   }
-  this.fetCh= function(){
+  this.fetCh= function(fetId){
     console.log( 'fetCh..', sto.getItem(as[0]) );
     var jo= JSON.parse(sto.getItem(as[0]));
+    jo.id= fetId;
     $t.res.a.unshift( jo );
     if (($t.res.tid==jo.prev) ||
         (jo.prev=="") ||
@@ -56,9 +55,10 @@ Msg5do = function(){
     new Tstu().start(["",$t.tuHost+jo.prev,as[0]]);
     if (jo.prev) fox.ttry(
       function(){return (sto.getItem(as[0]))?1:0},
-      function(){$t.fetCh()}, 20,
-      function(){$t.fetAb()} );
+      function(){$t.fetCh(jo.prev)}, 20,
+      function(){$t.fetAb(jo.prev)} );
   }
+/*
   this.startSim= function(mid,fn){
     var key= "qwe56"; //prompt('unique prefix');
     var res=[],dt= new Date().valueOf();
@@ -72,6 +72,7 @@ Msg5do = function(){
     if (res.length>this.max) res.length=this.max;
     fn( res.reverse() );
   }
+*/
   this.bldJo= function(meh, dat, id){
     var res={};
     for (var i=0; i<meh.length; i++)
