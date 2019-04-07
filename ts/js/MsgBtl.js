@@ -1,4 +1,4 @@
-//4-7-2019 jchoy v1.118 fix bug w/ undefined jo in feTest
+//4-7-2019 jchoy v1.119 fox.abc
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -7,10 +7,11 @@ Msg5do = function(){
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
   var meh= fox.meh;
   var as=["tmp/m5do","m5tst_cfg","2687"];
+  var og= fox.abc( "tmp/m5do","","2687" );
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
-    sto.setItem( as[0], "" );
-    new Tstu().start(["",this.tuHost+as[2],as[0]]);
+    sto.setItem( og.a, "" );
+    new Tstu().start(["", $t.tuHost+og.c, og.a]);
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetHd()}, 20,
       function(){$t.fetAb()} );
@@ -70,6 +71,11 @@ Msg5do.fox= {
     sto.setItem( p2, "" );  //clear file
     new Tstu().start(["",p1,p2]);
   }
+  ,abc: function(){  var res={};
+    for (var i=0; i<arguments.length; i++) 
+      { res[String.fromCharCode(97+i)]= arguments[i];}
+    return res;
+  }
 }
 //---
 //new MsgBtl( new Msg5do(), new Sto().lo );
@@ -123,7 +129,7 @@ Btem= function(sto){
     var sheet = D[as[2]]('style');
     var bdr="border: 1px solid gray; border-radius: 5px;";
     sheet[as[5]]= "."+as[4]+" {"+bdr+"margins:0 2 0 2;"
-      +"width:60%; margin-left:20%; padding-left:2px}\n"
+      +"width:70%; margin-left:15%; padding-left:2px}\n"
       +"."+as[6]+" {"+bdr+"background-color:#DDBBBB;"
       +"margins:0 2 0 2; width:8%; text-align:center;"
       +"margin-left:45%}";
