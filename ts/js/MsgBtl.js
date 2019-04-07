@@ -1,13 +1,11 @@
-//4-6-2019 jchoy v1.116 autolink, icoEl
+//4-6-2019 jchoy v1.117 fox.tstu, feTest
 Msg5do = function(){
-  this.max= 3;  //  10;
+  this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
-  $t.tag= "#default", $t.tuHost= "$r";  //"$t/";
+  $t.tuHost= "$r";  //"$t/";  //$t.tag= "#default"
   //TODO: handle mixed tuHosts
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
-  var meh=[["body","String"]
-          ,["date","Date"]
-          ,["prev","String"]];
+  var meh= fox.meh;
   var as=["tmp/m5do","m5tst_cfg","2687"];
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
@@ -26,25 +24,23 @@ Msg5do = function(){
     var id0= sto.getItem(as[0]);
     if ($t.res.tid==id0)
       return $t.res.f([]);
-    sto.setItem( as[0], "" );
-    new Tstu().start(["",this.tuHost+id0,as[0]]);
+    fox.tstu(this.tuHost+id0,as[0],sto);
     if (id0) fox.ttry(
       function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetCh(id0)}, 20,
       function(){$t.fetAb(id0)} );
   }
+  this.feTest= function(jp){
+    if ($t.res.tid==jp) return true;
+    return (jo.prev=="") || ($t.res.a.length>=$t.max);
+  }
   this.fetCh= function(fetId){
     var jo= JSON.parse(sto.getItem(as[0]));
     jo.id= fetId;
     $t.res.a.unshift( jo );
-    if (($t.res.tid==jo.prev) ||
-        (jo.prev=="") ||
-        ($t.res.a.length>=$t.max)
-       )
+    if (this.feTest(jo.prev))
          return $t.res.f($t.res.a);
-
-    sto.setItem( as[0], "" );
-    new Tstu().start(["",$t.tuHost+jo.prev,as[0]]);
+    fox.tstu($t.tuHost+jo.prev,as[0],sto);
     if (jo.prev) fox.ttry(
       function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetCh(jo.prev)}, 20,
@@ -67,8 +63,15 @@ Msg5do.fox= {
       if (tto.max-- > 0) setTimeout(tto.f$, 300); } };
     tto.f$();
   }
-  ,x:0
+  ,meh:   [["body","String"]
+          ,["date","Date"]
+          ,["prev","String"]]
+  ,tstu: function(p1,p2,sto){
+    sto.setItem( p2, "" );  //clear file
+    new Tstu().start(["",p1,p2]);
+  }
 }
+//---
 //new MsgBtl( new Msg5do(), new Sto().lo );
 MsgBtl = function(fido,sto){
   var $t=this, as=["","tmp/tumrec"];
