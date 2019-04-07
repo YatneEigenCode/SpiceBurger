@@ -1,4 +1,4 @@
-//4-6-2019 jchoy v1.115 autolink
+//4-6-2019 jchoy v1.116 autolink, icoEl
 Msg5do = function(){
   this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -113,7 +113,7 @@ Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
   var as= ["tub/","appendChild","createElement",
-    "div","btem","innerHTML","bctl"];
+    "div","btem","innerHTML","bctl","[link]"];
   var D=document;
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
@@ -129,22 +129,27 @@ Btem= function(sto){
   this.show= function(btl){
     console.log( 'show', this.jo.id );
     var el= this.el=D.body[as[1]](D[as[2]](as[3]));
-    var sb= el.innerHTML= this.jo.body;
-    if (sb.indexOf("://")>0)
-      el.innerHTML= sb.link(sb);
-    el.getElementsByTagName("a")[0].target="_blank";
-    el.className= as[4];
-    el.onclick= this.showCtl;
+    var sb= this.jo.body;
+    this.icoEl(el,sb,as[4],this.showCtl);
     el.ado= [this,btl];
+  }
+  this.icoEl= function(el,ih,cn,oc){
+    el.innerHTML= ih;
+    el.className= cn;
+    el.onclick= oc;
+    if (ih.indexOf("://")>0) {
+      el.innerHTML+= " &nbsp; ";
+      var ln= el[as[1]](D[as[2]]("a"));
+      ln.innerHTML= as[7];
+      ln.href= ih;  ln.target="_blank";
+    }
   }
   this.showCtl= function(btl){
     console.log( 'showCtl' );
     var ao= this.getElementsByClassName(as[6]);
     if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var ctl=this[as[1]](D[as[2]](as[3]));
-    ctl.innerHTML= "X";
-    ctl.className= as[6];
-    ctl.onclick= this.ado[0].del;
+    this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
   }
   this.del= function(){
     console.log( 'del', this.innerHTML );
