@@ -1,4 +1,4 @@
-//4-6-2019 jchoy v0.132 fetId to detect endpoint
+//4-6-2019 jchoy v0.132a thread head on rip
 Msg5do = function(){
   this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -9,12 +9,12 @@ Msg5do = function(){
   var meh=[["body","String"]
           ,["date","Date"]
           ,["prev","String"]];
-  var as=["tmp/m5do","m5tst_cfg"];
+  var as=["tmp/m5do","m5tst_cfg","2687"];
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
     //first get pointer to list head from tsrw
     sto.setItem( as[0], "" );
-    sto.setItem( as[0], sto.getItem(as[1]) );
+    new Tstu().start(["",this.tuHost+as[2],as[0]]);
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetHd()}, 20,
       function(){$t.fetAb()} );
@@ -26,11 +26,7 @@ Msg5do = function(){
   }
   this.fetHd= function(){
     console.log( 'startHd..', sto.getItem(as[0]) );
-    var id0, at= sto.getItem(as[0]).split("\n");
-    for (var ap,i=0; i<at.length; i++){
-      ap= at[i].split(',');
-      if (ap[0]==this.tag) id0=ap[1]; 
-    }
+    var id0= sto.getItem(as[0]);
     if ($t.res.tid==id0)
       return $t.res.f([]);
     sto.setItem( as[0], "" );
@@ -119,7 +115,7 @@ MsgBtl = function(fido,sto){
       if (em) this.pail.push(em);
       if (!em) i= -9;
     }
-    return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"";
+    return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"*";
   }
   this.delem= function(em){
     var k= -1;
