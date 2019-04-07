@@ -1,10 +1,9 @@
-//4-6-2019 jchoy v0.132a thread head on rip
+//4-6-2019 jchoy v0.134 thread head on rip
 Msg5do = function(){
   this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tag= "#default", $t.tuHost= "$r";  //"$t/";
-  //refused to display (load) in a frame because
-  //btly server set X-Frame-Options to deny
+  //TODO: handle mixed tuHosts
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
   var meh=[["body","String"]
           ,["date","Date"]
@@ -12,7 +11,6 @@ Msg5do = function(){
   var as=["tmp/m5do","m5tst_cfg","2687"];
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
-    //first get pointer to list head from tsrw
     sto.setItem( as[0], "" );
     new Tstu().start(["",this.tuHost+as[2],as[0]]);
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
@@ -21,7 +19,6 @@ Msg5do = function(){
   }
   this.fetAb= function(fetId){
     $t.res.a.unshift({body:"comm error for "+fetId});
- //TODO: res.a is undefined
     $t.res.f($t.res.a);
   }
   this.fetHd= function(){
@@ -37,7 +34,6 @@ Msg5do = function(){
       function(){$t.fetAb(id0)} );
   }
   this.fetCh= function(fetId){
-    console.log( 'fetCh..', sto.getItem(as[0]) );
     var jo= JSON.parse(sto.getItem(as[0]));
     jo.id= fetId;
     $t.res.a.unshift( jo );
@@ -54,21 +50,6 @@ Msg5do = function(){
       function(){$t.fetCh(jo.prev)}, 20,
       function(){$t.fetAb(jo.prev)} );
   }
-/*
-  this.startSim= function(mid,fn){
-    var key= "qwe56"; //prompt('unique prefix');
-    var res=[],dt= new Date().valueOf();
-    var rd= "QZWXYK.".charAt(Math.random()*6);
-    for (var pv,i=5,isn=1,s=rd+key; i>2; i--){
-      pv= key+(i-1);
-      if (key+i == mid) isn=0;
-      if (isn)
-        res.push(this.bldJo(meh,[s+i,dt+i*1000,pv],key+i));
-    }
-    if (res.length>this.max) res.length=this.max;
-    fn( res.reverse() );
-  }
-*/
   this.bldJo= function(meh, dat, id){
     var res={};
     for (var i=0; i<meh.length; i++)
@@ -105,8 +86,7 @@ MsgBtl = function(fido,sto){
     }
     console.log( 'pail.len',$t.pail.length );
     if ($t.pail.length>0) $t.pail[0].initStyle();
-    $t.pail.map( function(o,i){
-      console.log(i); o.show($t)} );
+    $t.pail.map( function(o,i){ o.show($t)} );
   }
   this.hogTums= function(){
     console.log( 'hogTums' );
@@ -115,7 +95,7 @@ MsgBtl = function(fido,sto){
       if (em) this.pail.push(em);
       if (!em) i= -9;
     }
-    return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"*";
+    return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"";
   }
   this.delem= function(em){
     var k= -1;
@@ -124,7 +104,6 @@ MsgBtl = function(fido,sto){
     if (k < 0) return;
     $t.pail.splice(k,1);
     new Btem($t.sto).iceDel($t.pail.length);
-console.log('delem',$t.pail.length);
     for (var i=k; i<$t.pail.length; i++)
       $t.pail[i].ice(i);
   }
@@ -182,18 +161,15 @@ Btem= function(sto){
     return this;
   }
   this.ice= function(num){
-    console.log( 'ice ',as[0]+num );
     this.sto.setItem(as[0]+num, JSON.stringify(this.jo));
     return this;
   }
   this.iceDel= function(num){
-    console.log( 'icedel '+as[0]+num );
     this.sto.setItem(as[0]+num, "");
   }
   this.thaw= function(num){
     var raw= this.sto.getItem(as[0]+num);
     this.jo= (raw)? JSON.parse(raw) : {};
-    console.log( 'thaw ',num,this.jo.id );
     return (raw)? this: null;
   }
 }
