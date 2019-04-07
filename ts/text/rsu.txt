@@ -1,4 +1,4 @@
-//3-24-2019 jchoy v0.161 ttry rca
+//4-7-2019 jchoy v0.162 numCode
 //-----
 RsuParse= function(){
   var $t= this;
@@ -21,6 +21,7 @@ RsuParse= function(){
     if (this.cgi(pm,"",location)) this.loadJs( "ts/text/"+fi+".txt" );
   }
   this.startTca= function(tca){
+    //TODO: decode tca param if needed
     this.ttry( function(){return typeof(Tstu)!="undefined"},
       function(){new Tstu().start(["",tca,"sutca"]);$t.startTcaR()}, 20);
   }
@@ -38,6 +39,18 @@ RsuParse= function(){
     if (sd.indexOf('link') != 0) return;
     document.body.innerHTML= "";
     new CmdAutostart().parse( new CmdEngine().ce1.ce, sd );
+  }
+  this.numCode= function( val, isDec ){
+    var m,p,x, av=[20,"abcd",10000];
+    if (isDec){
+      x= parseInt( atob(val).substr(1), 16);
+      m= av[0]-x%10;
+      return x- av[2]*m;
+    } else {
+      m= av[0]-val%10;
+      p= av[1].charAt(m%av[1].length);
+      return btoa( p + (val + av[2]*m).toString(16) );
+    }
   }
   this.ttry=function(isReady,run,max){
     var ittry= { max: max, f$:function(){
