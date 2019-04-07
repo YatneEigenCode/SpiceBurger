@@ -1,4 +1,4 @@
-//4-6-2019 jchoy v1.117 fox.tstu, feTest
+//4-7-2019 jchoy v1.118 fix bug w/ undefined jo in feTest
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -32,7 +32,7 @@ Msg5do = function(){
   }
   this.feTest= function(jp){
     if ($t.res.tid==jp) return true;
-    return (jo.prev=="") || ($t.res.a.length>=$t.max);
+    return (jp=="") || ($t.res.a.length>=$t.max);
   }
   this.fetCh= function(fetId){
     var jo= JSON.parse(sto.getItem(as[0]));
