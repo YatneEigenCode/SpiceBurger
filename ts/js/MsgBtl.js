@@ -1,4 +1,4 @@
-//4-6-2019 jchoy v0.134 thread head on rip
+//4-6-2019 jchoy v1.115 autolink
 Msg5do = function(){
   this.max= 3;  //  10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -112,7 +112,8 @@ MsgBtl = function(fido,sto){
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
-  var as= ["tub/","appendChild","createElement", "div","btem","innerHTML","bctl"];
+  var as= ["tub/","appendChild","createElement",
+    "div","btem","innerHTML","bctl"];
   var D=document;
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
@@ -128,7 +129,10 @@ Btem= function(sto){
   this.show= function(btl){
     console.log( 'show', this.jo.id );
     var el= this.el=D.body[as[1]](D[as[2]](as[3]));
-    el.innerHTML= this.jo.body;
+    var sb= el.innerHTML= this.jo.body;
+    if (sb.indexOf("://")>0)
+      el.innerHTML= sb.link(sb);
+    el.getElementsByTagName("a")[0].target="_blank";
     el.className= as[4];
     el.onclick= this.showCtl;
     el.ado= [this,btl];
