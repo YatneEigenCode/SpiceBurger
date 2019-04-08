@@ -6,13 +6,17 @@
   <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.124]:</div>
 </body>
 <script>
-//3-25-2019 jchoy addDiv
+//4-8-2019 jchoy json body
 function tf(url){
   var at= url.split(/[&?](.*?)=/), D=document;
   var data= (at.length<3)? "ping" : at[2];
   var redm= "*", ad=["appendChild","createElement"];  //optionally decode from url
-  var addDiv= function(s){ D.body[ad[0]](D[ad[1]]("div")).innerHTML=s;}
-  addDiv(decodeURIComponent(data));
+  var addDiv= function(s){
+    var res, div= D.body[ad[0]](D[ad[1]]("div"));
+    div.innerHTML= s;
+    if (res= JSON.parse(s).body) div.innerHTML= res;
+  }
+  try { addDiv(decodeURIComponent(data)); } catch {}
   window.parent.postMessage( decodeURIComponent(data), redm );
 };
 tf(location+"");
