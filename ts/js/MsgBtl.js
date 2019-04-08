@@ -1,4 +1,4 @@
-//4-7-2019 jchoy v1.119 fox.abc
+//4-7-2019 jchoy v1.121 MsgSdr (dev in progress)
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -75,6 +75,41 @@ Msg5do.fox= {
     for (var i=0; i<arguments.length; i++) 
       { res[String.fromCharCode(97+i)]= arguments[i];}
     return res;
+  }
+}
+MsgSdr= function(){
+  var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
+  var og= fox.abc( "tmp/sendme", "2692", "tmp/rsv",  
+    "location=\"http://spiceburger.okdaily.com/cgi2pm.html?lore=",
+    "msgsdr_cfg", "2687" );
+  this.start= function(){
+    if (this.checkReq()) return;
+    //fox.tstu(og.b)   //load list
+    //fox.ttry -> this.takeNum
+  }
+  this.checkReq= function(){
+    //requires Tstu, msgsdr_cfg
+    //ce edit og.a
+  }
+  this.takeNum= function(){   //shift and write back list
+    var jo= JSON.parse(sto.getItem(og.c));
+    this.num= jo.reservations.shift();
+    this.pkgCpm( og.b, sJSON.stringify(jo) );
+
+    //read thread head (og.f) to find prev
+    //fox.tstu
+    //fox.ttry -> this.sendMsg
+  }
+  this.sendMsg= function(){
+    //write message (fnf)  //meh: body, date, prev
+    //this.pkgCpm( this.num, x )
+    //update thread head - Image
+
+    sto.setItem( og.a, "" );  //erase tmp/sendme
+  }
+  this.pkgCpm= function(num,lore){
+    var url= og.d + encodeURIComponent(lore) +"\"";
+    new Image().src= sto.getItem(og.e) + "&i="+num +"&data="+ encodeURIComponent(url);  //fnf
   }
 }
 //---
