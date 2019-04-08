@@ -1,4 +1,4 @@
-//4-7-2019 jchoy v1.121 MsgSdr (dev in progress)
+//4-7-2019 jchoy v1.123 MsgSdr (working), pkgCpm, takeNum
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -81,35 +81,49 @@ MsgSdr= function(){
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   var og= fox.abc( "tmp/sendme", "2692", "tmp/rsv",  
     "location=\"http://spiceburger.okdaily.com/cgi2pm.html?lore=",
-    "msgsdr_cfg", "2687" );
+    "msgsdr_cfg", "2687", "ok",
+    "not ready for writing", "missing cfg or class", new LinkMaker(),
+    "error", "#://cmd/msend", "$r", "tmp/msghead",
+    "no rsv list", "no thread head", "Message sent successfully" );  //opq
   this.start= function(){
-    if (this.checkReq()) return;
-    //fox.tstu(og.b)   //load list
-    //fox.ttry -> this.takeNum
+    if (this.checkReq()) return og.k;
+    fox.tstu( og.m+og.b, og.c, sto );  //load list
+    fox.ttry( function(){return (sto.getItem(og.c))?1:0},
+      function(){$t.takeNum()}, 20,
+      function(){og.j.start( [0,".",og.o] )} );
+    return og.g;
   }
-  this.checkReq= function(){
-    //requires Tstu, msgsdr_cfg
-    //ce edit og.a
+  this.checkReq= function( isFull ){
+    if (isFull) return og.j.start([0,".",og.h]);
+    if ( (typeof(Tstu)=="undefined") || (!sto.getItem(og.e)) )
+      return og.j.start([0,".",og.i]);
+    if (!sto.getItem(og.a))
+      return [new StoEdit().start([0,og.a]), og.j.start([0,og.l]) ];
   }
   this.takeNum= function(){   //shift and write back list
     var jo= JSON.parse(sto.getItem(og.c));
+    if (jo.reservations.length<1) return this.checkReq(1)
     this.num= jo.reservations.shift();
-    this.pkgCpm( og.b, sJSON.stringify(jo) );
+    this.pkgCpm( og.b, JSON.stringify(jo) );
 
-    //read thread head (og.f) to find prev
-    //fox.tstu
-    //fox.ttry -> this.sendMsg
+    fox.tstu( og.m+og.f, og.n, sto );  //load list
+    fox.ttry( function(){return (sto.getItem(og.n))?1:0},
+      function(){$t.sendMsg()}, 20,
+      function(){og.j.start( [0,".", og.n] )} );
   }
   this.sendMsg= function(){
-    //write message (fnf)  //meh: body, date, prev
-    //this.pkgCpm( this.num, x )
-    //update thread head - Image
-
+    var jo= {date:new Date().valueOf(), body:sto.getItem(og.a)}
+    jo.prev= sto.getItem(og.n);  //TODO: catch body > 300;
+    this.pkgCpm( this.num, JSON.stringify(jo) );  //write msg
+    this.pkgCpm( og.f, this.num );  //update thread head
     sto.setItem( og.a, "" );  //erase tmp/sendme
+    og.j.start( [1,".", og.q] );
   }
   this.pkgCpm= function(num,lore){
     var url= og.d + encodeURIComponent(lore) +"\"";
-    new Image().src= sto.getItem(og.e) + "&i="+num +"&data="+ encodeURIComponent(url);  //fnf
+    new Image().src= url= sto.getItem(og.e) + "&i="+num
+      +"&data="+ encodeURIComponent(url);  //fnf
+    console.log( 'pkgCpm', url );
   }
 }
 //---
