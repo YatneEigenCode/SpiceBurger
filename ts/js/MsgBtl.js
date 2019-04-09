@@ -1,17 +1,15 @@
-//4-7-2019 jchoy v1.123 MsgSdr (working), pkgCpm, takeNum
+//4-8-2019 jchoy v1.124 handle mixed tuHosts
 Msg5do = function(){
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //"$t/";  //$t.tag= "#default"
-  //TODO: handle mixed tuHosts
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
   var meh= fox.meh;
   var as=["tmp/m5do","m5tst_cfg","2687"];
   var og= fox.abc( "tmp/m5do","","2687" );
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
-    sto.setItem( og.a, "" );
-    new Tstu().start(["", $t.tuHost+og.c, og.a]);
+    fox.tstu( og.c, og.a, sto, $t.tuHost );
     fox.ttry( function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetHd()}, 20,
       function(){$t.fetAb()} );
@@ -25,7 +23,7 @@ Msg5do = function(){
     var id0= sto.getItem(as[0]);
     if ($t.res.tid==id0)
       return $t.res.f([]);
-    fox.tstu(this.tuHost+id0,as[0],sto);
+    fox.tstu(id0,as[0],sto,this.tuHost);
     if (id0) fox.ttry(
       function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetCh(id0)}, 20,
@@ -41,7 +39,7 @@ Msg5do = function(){
     $t.res.a.unshift( jo );
     if (this.feTest(jo.prev))
          return $t.res.f($t.res.a);
-    fox.tstu($t.tuHost+jo.prev,as[0],sto);
+    fox.tstu(jo.prev,as[0],sto,this.tuHost);
     if (jo.prev) fox.ttry(
       function(){return (sto.getItem(as[0]))?1:0},
       function(){$t.fetCh(jo.prev)}, 20,
@@ -67,9 +65,10 @@ Msg5do.fox= {
   ,meh:   [["body","String"]
           ,["date","Date"]
           ,["prev","String"]]
-  ,tstu: function(p1,p2,sto){
+  ,tstu: function(p1,p2,sto,tuh){
     sto.setItem( p2, "" );  //clear file
-    new Tstu().start(["",p1,p2]);
+    var pp= (p1.match(/^\$[a-z]/))? p1 : (tuh+p1);
+    new Tstu().start(["", pp, p2]);
   }
   ,abc: function(){  var res={};
     for (var i=0; i<arguments.length; i++) 
