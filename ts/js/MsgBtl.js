@@ -1,4 +1,4 @@
-//4-9-2019 jchoy v1.125 scroll to bottom
+//4-9-2019 jchoy v1.126 Btem.scrollEnd
 Msg5do = function(){
   this.ver= "1.125";
   this.max= 10;
@@ -140,9 +140,9 @@ MsgBtl = function(fido,sto){
       var em= new Btem($t.sto).fill(am[i]);
       $t.pail.push( em.ice($t.pail.length) );
     }
-    if ($t.pail.length>0) $t.pail[0].initStyle();
+    new Btem().initStyle();
     $t.pail.map( function(o,i){ o.show($t)} );
-    window.scrollTo( 0, 999999 );
+    new Btem().scrollEnd( 0, 999999 );
   }
   this.hogTums= function(){
     console.log( 'hogTums' );
@@ -236,5 +236,11 @@ Btem= function(sto){
     var raw= this.sto.getItem(as[0]+num);
     this.jo= (raw)? JSON.parse(raw) : {};
     return (raw)? this: null;
+  }
+  this.scrollEnd= function(){
+    var D=document, div=document.createElement('div');
+    D.body.appendChild(div).style.height= 699;
+    window.scrollTo( 0, 99999 );
+    D.body.removeChild( div );
   }
 }
