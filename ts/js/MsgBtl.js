@@ -1,4 +1,4 @@
-//4-10-2019 jchoy v1.128 aniMap option
+//4-10-2019 jchoy v1.129 scrollBy when using aniMap
 Msg5do = function(){
   this.ver= "1.128";
   this.max= 10;
@@ -132,6 +132,7 @@ MsgBtl = function( fido, sto, isAni ){
   var $t=this, as=["","tmp/tumrec"];
   $t.pail= []; $t.sto= sto; $t.ub=new Btem($t.sto);
   this.start= function(){
+    console.log( fido.ver );
     this.lastId= this.hogTums();
     fido.start(this.lastId, function(r){$t.restock(r)} );
   }
@@ -146,8 +147,7 @@ MsgBtl = function( fido, sto, isAni ){
       $t.ub.scrollEnd( 0, 999999 );
     } else 
       $t.ub.aniMap( $t.pail, function(o,i){
-        o.show($t)
-      } );
+        o.show($t); window.scrollBy(0, 9999); } );
   }
   this.hogTums= function(){
     console.log( 'hogTums' );
