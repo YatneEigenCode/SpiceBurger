@@ -1,8 +1,9 @@
-//4-8-2019 jchoy v1.124 handle mixed tuHosts
+//4-9-2019 jchoy v1.125 scroll to bottom
 Msg5do = function(){
+  this.ver= "1.125";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
-  $t.tuHost= "$r";  //"$t/";  //$t.tag= "#default"
+  $t.tuHost= "$r";  //$t.tag= "#default"
   $t.res= {a:[], f:function(){console.log('no res fcn')} };
   var meh= fox.meh;
   var as=["tmp/m5do","m5tst_cfg","2687"];
@@ -132,18 +133,16 @@ MsgBtl = function(fido,sto){
   this.pail= []; this.sto= sto;
   this.start= function(){
     this.lastId= this.hogTums();
-    console.log( 'start lastId', this.lastId );
     fido.start(this.lastId, function(r){$t.restock(r)} );
-    //fido.start(this.lastId).map( this.restock );
   }
   this.restock= function( am ){
     for (var i=0; i<am.length; i++){
       var em= new Btem($t.sto).fill(am[i]);
       $t.pail.push( em.ice($t.pail.length) );
     }
-    console.log( 'pail.len',$t.pail.length );
     if ($t.pail.length>0) $t.pail[0].initStyle();
     $t.pail.map( function(o,i){ o.show($t)} );
+    window.scrollTo( 0, 999999 );
   }
   this.hogTums= function(){
     console.log( 'hogTums' );
