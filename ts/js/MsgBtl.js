@@ -1,6 +1,6 @@
-//4-9-2019 jchoy v1.127 aniMap
+//4-10-2019 jchoy v1.128 aniMap option
 Msg5do = function(){
-  this.ver= "1.125";
+  this.ver= "1.128";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -128,9 +128,9 @@ MsgSdr= function(){
 }
 //---
 //new MsgBtl( new Msg5do(), new Sto().lo );
-MsgBtl = function(fido,sto){
+MsgBtl = function( fido, sto, isAni ){
   var $t=this, as=["","tmp/tumrec"];
-  this.pail= []; this.sto= sto;
+  $t.pail= []; $t.sto= sto; $t.ub=new Btem($t.sto);
   this.start= function(){
     this.lastId= this.hogTums();
     fido.start(this.lastId, function(r){$t.restock(r)} );
@@ -140,9 +140,14 @@ MsgBtl = function(fido,sto){
       var em= new Btem($t.sto).fill(am[i]);
       $t.pail.push( em.ice($t.pail.length) );
     }
-    new Btem().initStyle();
-    $t.pail.map( function(o,i){ o.show($t)} );
-    new Btem().scrollEnd( 0, 999999 );
+    $t.ub.initStyle();
+    if (!isAni) {
+      $t.pail.map( function(o,i){ o.show($t)} );
+      $t.ub.scrollEnd( 0, 999999 );
+    } else 
+      $t.ub.aniMap( $t.pail, function(o,i){
+        o.show($t)
+      } );
   }
   this.hogTums= function(){
     console.log( 'hogTums' );
