@@ -1,4 +1,4 @@
-//4-5-2019 jchoy v0.134 $r rippy
+//4-9-2019 jchoy v0.135 smaller iframe
 Tstu= function(){
   new AppTool().inherit( this, AppTool );
   var fr, as=["message","iframe","ok","tstudata",
@@ -9,6 +9,7 @@ Tstu= function(){
     new Sto().lo.setItem(as[3],"");     //todo: sto.delWbak()
     window.addEventListener(as[0],handler$);
     (fr=$t.addEl(as[1])).src=$t.th(ap[1]);
+    $t._.style.width= 25;
     return (ap.length>1)? as[2] : as[4];
   }
   this.th= function(url){
