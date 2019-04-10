@@ -1,4 +1,4 @@
-//4-9-2019 jchoy v1.126 Btem.scrollEnd
+//4-9-2019 jchoy v1.127 aniMap
 Msg5do = function(){
   this.ver= "1.125";
   this.max= 10;
@@ -236,6 +236,13 @@ Btem= function(sto){
     var raw= this.sto.getItem(as[0]+num);
     this.jo= (raw)? JSON.parse(raw) : {};
     return (raw)? this: null;
+  }
+  this.aniMap= function( a, f ){
+    var k=0, act=function(t){
+      if (k>=a.length) return;
+      f( a[k++], k );
+      window.requestAnimationFrame(act);
+    }; act();
   }
   this.scrollEnd= function(){
     var D=document, div=document.createElement('div');
