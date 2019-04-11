@@ -205,11 +205,19 @@ Btem= function(sto){
     if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var ctl=this[as[1]](D[as[2]](as[3]));
     this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
-    //ctl=this[as[1]](D[as[2]](as[3]));
-    //this.ado[0].icoEl(ctl,"<3",as[6],this.ado[0].fav);
+    /*
+    var pnl=this[as[1]](D[as[2]](as[3]));
+    this.ado[0].icoEl(pnl,"","bpnl",);
+    var ctl=pnl[as[1]](D[as[2]]("span"));
+    this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
+    ctl=pnl[as[1]](D[as[2]]("span"));
+    this.ado[0].icoEl(ctl,"<3",as[6],this.ado[0].fav);
   }
-  this.fav= function(){
-    console.log('fav');
+  this.fav= function(e){
+    this.parentNode.parentNode.style.backgroundColor="yellow";
+    console.log(384,this);
+    e.stopPropagation();
+    */
   }
   this.del= function(){
     console.log( 'del', this.innerHTML );
