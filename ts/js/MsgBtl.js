@@ -1,6 +1,6 @@
-//4-10-2019 jchoy v1.132 precise autolink
+//4-10-2019 jchoy v1.134 precise autolink by whitespace
 Msg5do = function(){
-  this.ver= "1.131";
+  this.ver= "1.134";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -190,8 +190,8 @@ Btem= function(sto){
     el.innerHTML= ih;
     el.className= cn;
     el.onclick= oc;
-    for (var i=0,at=ih.split(" "); i<at.length; i++)
-      if (at[i].indexOf("://")>0) this.autolink(at[i], el);
+    for (var i=0,a=ih.split(/\s/); i<a.length; i++)
+      if (a[i].indexOf("://")>0) this.autolink(a[i],el);
   }
   this.autolink= function( url, el ){
       el.innerHTML+= " &nbsp; ";
