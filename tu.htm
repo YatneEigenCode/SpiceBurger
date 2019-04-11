@@ -1,5 +1,11 @@
 <body>
-Forwarding...<br />
+
+<form>
+         Number: <input name=num size=8>
+         <input type=button value=Go 
+         onclick="location='tu.htm?'+this.form.num.value">
+</form>
+
 </body>
 <script>
 //4-6-2019 jchoy v0.116 echo back invalid param, add cmt for rip tu via sutu/rsu
@@ -17,8 +23,6 @@ function start(){
          //just make sure content is formatted as js parseable
   else if (i<pail.length)
     location= ((pail[i].indexOf("://")>-1)? "" : as[0]) +pail[i];
-  else 
-    document.body.innerHTML= "Invalid request: "+i;
 }
 start();
 </script>
