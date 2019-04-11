@@ -1,4 +1,4 @@
-//4-10-2019 jchoy v1.131 item scroll
+//4-10-2019 jchoy v1.132 precise autolink
 Msg5do = function(){
   this.ver= "1.131";
   this.max= 10;
@@ -190,12 +190,14 @@ Btem= function(sto){
     el.innerHTML= ih;
     el.className= cn;
     el.onclick= oc;
-    if (ih.indexOf("://")>0) {
+    for (var i=0,at=ih.split(" "); i<at.length; i++)
+      if (at[i].indexOf("://")>0) this.autolink(at[i], el);
+  }
+  this.autolink= function( url, el ){
       el.innerHTML+= " &nbsp; ";
       var ln= el[as[1]](D[as[2]]("a"));
       ln.innerHTML= as[7];
-      ln.href= ih;  ln.target="_blank";
-    }
+      ln.href= url;  ln.target="_blank";
   }
   this.showCtl= function(btl){
     console.log( 'showCtl' );
