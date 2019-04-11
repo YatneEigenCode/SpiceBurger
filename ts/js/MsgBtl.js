@@ -1,6 +1,6 @@
-//4-10-2019 jchoy v1.135 autolink fix typo
+//4-11-2019 jchoy v1.136 scroll-x
 Msg5do = function(){
-  this.ver= "1.135";
+  this.ver= "1.136";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -173,7 +173,7 @@ Btem= function(sto){
     var sheet = D[as[2]]('style');
     var bdr="border: 1px solid gray; border-radius: 5px;";
     sheet[as[5]]= "."+as[4]+" {"+bdr+"margins:0 2 0 2;"
-      +"width:70%; margin-left:15%; padding-left:2px; overflow:scroll}\n"
+      +"width:70%; margin-left:15%; padding-left:2px; overflow-x:auto}\n"
       +"."+as[6]+" {"+bdr+"background-color:#DDBBBB;"
       +"margins:0 2 0 2; width:8%; text-align:center;"
       +"margin-left:45%}";
@@ -205,6 +205,11 @@ Btem= function(sto){
     if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var ctl=this[as[1]](D[as[2]](as[3]));
     this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
+    //ctl=this[as[1]](D[as[2]](as[3]));
+    //this.ado[0].icoEl(ctl,"<3",as[6],this.ado[0].fav);
+  }
+  this.fav= function(){
+    console.log('fav');
   }
   this.del= function(){
     console.log( 'del', this.innerHTML );
