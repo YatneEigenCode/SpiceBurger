@@ -1,6 +1,6 @@
-//4-11-2019 jchoy v1.137 more prep for hCtlBtn
+//4-11-2019 jchoy v1.138 colorFav, iceEm
 Msg5do = function(){
-  this.ver= "1.137";
+  this.ver= "1.138";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -150,11 +150,16 @@ MsgBtl = function( fido, sto, isAni ){
     }
     return ($t.pail.length)? $t.pail.slice(-1)[0].getId() :"";
   }
-  this.delem= function(em){
-    var k= -1;
+  this.iceEm= function(em, nop, k){
+    if ((k=this.getEmNum(em))>0) $t.pail[k].ice(k);
+  }
+  this.getEmNum= function(em){
     for (var i=0; i<$t.pail.length; i++)
-      if (em == $t.pail[i]) k=i;
-    if (k < 0) return;
+      if (em == $t.pail[i]) return i;
+    return -1;
+  }
+  this.delem= function(em, nop, k){
+    if ((k=this.getEmNum(em))<0) return;
     $t.pail.splice(k,1);
     new Btem($t.sto).iceDel($t.pail.length);
     for (var i=k; i<$t.pail.length; i++)
@@ -167,8 +172,8 @@ Btem= function(sto){
   this.sto= sto;
   var as= ["tub/","appendChild","createElement",
     "div","btem","innerHTML","bctl","[link]"];
-  //var og= Msg5do.fox.abc(1,2,3,4,5, 
-  //  6,7,8,"span","parentNode","backgroundColor");
+  var og= Msg5do.fox.abc(1,2,3,4,5, 
+    6,7,8,"span","parentNode","backgroundColor");
   var D=document;
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
@@ -188,6 +193,7 @@ Btem= function(sto){
     var el= this.el=D.body[as[1]](D[as[2]](as[3]));
     var sb= this.jo.body;
     this.icoEl(el,sb,as[4],this.showCtl);
+    this.colorFav( this.jo.meta.fav );
     el.ado= [this,btl];
   }
   this.icoEl= function(el,ih,cn,oc){
@@ -203,6 +209,7 @@ Btem= function(sto){
       ln.innerHTML= as[7];
       ln.href= url;  ln.target="_blank";
   }
+  /*
   this.showCtl= function(btl){
     console.log( 'showCtl' );
     var ao= this.getElementsByClassName(as[6]);
@@ -210,11 +217,9 @@ Btem= function(sto){
     var ctl=this[as[1]](D[as[2]](as[3]));
     this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
   }
-  /*
+  */
   this.showCtl= function(btl){
     console.log( 'showCtl' );
-    //var ao= this.getElementsByClassName("bpnl");
-    //if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var jo=this.ado[0]; pnl=this[as[1]](D[as[2]](as[3]));
     jo.icoEl(pnl,"","bpnl",);
     for (var m in {"X":1,"&lt;3":1}){
@@ -232,7 +237,7 @@ Btem= function(sto){
     } else if (bv=="&lt;3") {
       var isFav=(div.className.indexOf("fav")>0);
       div.ado[0].colorFav( ! isFav );    
-      //div.ado[0].ice(num);  
+      div.ado[1].iceEm(div.ado[0]);  
     }
     e.stopPropagation();
   }
@@ -240,7 +245,6 @@ Btem= function(sto){
     this.jo.meta.fav= (isf)? 1:0;
     this.el.className=as[4]+" "+((isf)?"fav":"vaf");
   }
-  */
   this.del= function(){
     console.log( 'del', this.innerHTML );
     var el=this.parentNode;
