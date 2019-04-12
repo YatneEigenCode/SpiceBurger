@@ -167,6 +167,8 @@ Btem= function(sto){
   this.sto= sto;
   var as= ["tub/","appendChild","createElement",
     "div","btem","innerHTML","bctl","[link]"];
+  //var og= Msg5do.fox.abc(1,2,3,4,5, 
+  //  6,7,8,"span","parentNode","backgroundColor");
   var D=document;
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
@@ -205,20 +207,31 @@ Btem= function(sto){
     if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var ctl=this[as[1]](D[as[2]](as[3]));
     this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
-    /*
-    var pnl=this[as[1]](D[as[2]](as[3]));
-    this.ado[0].icoEl(pnl,"","bpnl",);
-    var ctl=pnl[as[1]](D[as[2]]("span"));
-    this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
-    ctl=pnl[as[1]](D[as[2]]("span"));
-    this.ado[0].icoEl(ctl,"<3",as[6],this.ado[0].fav);
   }
-  this.fav= function(e){
-    this.parentNode.parentNode.style.backgroundColor="yellow";
-    console.log(384,this);
+  /*
+  this.showCtl= function(btl){
+    console.log( 'showCtl' );
+    //var ao= this.getElementsByClassName("bpnl");
+    //if (ao.length>0) return this.ado[0].rmNode(ao[0]);
+    var jo=this.ado[0]; pnl=this[as[1]](D[as[2]](as[3]));
+    jo.icoEl(pnl,"","bpnl",);
+    for (var m in {"X":1,"&lt;3":1}){
+      var ctl=pnl[as[1]](D[as[2]](og.i));
+      jo.icoEl(ctl,m,"as6", jo.hCtlBtn);
+    }
+  }
+  this.hCtlBtn= function(e){
+    var div=this[og.j][og.j], bv=this[as[5]];
+    console.log('hCtlBtn',bv,og.j);
+    div.ado[0].rmNode(this[og.j]);
+    if (bv=="X") {
+      div.ado[0].rmNode(div);
+      div.ado[1].delem(div.ado[0]);
+    } else if (bv=="&lt;3")
+      div.className= (div.className=="fav")?as[4]:"fav";
     e.stopPropagation();
-    */
   }
+  */
   this.del= function(){
     console.log( 'del', this.innerHTML );
     var el=this.parentNode;
