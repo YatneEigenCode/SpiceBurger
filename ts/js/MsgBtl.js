@@ -1,6 +1,6 @@
-//4-11-2019 jchoy v1.138 colorFav, iceEm
+//4-11-2019 jchoy v1.139 style buttons
 Msg5do = function(){
-  this.ver= "1.138";
+  this.ver= "1.139";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -181,9 +181,10 @@ Btem= function(sto){
     var bdr="border: 1px solid gray; border-radius: 5px;";
     sheet[as[5]]= "."+as[4]+" {"+bdr+"margins:0 2 0 2;"
       +"width:70%; margin-left:15%; padding-left:2px; overflow-x:auto}\n"
-      +"."+as[6]+" {"+bdr+"background-color:#DDBBBB;"
-      +"margins:0 2 0 2; width:8%; text-align:center;"
-      +"margin-left:45%}\n"
+      +".bcbn {"+bdr+"background-color:#DDBBBB;"
+      +"margin-left: 4px; text-align:center;"
+      +"padding:0 9px 0 9px}\n"
+      +".bpnl {text-align: center}\n"
       +".fav {background-color: #FFFFE0}\n"
       +".vaf {background-color: white}\n";
     D.body[as[1]](this.css=sheet);
@@ -220,11 +221,13 @@ Btem= function(sto){
   */
   this.showCtl= function(btl){
     console.log( 'showCtl' );
+    var ao= this.getElementsByClassName('bpnl');
+    if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var jo=this.ado[0]; pnl=this[as[1]](D[as[2]](as[3]));
     jo.icoEl(pnl,"","bpnl",);
     for (var m in {"X":1,"&lt;3":1}){
       var ctl=pnl[as[1]](D[as[2]](og.i));
-      jo.icoEl(ctl,m,"as6", jo.hCtlBtn);
+      jo.icoEl(ctl,m,"bcbn", jo.hCtlBtn);
     }
   }
   this.hCtlBtn= function(e){
