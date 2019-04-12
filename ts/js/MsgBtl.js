@@ -1,6 +1,6 @@
-//4-11-2019 jchoy v1.139 style buttons
+//4-11-2019 jchoy v1.141 adjust color
 Msg5do = function(){
-  this.ver= "1.139";
+  this.ver= "1.141";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -185,7 +185,7 @@ Btem= function(sto){
       +"margin-left: 4px; text-align:center;"
       +"padding:0 9px 0 9px}\n"
       +".bpnl {text-align: center}\n"
-      +".fav {background-color: #FFFFE0}\n"
+      +".fav {background-color: #FFFF80}\n"
       +".vaf {background-color: white}\n";
     D.body[as[1]](this.css=sheet);
   }
