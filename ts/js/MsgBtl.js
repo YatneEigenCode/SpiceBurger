@@ -1,6 +1,6 @@
-//4-11-2019 jchoy v1.136 scroll-x
+//4-11-2019 jchoy v1.137 more prep for hCtlBtn
 Msg5do = function(){
-  this.ver= "1.136";
+  this.ver= "1.137";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -178,7 +178,9 @@ Btem= function(sto){
       +"width:70%; margin-left:15%; padding-left:2px; overflow-x:auto}\n"
       +"."+as[6]+" {"+bdr+"background-color:#DDBBBB;"
       +"margins:0 2 0 2; width:8%; text-align:center;"
-      +"margin-left:45%}";
+      +"margin-left:45%}\n"
+      +".fav {background-color: #FFFFE0}\n"
+      +".vaf {background-color: white}\n";
     D.body[as[1]](this.css=sheet);
   }
   this.show= function(btl){
@@ -227,9 +229,16 @@ Btem= function(sto){
     if (bv=="X") {
       div.ado[0].rmNode(div);
       div.ado[1].delem(div.ado[0]);
-    } else if (bv=="&lt;3")
-      div.className= (div.className=="fav")?as[4]:"fav";
+    } else if (bv=="&lt;3") {
+      var isFav=(div.className.indexOf("fav")>0);
+      div.ado[0].colorFav( ! isFav );    
+      //div.ado[0].ice(num);  
+    }
     e.stopPropagation();
+  }
+  this.colorFav= function(isf){
+    this.jo.meta.fav= (isf)? 1:0;
+    this.el.className=as[4]+" "+((isf)?"fav":"vaf");
   }
   */
   this.del= function(){
