@@ -1,6 +1,6 @@
-//4-11-2019 jchoy v1.141 adjust color
+//4-11-2019 jchoy v1.142 heart symbol
 Msg5do = function(){
-  this.ver= "1.141";
+  this.ver= "1.142";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -170,11 +170,13 @@ MsgBtl = function( fido, sto, isAni ){
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
   this.sto= sto;
+  var D=document;
   var as= ["tub/","appendChild","createElement",
     "div","btem","innerHTML","bctl","[link]"];
   var og= Msg5do.fox.abc(1,2,3,4,5, 
-    6,7,8,"span","parentNode","backgroundColor");
-  var D=document;
+    "innerHTML",7,8,"span","parentNode",
+    "backgroundColor", D.createElement('div'),"&hearts;");
+  og.m= [og.l[og.f]=og.m, og.l.innerText][1];
   this.initStyle= function(){
     if (this.css) this.rmNode(this.css);
     var sheet = D[as[2]]('style');
@@ -210,24 +212,15 @@ Btem= function(sto){
       ln.innerHTML= as[7];
       ln.href= url;  ln.target="_blank";
   }
-  /*
-  this.showCtl= function(btl){
-    console.log( 'showCtl' );
-    var ao= this.getElementsByClassName(as[6]);
-    if (ao.length>0) return this.ado[0].rmNode(ao[0]);
-    var ctl=this[as[1]](D[as[2]](as[3]));
-    this.ado[0].icoEl(ctl,"X",as[6],this.ado[0].del);
-  }
-  */
   this.showCtl= function(btl){
     console.log( 'showCtl' );
     var ao= this.getElementsByClassName('bpnl');
     if (ao.length>0) return this.ado[0].rmNode(ao[0]);
     var jo=this.ado[0]; pnl=this[as[1]](D[as[2]](as[3]));
     jo.icoEl(pnl,"","bpnl",);
-    for (var m in {"X":1,"&lt;3":1}){
+    for (var i=0,a=["X", og.m]; i<a.length; i++){
       var ctl=pnl[as[1]](D[as[2]](og.i));
-      jo.icoEl(ctl,m,"bcbn", jo.hCtlBtn);
+      jo.icoEl(ctl,a[i],"bcbn", jo.hCtlBtn);
     }
   }
   this.hCtlBtn= function(e){
@@ -237,7 +230,7 @@ Btem= function(sto){
     if (bv=="X") {
       div.ado[0].rmNode(div);
       div.ado[1].delem(div.ado[0]);
-    } else if (bv=="&lt;3") {
+    } else if (bv==og.m) {
       var isFav=(div.className.indexOf("fav")>0);
       div.ado[0].colorFav( ! isFav );    
       div.ado[1].iceEm(div.ado[0]);  
