@@ -1,6 +1,6 @@
-//4-11-2019 jchoy v1.142 heart symbol
+//4-12-2019 jchoy v1.143 HdSto prep for multi head
 Msg5do = function(){
-  this.ver= "1.142";
+  this.ver= "1.143";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -68,6 +68,7 @@ Msg5do.fox= {
       { res[String.fromCharCode(97+i)]= arguments[i];}
     return res;
   }
+  ,new: function(){ return new Msg5do() }
 }
 MsgSdr= function(){
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
@@ -166,6 +167,32 @@ MsgBtl = function( fido, sto, isAni ){
       $t.pail[i].ice(i);
   }
 }
+/*
+HdSto= function(){
+  var og, sto= new Sto().lo;
+  og= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd");
+  var parseI= function(s){ return parseInt(s.split("/").pop()) }
+  var raw, pailFile, head= sto.getItem(og.b);
+  raw= sto.getItem( pailFile= og.c+((head)?head:og.a) );
+  this.pail= (raw)? JSON.parse(raw) : {ls:[]};
+
+  this.setItem= function(sn,v){  //interim for backward compat
+    this.setItm( parseI(sn), (v)? JSON.parse(v):null );
+  }
+  this.getItem= function(sn){
+    var res= this.getItm( parseI(sn) );
+    return (res)? JSON.stringify(res) : ""; 
+  }
+  this.setItm= function(i,jo){
+    this.pail.ls[i]= jo; 
+    sto.setItem( pailFile, JSON.stringify(this.pail) );
+  }
+  this.getItm= function(i){
+    return this.pail.ls[i];
+  }
+}
+HdSto.new= function(){ return new HdSto() }
+*/
 //---
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
