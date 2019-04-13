@@ -1,6 +1,6 @@
-//4-12-2019 jchoy v1.143 HdSto prep for multi head
+//4-13-2019 jchoy - deploy HdSto
 Msg5do = function(){
-  this.ver= "1.143";
+  this.ver= "1.145";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -167,7 +167,7 @@ MsgBtl = function( fido, sto, isAni ){
       $t.pail[i].ice(i);
   }
 }
-/*
+//---
 HdSto= function(){
   var og, sto= new Sto().lo;
   og= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd");
@@ -192,7 +192,6 @@ HdSto= function(){
   }
 }
 HdSto.new= function(){ return new HdSto() }
-*/
 //---
 Btem= function(sto){
   this.jo= {body:"",meta:{},id:""};
