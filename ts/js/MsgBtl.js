@@ -1,6 +1,6 @@
-//4-13-2019 jchoy - prep for HdSwitch
+//4-13-2019 jchoy - prep for HdSwitch, fix typo
 Msg5do = function(){
-  this.ver= "1.146";
+  this.ver= "1.147";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -169,14 +169,15 @@ MsgBtl = function( fido, sto, isAni ){
       $t.pail[i].ice(i);
   }
 }
-//---
+/*---
 HdSwitch= function(){
   var cfg= this.cfg= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd","hdn");
   this.start= function(){
-    var hdn= new SnAppFdn().cgi(cfg.d, cfg.a, location) );
+    var hdn= new SnAppFdn().cgi(cfg.d, cfg.a, location);
     new Sto().setItem( cfg.b, hdn );
   }
 }
+*/
 HdSto= function(){
   var og, sto= new Sto().lo;
   og= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd");
