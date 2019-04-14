@@ -1,6 +1,6 @@
-//4-13-2019 jchoy - HdSwitch
+//4-13-2019 jchoy - fix sto call in HdSwitch
 Msg5do = function(){
-  this.ver= "1.148";
+  this.ver= "1.149";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -173,7 +173,7 @@ HdSwitch= function(){
   var cfg= this.cfg= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd","hdn");
   this.start= function(){
     var hdn= new SnAppFdn().cgi(cfg.d, cfg.a, location);
-    new Sto().setItem( cfg.b, hdn );
+    new Sto().lo.setItem( cfg.b, hdn );
   }
 }
 HdSwitch.new= function(){ return new HdSwitch() }
