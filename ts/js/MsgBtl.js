@@ -10,7 +10,7 @@ Msg5do = function(){
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
     //var head, hdcfg= new HdSwitch().cfg;
-    //if ( !(head=sto.getItem(hdcfg.b) ) head= hdcfg.a;
+    //if ( !(head=sto.getItem(hdcfg.b)) ) head= hdcfg.a;
     //fox.tstu( head, og.a, sto, $t.tuHost );
     fox.tstu( og.c, og.a, sto, $t.tuHost );
     fox.ttry( function(){return (sto.getItem(og.a))?1:0},
