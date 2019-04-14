@@ -1,6 +1,6 @@
-//4-13-2019 jchoy - prep for HdSwitch, fix typo
+//4-13-2019 jchoy - HdSwitch
 Msg5do = function(){
-  this.ver= "1.147";
+  this.ver= "1.148";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -9,10 +9,9 @@ Msg5do = function(){
   var og= fox.abc( "tmp/m5do","","2687","msgbtl_head_cfg" );
   this.start= function(tid,fn){
     $t.res.f= fn;  $t.res.a=[];  $t.res.tid=tid;
-    //var head, hdcfg= new HdSwitch().cfg;
-    //if ( !(head=sto.getItem(hdcfg.b)) ) head= hdcfg.a;
-    //fox.tstu( head, og.a, sto, $t.tuHost );
-    fox.tstu( og.c, og.a, sto, $t.tuHost );
+    var head, hdcfg= new HdSwitch().cfg;
+    if ( !(head=sto.getItem(hdcfg.b)) ) head= hdcfg.a;
+    fox.tstu( head, og.a, sto, $t.tuHost );
     fox.ttry( function(){return (sto.getItem(og.a))?1:0},
       function(){$t.fetHd()}, 20,
       function(){$t.fetAb()} );
@@ -169,7 +168,7 @@ MsgBtl = function( fido, sto, isAni ){
       $t.pail[i].ice(i);
   }
 }
-/*---
+//---
 HdSwitch= function(){
   var cfg= this.cfg= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd","hdn");
   this.start= function(){
@@ -177,10 +176,12 @@ HdSwitch= function(){
     new Sto().setItem( cfg.b, hdn );
   }
 }
-*/
+HdSwitch.new= function(){ return new HdSwitch() }
+
 HdSto= function(){
   var og, sto= new Sto().lo;
-  og= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd");
+  //og= Msg5do.fox.abc("2687","msgbtl_head_cfg","msgbtl/hd");
+  og= HdSwitch.new().cfg;
   var parseI= function(s){ return parseInt(s.split("/").pop()) }
   var raw, pailFile, head= sto.getItem(og.b);
   raw= sto.getItem( pailFile= og.c+((head)?head:og.a) );
