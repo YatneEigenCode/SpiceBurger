@@ -1,6 +1,6 @@
-//4-13-2019 jchoy - fix sto call in HdSwitch
+//4-14-2019 jchoy -  HdSwitch.getNum, use in MsgSdr
 Msg5do = function(){
-  this.ver= "1.149";
+  this.ver= "1.151";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -72,7 +72,7 @@ Msg5do.fox= {
   ,new: function(){ return new Msg5do() }
 }
 MsgSdr= function(){
-  var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
+  var $t=this, sto=new Sto().lo, fox=Msg5do.fox, hsw=new HdSwitch();
   var og= fox.abc( "tmp/sendme", "2692", "tmp/rsv",  
     "location=\"http://spiceburger.okdaily.com/cgi2pm.html?lore=",
     "msgsdr_cfg", "2687", "ok",
@@ -100,7 +100,7 @@ MsgSdr= function(){
     this.num= jo.reservations.shift();
     this.pkgCpm( og.b, JSON.stringify(jo) );
 
-    fox.tstu( og.m+og.f, og.n, sto );  //load list
+    fox.tstu( og.m+hsw.getNum(), og.n, sto );  //load list
     fox.ttry( function(){return (sto.getItem(og.n))?1:0},
       function(){$t.sendMsg()}, 20,
       function(){og.j.start( [0,".", og.n] )} );
@@ -109,7 +109,7 @@ MsgSdr= function(){
     var jo= {date:new Date().valueOf(), body:sto.getItem(og.a)}
     jo.prev= sto.getItem(og.n);  //TODO: catch body > 300;
     this.pkgCpm( this.num, JSON.stringify(jo) );  //write msg
-    this.pkgCpm( og.f, this.num );  //update thread head
+    this.pkgCpm( hsw.getNum(), this.num );  //update thread head
     sto.setItem( og.a, "" );  //erase tmp/sendme
     og.j.start( [1,".", og.q] );
   }
@@ -174,6 +174,10 @@ HdSwitch= function(){
   this.start= function(){
     var hdn= new SnAppFdn().cgi(cfg.d, cfg.a, location);
     new Sto().lo.setItem( cfg.b, hdn );
+  }
+  this.getNum= function(){
+    var head= new Sto().lo.getItem(cfg.b)
+    return (head)? head : cfg.a;
   }
 }
 HdSwitch.new= function(){ return new HdSwitch() }
