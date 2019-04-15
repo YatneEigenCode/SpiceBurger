@@ -1,6 +1,6 @@
 //4-14-2019 jchoy -  Spinner
 Msg5do = function(){
-  this.ver= "1.152";
+  this.ver= "1.153";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -43,6 +43,7 @@ Msg5do = function(){
     if (this.feTest(jo.prev))
          return $t.res.f($t.res.a);
     fox.tstu(jo.prev,og.a,sto,this.tuHost);
+    new Spinner().start( 10, "Loading "+jo.prev );
     if (jo.prev) fox.ttry(
       function(){return (sto.getItem(og.a))?1:0},
       function(){$t.fetCh(jo.prev)}, 20,
