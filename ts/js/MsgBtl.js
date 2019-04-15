@@ -1,6 +1,6 @@
-//4-14-2019 jchoy -  HdSwitch.getNum, use in MsgSdr
+//4-14-2019 jchoy -  Spinner
 Msg5do = function(){
-  this.ver= "1.151";
+  this.ver= "1.152";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -26,6 +26,7 @@ Msg5do = function(){
     if ($t.res.tid==id0)
       return $t.res.f([]);
     fox.tstu(id0,og.a,sto,this.tuHost);
+    new Spinner().start( 10, "Loading "+id0 );
     if (id0) fox.ttry(
       function(){return (sto.getItem(og.a))?1:0},
       function(){$t.fetCh(id0)}, 20,
@@ -71,6 +72,39 @@ Msg5do.fox= {
   }
   ,new: function(){ return new Msg5do() }
 }
+//---
+Spinner= function(){
+  new SnAppFdn().inherit( this, SnAppFdn );
+  this.start= function(secs,s){
+    if (!secs) secs= 30;
+    this.getEl(s).ctlprop.expire= this.now()+secs*1000;
+  }
+  this.stop= function(){
+    this.getEl().ctlprop.expire= this.now();
+  }
+  this.now= function(){ return new Date().valueOf(); }
+  this.getEl= function(s){
+    var sty, og, res= document.getElementById("spinner");
+    if (res && s) res.ctlprop.word.innerHTML= s;
+    if (res) return res;
+    (res= this.addEl('div')).id= "spinner";
+    Object.assign( res.style, {width:"80%",marginLeft:"10%", 
+        height:240, textAlign:"center"} );
+    res.ctlprop= { expire: new Date().valueOf()+999, n:1 };
+    (res.ctlprop.word= this.addEl('div',res)).innerHTML= (s)?s:"";
+    res.ctlprop.word.style.paddingTop= 50;
+    (sty = (res.ctlprop.bar= this.addEl('div',res)).style).height=10;
+    var fcn= function(){
+      if ( new Date().valueOf() > res.ctlprop.expire )
+        return res.parentNode.removeChild( res );
+      res.ctlprop.bar.style.width= (++res.ctlprop.n % 100) +"%";
+      requestAnimationFrame( fcn );
+    }
+    fcn( sty.backgroundColor= "blue" );
+    return res;
+  }
+}
+//---
 MsgSdr= function(){
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox, hsw=new HdSwitch();
   var og= fox.abc( "tmp/sendme", "2692", "tmp/rsv",  
