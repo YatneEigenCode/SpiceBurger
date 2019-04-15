@@ -1,6 +1,6 @@
-//4-14-2019 jchoy -  Spinner
+//4-14-2019 jchoy -  Spinner stop point
 Msg5do = function(){
-  this.ver= "1.153";
+  this.ver= "1.154";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -19,6 +19,7 @@ Msg5do = function(){
   this.fetAb= function(fetId){
     $t.res.a.unshift({body:"comm error for "+fetId});
     $t.res.f($t.res.a);
+    new Spinner().stop();
   }
   this.fetHd= function(){
     console.log( 'startHd..', sto.getItem(og.a) );
@@ -41,7 +42,7 @@ Msg5do = function(){
     jo.id= fetId;
     $t.res.a.unshift( jo );
     if (this.feTest(jo.prev))
-         return $t.res.f($t.res.a);
+      return new Spinner().stop( $t.res.f($t.res.a) );
     fox.tstu(jo.prev,og.a,sto,this.tuHost);
     new Spinner().start( 10, "Loading "+jo.prev );
     if (jo.prev) fox.ttry(
