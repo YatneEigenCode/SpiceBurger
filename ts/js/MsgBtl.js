@@ -1,6 +1,6 @@
-//4-14-2019 jchoy -  Spinner stop point
+//4-16-2019 jchoy -  Spinner.styleEl
 Msg5do = function(){
-  this.ver= "1.154";
+  this.ver= "1.156";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -75,35 +75,35 @@ Msg5do.fox= {
   ,new: function(){ return new Msg5do() }
 }
 //---
-Spinner= function(){
+Spinner= function(color){
   new SnAppFdn().inherit( this, SnAppFdn );
   this.start= function(secs,s){
-    if (!secs) secs= 30;
-    this.getEl(s).ctlprop.expire= this.now()+secs*1000;
+    this.getEl(s).ctlprop.expire= this.nowAdd((secs)?secs:0);
   }
-  this.stop= function(){
-    this.getEl().ctlprop.expire= this.now();
+  this.stop= function(){ this.start(0) }
+  this.nowAdd= function(n){ return new Date().valueOf()+n*1000; }
+  this.styleEl= function(res,s){
+    Object.assign( res.style, {width:"80%",marginLeft:"10%", 
+        height:240, textAlign:"center"} );
+    var cp=res.ctlprop= { expire: this.nowAdd(999), n:1 };
+    (cp.word= this.addEl('div',res)).innerHTML= (s)?s:"";
+    cp.word.style.paddingTop= 50;
+    (cp.bar= this.addEl('div',res)).style.height=10;
+    cp.bar.style.backgroundColor= (color)?color:"blue";
   }
-  this.now= function(){ return new Date().valueOf(); }
   this.getEl= function(s){
     var sty, og, res= document.getElementById("spinner");
     if (res && s) res.ctlprop.word.innerHTML= s;
     if (res) return res;
     (res= this.addEl('div')).id= "spinner";
-    Object.assign( res.style, {width:"80%",marginLeft:"10%", 
-        height:240, textAlign:"center"} );
-    res.ctlprop= { expire: new Date().valueOf()+999, n:1 };
-    (res.ctlprop.word= this.addEl('div',res)).innerHTML= (s)?s:"";
-    res.ctlprop.word.style.paddingTop= 50;
-    (sty = (res.ctlprop.bar= this.addEl('div',res)).style).height=10;
+    this.styleEl( res, s );
     var fcn= function(){
       if ( new Date().valueOf() > res.ctlprop.expire )
         return res.parentNode.removeChild( res );
       res.ctlprop.bar.style.width= (++res.ctlprop.n % 100) +"%";
       requestAnimationFrame( fcn );
     }
-    fcn( sty.backgroundColor= "blue" );
-    return res;
+    return [res, fcn()][0];
   }
 }
 //---
