@@ -1,6 +1,6 @@
-//4-16-2019 jchoy -  Spinner.styleEl
+//4-16-2019 jchoy -  Spinner pattern
 Msg5do = function(){
-  this.ver= "1.156";
+  this.ver= "1.157";
   this.max= 10;
   var $t=this, sto=new Sto().lo, fox=Msg5do.fox;
   $t.tuHost= "$r";  //$t.tag= "#default"
@@ -89,7 +89,9 @@ Spinner= function(color){
     (cp.word= this.addEl('div',res)).innerHTML= (s)?s:"";
     cp.word.style.paddingTop= 50;
     (cp.bar= this.addEl('div',res)).style.height=10;
-    cp.bar.style.backgroundColor= (color)?color:"blue";
+    var c4= " 4px, "+ ((color)? color : "blue");
+    cp.bar.style.background= "repeating-linear-gradient( "
+      +"45deg, white, white "+c4+c4+" 9px )";
   }
   this.getEl= function(s){
     var sty, og, res= document.getElementById("spinner");
