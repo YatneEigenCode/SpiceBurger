@@ -1,19 +1,20 @@
+//4-26-2019 jchoy RafControl
 RafControl= function(clsName){
-  this.ver= 'RafCtl v0.151';
-  var $t=this, n=4, cn= 'rafctl';
-  this.items= [];
+  this.ver= 'RafCtl v0.158';
+  var $t=this, fn, n=4, cn= 'rafctl', at=this.items=[];
   if (clsName) cn= clsName;
   this.start= function(){
-    var fn= function(){
+    (fn= function(){
       for (var i=0,j=$t.addItems(cn); i<n; i++)
         if ($t.items.length>0) $t.aniUpdate( $t.items.shift() );
       if (!window.killRafControl) requestAnimationFrame(fn);
-    };        fn();
+    })();
   }
   this.aniUpdate= function(el){
     var cd= JSON.parse(atob(el.getAttribute(cn)));
     if (!cd.range) return console.log('invalid RafControl data');
-    if ( (cd.i=this.step(cd.i, cd.range))>=cd.range[1] ) return;
+    if ( (cd.i=this.step(cd.i, cd.range))>=cd.range[1] )
+      return el.setAttribute('class',cn+'_done');
     el.style[cd.attr]= cd.i + cd.unit;
     el.setAttribute(cn, btoa(JSON.stringify(cd)) );
   }
@@ -22,27 +23,35 @@ RafControl= function(clsName){
     return (rg[3]=="r")? i=rg[0] : rg[1];
   }
   this.addItems= function(cn){
-    console.log(this.items.length, 'items');
     if (this.items.length>0) return;
     var at=document.getElementsByClassName(cn);
     for (var i=0; i<at.length; i++) this.items.push(at[i]);
   }
-  this.setEg= function(el){
+  this.setEg= function(el,cda){
     el.setAttribute('class',cn);
-    var cda={range:[10,50,1,"r"],i:0,attr:'width',unit:'%'};
+    cda|={range:[10,50,1,""],i:0,attr:'width',unit:'%'};
     el.setAttribute(cn, btoa(JSON.stringify(cda)));
   }
 }
-RafControl.new=function(mn,a,b,c){
- var o=new RafControl(); if (o[mn])o[mn](a,b,c); return o; 
-}
+RafControl.new=function(a,b,c){ return new RafControl(a,b,c); }
+/*
+flopi.addEl('style');flopi._.innerHTML=".bluebar{background-color:blue; height:15px}"
+var cda={range:[5,60,1,""],i:0,attr:'marginLeft',unit:'px'};
+flopi.addEl('div').setAttribute("rafctl",btoa(JSON.stringify(cda)));
+flopi._.setAttribute('class','rafctl bluebar');
+flopi._.innerHTML="fgoo";
+//flopi._.setAttribute('align','left');
+*/
 
 /*
-var cda={range:[10,80,0.3,"r"],i:0,attr:'width',unit:'%'};
-flopi.addEl('hr').setAttribute("rafctl",btoa(JSON.stringify(cda)));
-flopi._.setAttribute('class','rafctl');
-flopi._.setAttribute('align','left');
-flopi._.style="height:5; background-color:blue";
+//RafControl.new().setEg(flopi.addEl('hr'));flopi._.setAttribute('class','rafctl bluebar');
+//RafControl.new().start();
+
+flopi.addEl('div').innerHTML="click-to-delete-me";
+flopi._.onclick=function(){
+  var $t=this, cdat={range:[0,600,25,""],i:0,attr:'marginLeft',unit:'px'};
+  RafControl.new().setEg( this, cdat );
+  killRafControl= 0;
+  RafControl.new().start();
+  setTimeout( function(){ $t.parentNode.removeChild($t); killRafControl=1 }, 300 );
 */
-//RafControl.new('setEg',flopi.addEl('hr'));
-//RafControl.new('start');
