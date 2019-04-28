@@ -1,6 +1,6 @@
-//4-26-2019 jchoy RafControl
+//4-28-2019 jchoy RafControl
 RafControl= function(clsName){
-  this.ver= 'RafCtl v0.158';
+  this.ver= 'RafCtl v0.159';
   var $t=this, fn, n=4, cn= 'rafctl', at=this.items=[];
   if (clsName) cn= clsName;
   this.start= function(){
@@ -8,8 +8,9 @@ RafControl= function(clsName){
       for (var i=0,j=$t.addItems(cn); i<n; i++)
         if ($t.items.length>0) $t.aniUpdate( $t.items.shift() );
       if (!window.killRafControl) requestAnimationFrame(fn);
-    })();
+    })( this.startStop(1) );
   }
+  this.startStop= function(isStart){window.killRafControl= (isStart)? 0:1;}
   this.aniUpdate= function(el){
     var cd= JSON.parse(atob(el.getAttribute(cn)));
     if (!cd.range) return console.log('invalid RafControl data');
@@ -32,6 +33,12 @@ RafControl= function(clsName){
     cda|={range:[10,50,1,""],i:0,attr:'width',unit:'%'};
     el.setAttribute(cn, btoa(JSON.stringify(cda)));
   }
+  this.closeEl= function(el){
+    var cdat={range:[0,600,25,""],i:0,attr:'marginLeft',unit:'px'};
+    this.setEg( el, cdat );
+    this.start();
+    setTimeout( function(){ el.parentNode.removeChild(el); flopi.rc.stop() }, 300 );
+  }
 }
 RafControl.new=function(a,b,c){ return new RafControl(a,b,c); }
 /*
@@ -41,17 +48,4 @@ flopi.addEl('div').setAttribute("rafctl",btoa(JSON.stringify(cda)));
 flopi._.setAttribute('class','rafctl bluebar');
 flopi._.innerHTML="fgoo";
 //flopi._.setAttribute('align','left');
-*/
-
-/*
-//RafControl.new().setEg(flopi.addEl('hr'));flopi._.setAttribute('class','rafctl bluebar');
-//RafControl.new().start();
-
-flopi.addEl('div').innerHTML="click-to-delete-me";
-flopi._.onclick=function(){
-  var $t=this, cdat={range:[0,600,25,""],i:0,attr:'marginLeft',unit:'px'};
-  RafControl.new().setEg( this, cdat );
-  killRafControl= 0;
-  RafControl.new().start();
-  setTimeout( function(){ $t.parentNode.removeChild($t); killRafControl=1 }, 300 );
 */
