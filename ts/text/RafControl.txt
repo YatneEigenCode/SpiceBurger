@@ -1,6 +1,6 @@
 //4-28-2019 jchoy RafControl
 RafControl= function(clsName){
-  this.ver= 'RafCtl v0.161';
+  this.ver= 'RafCtl v0.162';
   var $t=this, fn, n=4, cn= 'rafctl', at=this.items=[];
   if (clsName) cn= clsName;
   this.start= function(){
@@ -35,7 +35,7 @@ RafControl= function(clsName){
   }
   this.closeEl= function(el){
     var cdat={range:[0,600,25,""],i:0,attr:'marginLeft',unit:'px'};
-    this.start( setEg( el, cdat ) );
+    this.start( this.setEg( el, cdat ) );
     setTimeout( function(){ el.parentNode.removeChild(el); new RafControl().startStop() }, 300 );
   }
 }
