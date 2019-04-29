@@ -1,4 +1,4 @@
-//3-14-2018 jchoy v1.113 fix extender
+//4-29-2019 jchoy v1.121 prepInput, decryptCheck
 SimpleEncr=function (){
   var $t= this;
   this.start=function(at){
@@ -8,6 +8,20 @@ SimpleEncr=function (){
   this.encrypt= function( key, data, isDecrypt ){
     return (isDecrypt)? xor_filter$( key, atob(data) )
       : btoa( xor_filter$( key, data ) )
+  }
+  this.decryptCheck= function(k,v){
+    var t,n=k.length;
+    if(n==0)return"";
+    t=this.encrypt(k,v,1);
+    return (t.substr(0,n)==t.substr(-n,n))? t : "";
+  }
+  this.prepInput= function(inp, asset, callback){
+    var encr= new SimpleEncr();
+    inp.onkeyup= function(){
+      var t= encr.decryptCheck(this.value, asset);
+      if (t) callback(t);
+    }
+    return inp;
   }
   var xor_filter$= function(key, sdata) {
     return sdata.split("").map( function(c, i) {
