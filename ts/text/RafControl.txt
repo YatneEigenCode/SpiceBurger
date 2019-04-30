@@ -1,4 +1,4 @@
-//4-29-2019 jchoy special case in closeEl
+//4-30-2019 jchoy use cloneNode in closeEl
 RafControl= function(clsName){
   this.ver= 'RafCtl v0.163';
   var $t=this, fn, n=4, cn= 'rafctl', at=this.items=[];
@@ -34,10 +34,12 @@ RafControl= function(clsName){
     el.setAttribute(cn, btoa(JSON.stringify(cda)));
   }
   this.closeEl= function(el){
-    if (el.parentNode.tagName=="TD") return el.parentNode.removeChild(el);
+    var cn;
     var cdat={range:[0,900,25,""],i:0,attr:'marginLeft',unit:'px'};
+    el.parentNode.appendChild(cn= el.cloneNode(true));
+    Object.assign(el.style,{opacity:0.3,position:"absolute"})
     this.start( this.setEg( el, cdat ) );
-    setTimeout( function(){ el.parentNode.removeChild(el); new RafControl().startStop() }, 300 );
+    setTimeout( function(){ el.appendChild(cn);el.parentNode.removeChild(el);new RafControl().startStop() }, 300 );
   }
 }
 RafControl.new=function(a,b,c){ return new RafControl(a,b,c); }
