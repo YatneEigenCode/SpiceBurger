@@ -1,4 +1,4 @@
-//5-6-2018 jchoy v0.153 mStyle
+//5-5-2019 jchoy v0.154 fwRug.nu, nowAdd, ttry, abc
 LocalTxt=function(){
   var fl=flopi, $t=this, k='ok', inp, lk, nm='err.log';
   this.start=function(at){
@@ -35,6 +35,19 @@ fwRug= {
   ,cgi: function(k,def,qy){
     var at=(qy+"").split(new RegExp("[\&\?]"+k+"="));
     return (at.length==1)?def:at[1].split("&")[0];
+  }
+  ,nu: function(c){ return new (c)() }
+  ,nowAdd: function(secs){ return new Date().valueOf()+secs }
+  ,ttry: function(testGo,run,max,runExpirxn){
+    var tto= { max: max, f$:function(){
+      if (testGo()) return run();
+      if (tto.max<=0) return runExpirxn();
+      if (tto.max-- > 0) setTimeout(tto.f$, 300); } };
+    tto.f$();
+  }
+  ,abc: function(){  var ag=arguments, Sg=String, res={};
+    for (var i=0; i<ag.length; i++) { res[Sg.fromCharCode(97+i)]= ag[i];}
+    return res;
   }
 }
 //-----
