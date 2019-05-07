@@ -1,4 +1,4 @@
-//5-5-2019 jchoy v0.154 fwRug.nu, nowAdd, ttry, abc
+//5-6-2019 jchoy v0.156 parce, decca
 LocalTxt=function(){
   var fl=flopi, $t=this, k='ok', inp, lk, nm='err.log';
   this.start=function(at){
@@ -66,6 +66,14 @@ flopi= (function(){
     ,ins: function(o){ var $t=this;
       for (var m in o) if (!$t.toiu(o[m])) $t[m]=new window[o[m]](); }
   }, fwRug );
+  rs.parce=function(t){ this.ca.parse(this.ce2.ce1.ce,t) }
+  rs.decca=function(se, prompt){
+     var $t=this, m=this.abc("input",this.ceDiv(prompt+"<br>"));
+     $t.addEl(m.a, m.b).focus();
+     new SimpleEncr().prepInput( $t._, se,
+       function(t){ $t.parce(t); $t.da.delEl(m.b.parentNode) }
+     );
+   }
   rs.ceDiv= function(s){ var x; rs.addEl('div').innerHTML=s;
     if (rs.lm) rs.lm.wrapCloser(x=rs._); return rs.mStyle(x); }
   rs.mStyle= function(div){
@@ -74,6 +82,6 @@ flopi= (function(){
   }
   return [rs,rs.c= (rs.toiu('Sto'))? rs.z : new Sto().lo][0];
 })();
-flopi.ins( {lm:'LinkMaker',ca:'CmdAutostart',ce2:'CmdEngine'} );
+flopi.ins( {lm:'LinkMaker',ca:'CmdAutostart',ce2:'CmdEngine',da:'DomAni'} );
 if (flopi.ce2) flopi.ce=flopi.ce2.ce1.ce;
 //flopi.soloTimeout()( 'flopi.ceDiv(747)', 3000 );
