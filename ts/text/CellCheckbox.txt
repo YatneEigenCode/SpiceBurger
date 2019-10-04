@@ -1,4 +1,4 @@
-//10-3-2019 jchoy v0.161 CellYT
+//10-3-2019 jchoy v0.162 CellYT 2.jpg, strip ?t=
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -85,7 +85,8 @@ CellYT=function (){
     var img, ln= $pipe.shift().getElementsByTagName("a")[0];
     ln.innerHTML= "";
     ln.appendChild(img=new Image());
-    img.src=q+(ln.href+"").split($k)[1]+"/1.jpg";
+    vn=(ln.href+"").split($k)[1];
+    img.src=q+vn.split("?")[0]+"/2.jpg";
   }
   var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
 }
