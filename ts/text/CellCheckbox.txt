@@ -1,4 +1,4 @@
-//5-1-2018 jchoy v0.157 CellHilite
+//10-3-2019 jchoy v0.161 CellYT
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -66,6 +66,26 @@ CellHilite=function (){
     if (hiliteColors.length>1)
       cell.style.background= hiliteColors[ (isMark)? 1:0];
     cell.style.background= hiliteColors[1];
+  }
+  var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
+}
+//---
+CellYT=function (){
+  var $pipe=[], lm= new LinkMaker();
+  var $k="://youtu.be/", q="http://i3.ytimg.com/vi/";
+  this.enhance=function(el,so,aa,trigger){
+    el.cellcheckbox_rc= getCellRC$(el);
+    if ((so.indexOf($k)>=0)) {
+      $pipe.push( el );
+      setTimeout( delayEnh$, 100 );
+    }
+    return [so, $pipe.asset=aa, $pipe.trigger=trigger][0];
+  }
+  var delayEnh$= function(){
+    var img, ln= $pipe.shift().getElementsByTagName("a")[0];
+    ln.innerHTML= "";
+    ln.appendChild(img=new Image());
+    img.src=q+(ln.href+"").split($k)[1]+"/1.jpg";
   }
   var getCellRC$= stoTabExtend( {} ).belt.getCellRC;
 }
