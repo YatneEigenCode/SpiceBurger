@@ -1,0 +1,65 @@
+Chiu=function (){
+  //12-25-19 jchoy v0.132 /m charcode & 0xF8
+  //Character input selector for unicode
+  this.start=function(at){
+    if (at.length<2) return "usage: chiu [charcode] [/m string]";
+    var lm, n, kl=[];
+    (lm=new LinkMaker()).start([0,".","chiu"]);
+    const ph=lm._, div=lm.addEl("div");
+    if (at[1]=="/m"){
+      for (var p,c0,c1,c2,i=0; i<at[2].length; i++){
+        if ( (at[2].charCodeAt(i) & 0xF8) == 232 ) {
+          c0=at[2].charCodeAt(i);
+          c1=at[2].charCodeAt(++i);
+          c2=at[2].charCodeAt(++i);
+          p=c1*256+c2 -0x1c40 + (c0-232)*0x1000 -(c1-165)*0xc0;
+          lm.addEl("a",div).innerHTML=String.fromCharCode(p);
+          lm._.href="#://cmd/chiu%20"+p.toString(16);
+        }
+        if ( (at[2].charCodeAt(i) & 0xF8) == 224 ) {
+          c0=at[2].charCodeAt(i);
+          c1=at[2].charCodeAt(++i);
+          c2=at[2].charCodeAt(++i);
+          p=c1*256+c2 -0x9c40 + (c0-224)*0x1000 -(c1-165)*0xc0;
+          lm.addEl("a",div).innerHTML=String.fromCharCode(p);
+          lm._.href="#://cmd/chiu%20"+p.toString(16);
+        }
+      }
+      return ["ok",ph.parentNode.appendChild(div)][0];
+    } if (at[1]=="/u"){
+      for (var i=2; i<at.length; i++){
+        lm.addEl("a",div).innerHTML=unescape("%u"+at[i]);
+        lm._.href="#://cmd/"+at[0]+"%20"+at[i];
+      }
+      return ["ok",ph.parentNode.appendChild(div)][0];
+    }
+
+    n= parseInt( at[1], 16 );
+    lm.addEl("span",div).innerHTML="&lt; ";
+    lm._.onclick= this.shiftL;
+
+    for (var te,i=n-5; i<=n+5; i++) {      
+      te=lm.addEl("span",div);
+      te.innerHTML=unescape( "%u"+i.toString(16) );
+    }
+    lm.addEl("span",div).innerHTML=" >";
+    lm._.onclick= this.shiftR;
+
+    div.bag= {n:n, oi:this};
+    return ["ok",ph.parentNode.appendChild(div)][0];
+  }
+  this.shiftL= function(){ 
+    this.parentNode.bag.oi.shiftLR( -1, this.parentNode );
+  }
+  this.shiftR= function(){ 
+    this.parentNode.bag.oi.shiftLR( 1, this.parentNode );
+  }
+  this.shiftLR= function( del, div ){
+    var ff= function(){
+      var n= (div.bag.n += del);
+      for (var k=n-5,i=0; i<=10; i++)   
+        div.childNodes[i+1].innerHTML=unescape( "%u"+(k+i).toString(16) );
+    }
+    for (var i=1; i<=10; i++) setTimeout( ff, 10*i*i)
+  }
+}
