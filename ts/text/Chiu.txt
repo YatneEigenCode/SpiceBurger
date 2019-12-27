@@ -1,11 +1,15 @@
 Chiu=function (){
-  //12-25-19 jchoy v0.132 /m charcode & 0xF8
+  //12-26-19 jchoy v0.135 /cgi
   //Character input selector for unicode
   this.start=function(at){
     if (at.length<2) return "usage: chiu [charcode] [/m string]";
     var lm, n, kl=[];
     (lm=new LinkMaker()).start([0,".","chiu"]);
     const ph=lm._, div=lm.addEl("div");
+    if (at[1]=="/cgi"){
+      at=["","/m",unescape(lm.cgi("chiu","",location))];
+
+    }
     if (at[1]=="/m"){
       for (var p,c0,c1,c2,i=0; i<at[2].length; i++){
         if ( (at[2].charCodeAt(i) & 0xF8) == 232 ) {
