@@ -1,0 +1,12 @@
+Cq2tab=function(){
+//4-7-2021 jkc Cq2tab v0.114 ts2978
+  this.start=function(at){
+    const tab=new StoTab();
+    tab.asset=[]; tab.fn="cq2tab_tmp";
+    for (var t,isX,i=0; !isX && i<99; i++)
+      if (!(t=tab.cgi("row"+i,"",location))) isX=1
+      else tab.asset.push(unescape(t).split("^^"))
+    if (--i<1) tab.asset=["AB".split("")];
+    return tab.start([tab.saveAsset(),tab.fn]);
+  }
+}
