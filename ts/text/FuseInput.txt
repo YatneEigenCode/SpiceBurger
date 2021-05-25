@@ -1,0 +1,53 @@
+FuseInput=function(){
+//5-19-2021 jkc FuseInput v0.112 ts2989
+//5-25-2021 jkc v0.114 FuiLabE use FuseInput pgmxly
+//todo: /all, /last;
+  var kw=["ok","infuse","idle","#CCDDDD"];
+  this.start=function(at){
+    var e1= this.findInfuse("textarea");
+    if (!e1) e1= this.findInfuse("input");
+    if (!e1) return kw[2];
+    this.infuse(e1,at[1]);
+    return kw[0];
+  }
+  this.findInfuse= function(tag){
+    var col=document.getElementsByTagName(tag);
+    for (var i=0; i<col.length; i++)
+      if (col[i].getAttribute(kw[1])) return col[i];
+  }
+  this.infuse= function(el, sfn, fcn){
+    var tu= new AppTool();
+    el.style.backgroundColor= kw[3];
+    tu.addEl("input",el.parentNode).type= "button";
+    tu._.value= sfn;
+    tu._.onclick= (fcn)? fcn : function(){window[sfn](el)}
+    if (fcn) tu._.fuiEl= el;
+    el.removeAttribute(kw[1]);
+  }
+}
+FuiLab= function(){
+//example of how to use FuseInput pgmxly from ce mod
+  var el, fui= new FuseInput();
+  this.kw= ["no element ready","Flab"];
+  this.start= function(at){
+    el= fui.findInfuse("input");
+    if (!el) return alert(this.kw[0]);
+    fui.infuse(el,this.kw[1],this.clickFcn,1);
+  }
+  this.clickFcn= function(){
+    var tu= new AppTool();
+    if (!this.ela) this.ela= tu.addEl("a",el.parentNode);
+    this.ela.href= this.ela.innerHTML=
+      "#://cmd/"+el.value.split(' ').join("%20");
+  }
+}
+FuiLabU= function(){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "Unescape";
+  this.clickFcn= function(){ this.fuiEl.value= unescape(this.fuiEl.value); }
+}
+FuiLabE= function(){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "Escape";
+  this.clickFcn= function(){ this.fuiEl.value= escape(this.fuiEl.value); }
+}
