@@ -1,6 +1,5 @@
 FuseInput=function(){
-//5-19-2021 jkc FuseInput v0.112 ts2989
-//5-25-2021 jkc v0.114 FuiLabE use FuseInput pgmxly
+//5-25-2021 jkc v0.214 Bump ts2989
 //todo: /all, /last;
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
@@ -30,7 +29,7 @@ FuiLab= function(){
   var el, fui= new FuseInput();
   this.kw= ["no element ready","Flab"];
   this.start= function(at){
-    el= fui.findInfuse("input");
+    el= fui.findInfuse( (at.length>1)?at[1]:"input");
     if (!el) return alert(this.kw[0]);
     fui.infuse(el,this.kw[1],this.clickFcn,1);
   }
@@ -38,7 +37,7 @@ FuiLab= function(){
     var tu= new AppTool();
     if (!this.ela) this.ela= tu.addEl("a",el.parentNode);
     this.ela.href= this.ela.innerHTML=
-      "#://cmd/"+el.value.split(' ').join("%20");
+      "#://cmd/"+el.value.split(" ").join("%20");
   }
 }
 FuiLabU= function(){
@@ -50,4 +49,33 @@ FuiLabE= function(){
   new AppTool().inherit( this, FuiLab );
   this.kw[1]= "Escape";
   this.clickFcn= function(){ this.fuiEl.value= escape(this.fuiEl.value); }
+}
+Bump= function(){
+  new AppTool().inherit( this, FuiLab );
+  var lu, kw=["bumpenv.csv","bumpout.csv"];
+  this.kw[1]= "Bump";
+  var cfg={lufilename:"x.csv",lukeycnum:0,luvalcnum:1,datvalcnum:0};
+  this.clickFcn= function(){
+    if (isNaN(dvcn)) dvcn= 0;
+    cfg= csvDict(kw[0], cfg);
+    lu= csvDict( cfg["lufilename"], {}, cfg.lukeycnum, cfg.luvalcnum );
+    var dvcn = parseInt( cfg.datvalcnum );
+    var wk= new StoTab();
+    wk.fn= kw[1];
+    wk.getAssetQ( this.fuiEl.value );
+    for (var ap, i=1; i<wk.asset.length; i++) {
+      ap= wk.asset[i];
+      ap.push( lu[ ap[dvcn] ] );
+    }
+    wk.saveAsset();
+  }
+  var csvDict= function( fn, res, kcnp, vcnp ){
+    var kcn= (kcnp)? parseInt(kcnp) : 0;
+    var vcn= (vcnp)? parseInt(vcnp) : 1;
+    res={bb:"hi"}, tab= new StoTab();
+    tab.getAsset(fn);
+    for (var i=0; i<tab.asset.length; i++)
+      res[tab.assetVal(i,kcn)]= tab.assetVal(i,vcn);
+    return res;
+  }
 }
