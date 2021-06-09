@@ -1,5 +1,5 @@
 FuseInput=function(){
-//5-25-2021 jkc v0.214 Bump ts2989
+//5-26-2021 jkc v0.413 fcnMkStatus, FuiLabCopy ts2989
 //todo: /all, /last;
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
@@ -14,6 +14,11 @@ FuseInput=function(){
     for (var i=0; i<col.length; i++)
       if (col[i].getAttribute(kw[1])) return col[i];
   }
+  this.fcnMkStatus= function(el){
+    var tu= new AppTool();
+    if (!el.els) el.els= tu.addEl("div",el.parentNode);
+    if (!el.ela) el.ela= tu.addEl("a",el.parentNode);
+  }
   this.infuse= function(el, sfn, fcn){
     var tu= new AppTool();
     el.style.backgroundColor= kw[3];
@@ -22,6 +27,7 @@ FuseInput=function(){
     tu._.onclick= (fcn)? fcn : function(){window[sfn](el)}
     if (fcn) tu._.fuiEl= el;
     el.removeAttribute(kw[1]);
+    el.mkStatus= this.fcnMkStatus;
   }
 }
 FuiLab= function(){
@@ -77,5 +83,22 @@ Bump= function(){
     for (var i=0; i<tab.asset.length; i++)
       res[tab.assetVal(i,kcn)]= tab.assetVal(i,vcn);
     return res;
+  }
+}
+FuiLabCopy=function(){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "Copy Src/Dest";
+  var lo= new Sto().lo;
+  var mkStatus= function(el){
+    var tu= new AppTool();
+    if (!el.els) el.els= tu.addEl("div",el.parentNode);
+    if (!el.ela) el.ela= tu.addEl("a",el.parentNode);
+  }
+  this.clickFcn= function(){ 
+    var fel=this.fuiEl; ap= (this.fuiEl.value+"/").split("/");
+    lo.setItem(ap[1], lo.getItem(ap[0]));
+    mkStatus(this.fuiEl);
+    fel.ela.href= fel.ela.innerHTML="#://cmd/edit%20"+ap[1];
+    fel.els.innerHTML= "copied to "+ap[1];
   }
 }
