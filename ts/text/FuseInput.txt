@@ -1,5 +1,5 @@
 FuseInput=function(){
-//5-26-2021 jkc v0.413 fcnMkStatus, FuiLabCopy ts2989
+//6-22-2021 jkc v0.427 FuiSmartCq ts2989
 //todo: /all, /last;
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
@@ -101,4 +101,78 @@ FuiLabCopy=function(){
     fel.ela.href= fel.ela.innerHTML="#://cmd/edit%20"+ap[1];
     fel.els.innerHTML= "copied to "+ap[1];
   }
+}
+FuiLabMux=function(){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "Mux";
+  var lo= new Sto().lo;
+  this.clickFcn= function(){ 
+    var at, kw, res, fel=this.fuiEl, sep="-";
+    kw=[unescape("%0a"),"{mux}","muxout.csv","#://cmd/tab%20"]; 
+    if (fel.value.charAt(0)==fel.value.charAt(fel.value.length-1))
+      sep= fel.value.charAt(0);
+    at= (fel.value+sep).split(sep);
+    if (at[1]=="") {kw[1]=at[2];at[0]="B";at[2]="";} else at.unshift("A");
+    lo.setItem(kw[2], at.join(kw[0]+kw[1]) );
+    fel.mkStatus(fel);
+    fel.ela.href= fel.ela.innerHTML=kw[3]+kw[2];
+  }
+}
+FuiCq=function(){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "CQ";
+  this.clickFcn= function(){ 
+    const tab=new StoTab();
+    var fel=this.fuiEl, kw=["tmp/fuicq.csv","#://cmd/tab%20"];
+    tab.asset=[]; tab.fn=kw[0];
+    for (var t,isX,i=0; !isX && i<99; i++)
+      if (!(t=tab.cgi("row"+i,"",fel.value))) isX=1
+      else tab.asset.push(unescape(t).split("^^"))
+    if (--i<1) tab.asset=["AB".split("")];
+    tab.saveAsset();
+    fel.mkStatus(fel);
+    fel.ela.href= fel.ela.innerHTML= kw[1]+kw[0];
+  }
+}
+FuiTcq=function (){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "Tab_to_CQ";
+  var res, cq8="http://cq.ok88.com/tabulofl.htm?title="+this.kw[1];
+  this.clickFcn= function(){ 
+    const tab=new StoTab(), fel=this.fuiEl;
+    tab.getAsset(fel.value);
+    for (var i=0,res=cq8; i<tab.asset.length; i++){
+      res+= "&row"+i+"="
+      for (var j=0; j<tab.asset[i].length; j++)
+        res+= ((j)?"^^":"")+ escape(tab.assetVal(i,j));
+    }
+    fel.mkStatus(fel);
+    fel.ela.href= fel.ela.innerHTML= res;
+  }
+}
+FuiSmartCq=function (){
+  new AppTool().inherit( this, FuiLab );
+  this.kw[1]= "smrTabCQ";
+  var res, cq8="http://cq.ok88.com/tabulofl.htm?title="+this.kw[1];
+  this.clickFcn= function(){ 
+   const tab=new StoTab(), fel=this.fuiEl;
+   var kw=["tmp/fuicq.csv","#://cmd/tab%20"];
+   if (fel.value.indexOf("&row1=")>0){
+    tab.asset=[]; tab.fn=kw[0]; res=kw[1]+kw[0];
+    for (var t,isX,i=0; !isX && i<99; i++)
+      if (!(t=tab.cgi("row"+i,"",fel.value))) isX=1
+      else tab.asset.push(unescape(t).split("^^"))
+    if (--i<1) tab.asset=["AB".split("")];
+    tab.saveAsset();
+   } else {
+    tab.getAsset(fel.value);
+    for (var i=0,res=cq8; i<tab.asset.length; i++){
+      res+= "&row"+i+"="
+      for (var j=0; j<tab.asset[i].length; j++)
+        res+= ((j)?"^^":"")+ escape(tab.assetVal(i,j));
+    }
+   }//else
+   fel.mkStatus(fel);
+   fel.ela.href= fel.ela.innerHTML= res;
+  }//fcn
 }
