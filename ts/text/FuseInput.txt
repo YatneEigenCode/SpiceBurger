@@ -1,5 +1,5 @@
 FuseInput=function(){
-//6-22-2021 jkc v0.427 FuiSmartCq ts2989
+//6-30-2021 jkc v0.431 Added FillBee, popf1, removed FuiTcq and FuiCq ts2989
 //todo: /all, /last;
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
@@ -118,38 +118,6 @@ FuiLabMux=function(){
     fel.ela.href= fel.ela.innerHTML=kw[3]+kw[2];
   }
 }
-FuiCq=function(){
-  new AppTool().inherit( this, FuiLab );
-  this.kw[1]= "CQ";
-  this.clickFcn= function(){ 
-    const tab=new StoTab();
-    var fel=this.fuiEl, kw=["tmp/fuicq.csv","#://cmd/tab%20"];
-    tab.asset=[]; tab.fn=kw[0];
-    for (var t,isX,i=0; !isX && i<99; i++)
-      if (!(t=tab.cgi("row"+i,"",fel.value))) isX=1
-      else tab.asset.push(unescape(t).split("^^"))
-    if (--i<1) tab.asset=["AB".split("")];
-    tab.saveAsset();
-    fel.mkStatus(fel);
-    fel.ela.href= fel.ela.innerHTML= kw[1]+kw[0];
-  }
-}
-FuiTcq=function (){
-  new AppTool().inherit( this, FuiLab );
-  this.kw[1]= "Tab_to_CQ";
-  var res, cq8="http://cq.ok88.com/tabulofl.htm?title="+this.kw[1];
-  this.clickFcn= function(){ 
-    const tab=new StoTab(), fel=this.fuiEl;
-    tab.getAsset(fel.value);
-    for (var i=0,res=cq8; i<tab.asset.length; i++){
-      res+= "&row"+i+"="
-      for (var j=0; j<tab.asset[i].length; j++)
-        res+= ((j)?"^^":"")+ escape(tab.assetVal(i,j));
-    }
-    fel.mkStatus(fel);
-    fel.ela.href= fel.ela.innerHTML= res;
-  }
-}
 FuiSmartCq=function (){
   new AppTool().inherit( this, FuiLab );
   this.kw[1]= "smrTabCQ";
@@ -175,4 +143,59 @@ FuiSmartCq=function (){
    fel.mkStatus(fel);
    fel.ela.href= fel.ela.innerHTML= res;
   }//fcn
+}
+//---
+popf1=function(el){
+  var tab, kw=["infuse"];
+  if (!el.getAttribute(kw[0])) return;
+  el.removeAttribute(kw[0]);
+  new FuseInput().fcnMkStatus(el);
+  el.onchange=function(){
+    el.els.innerHTML= el.options[el.selectedIndex].text};
+  (tab= new StoTab()).getAsset("docno.csv");
+  for (var i=0; i<tab.asset.length; i++)
+    el.options[i]= new Option(tab.assetVal(i,0));
+}
+TabFillBee= function(){
+  const kw=["cfg/tabfillbee","stopped","data:"],lo=new Sto().lo;
+  this.start=function(at){
+    if (at.length==1) {lo.setItem(kw[0],""); return kw[1]}
+    lo.setItem(kw[0], at[1]);
+    setTimeout( fcnwkr_tabfillbee, 2000 );
+  }
+  var fcnwkr_tabfillbee= function(){
+    console.log( "fcnwkr_tabfillbee active*" )
+    if (!lo.getItem(kw[0])) return;
+    for (var i=0,at=document.forms; i<at.length; i++)
+      if (!at[i].isDone_tabfillbee)
+        fcnsho_tabfillbee(at[i], i=at.length)
+    setTimeout( fcnwkr_tabfillbee, 1000 );
+  }
+  var fcnsho_tabfillbee= function(fm){
+    fm.isDone_tabfillbee= 1;
+    var tab= new StoTab(), k=fm.elements.length;
+    tab.addEl("input",fm.elements[k-1].parentNode);
+    tab._.type="button";
+    tab._.value= lo.getItem(kw[0]);
+    tab._.onclick= fcnact_tabfillbee;
+    (tab._.dataObj= tab).getAsset(tab._.value);
+  }
+  var fcnact_tabfillbee= function(){
+    var tab=this.dataObj;
+    tab.addEl("select",this.parentNode);
+    for (var i=0,at=tab.asset; i<at.length; i++)
+      tab._.options[i]= new Option(tab.assetVal(i,0));
+    tab._.onclick= fcnPik_tabfillbee;
+    tab._.onmousedown= fcnDwn_tabfillbee;
+    this.parentNode.removeChild(this);
+  }
+  var fcnDwn_tabfillbee= function(){
+    this.downIndex= this.selectedIndex;
+  }
+  var fcnPik_tabfillbee= function(){
+    var fm= this.form, k=this.selectedIndex;
+    if (this.downIndex==k) return;
+    for (var i=0,at=this.form.elements; i<at.length; i++)
+      if (!at[i].value) return at[i].value= this.options[k].text;
+  }
 }
