@@ -1,5 +1,5 @@
 FuseInput=function(){
-//6-30-2021 jkc v0.431 Added FillBee, popf1, removed FuiTcq and FuiCq ts2989
+//7-5-2021 jkc v0.432 FillBee to work on mobile ts2989
 //todo: /all, /last;
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
@@ -182,20 +182,27 @@ TabFillBee= function(){
   }
   var fcnact_tabfillbee= function(){
     var tab=this.dataObj;
+    tab.addEl("br",this.parentNode);
     tab.addEl("select",this.parentNode);
     for (var i=0,at=tab.asset; i<at.length; i++)
       tab._.options[i]= new Option(tab.assetVal(i,0));
+    var sel=tab._;
+    tab.addEl("input",this.parentNode);
+    tab._.value="copy to empty field";
+    tab._.type="button";
     tab._.onclick= fcnPik_tabfillbee;
-    tab._.onmousedown= fcnDwn_tabfillbee;
+    tab._.select= sel;
+    //tab._.onmousedown= fcnDwn_tabfillbee;
     this.parentNode.removeChild(this);
   }
-  var fcnDwn_tabfillbee= function(){
-    this.downIndex= this.selectedIndex;
-  }
+  //var fcnDwn_tabfillbee= function(){
+  //  this.downIndex= this.selectedIndex;
+  //}
   var fcnPik_tabfillbee= function(){
-    var fm= this.form, k=this.selectedIndex;
-    if (this.downIndex==k) return;
+    var fm= this.form, sel=this.select;
+    var k=sel.selectedIndex;
+    //if (this.downIndex==k) return;
     for (var i=0,at=this.form.elements; i<at.length; i++)
-      if (!at[i].value) return at[i].value= this.options[k].text;
+      if (!at[i].value) return at[i].value= sel.options[k].text;
   }
 }
