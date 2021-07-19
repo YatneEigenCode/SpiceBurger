@@ -1,5 +1,5 @@
 FuseInput=function(){
-//7-19-2021 jkc v0.434 FuiSmartCq use tu.htm, removed commentd out lines ts2989
+//7-19-2021 jkc v0.435 removed popf1
 //todo: /all, /last;
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
@@ -146,17 +146,6 @@ FuiSmartCq=function (){
   }//fcn
 }
 //---
-popf1=function(el){
-  var tab, kw=["infuse"];
-  if (!el.getAttribute(kw[0])) return;
-  el.removeAttribute(kw[0]);
-  new FuseInput().fcnMkStatus(el);
-  el.onchange=function(){
-    el.els.innerHTML= el.options[el.selectedIndex].text};
-  (tab= new StoTab()).getAsset("docno.csv");
-  for (var i=0; i<tab.asset.length; i++)
-    el.options[i]= new Option(tab.assetVal(i,0));
-}
 TabFillBee= function(){
   const kw=["cfg/tabfillbee","stopped","data:"],lo=new Sto().lo;
   this.start=function(at){
