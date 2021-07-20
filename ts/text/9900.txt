@@ -1,5 +1,5 @@
-//3-13-2018 jchoy
-pkg= pkg9900= { ver:'1.232' }; //stoTabExtend(), use when available fix #14,15
+//7-20-2021 jchoy v1.241 StoTabCqda; disable toggleMk
+pkg= pkg9900= { ver:'1.241' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -176,7 +176,7 @@ pkg.StoTabLo=function(){
     $t.putForm( $t.addEl('tr',tbl).insertCell(), tbl.rForm, this );
     tbl.rForm.getElementsByTagName('input')[0].disabled= false;
   }
-  this.toggleMark= function(n2, fm){
+  /* this.toggleMark= function(n2, fm){
     fm.isChgMk= false;
     if (n2 != fm.rowNum) return n2;
     var isMk, mk="<mk />", so= $t.assetVal(n2,0);
@@ -184,16 +184,34 @@ pkg.StoTabLo=function(){
     $t.assetVal(n2,0, (isMk)? so.replace(mk,'') : (so+mk) );
     fm.isChgMk= true;
     return n2;
-  }
+  } */
   this.putForm= function( ce, fm, elc ){
     var n2= parseInt(elc.innerHTML), i3=this.da.pinchOpen;
-    fm.rowNum= this.toggleMark(n2,fm);
+    // fm.rowNum= this.toggleMark(n2,fm);
     this.insertAfter(ce.parentNode,$t.mpn(elc,2), $t.mpn(elc,3));
     ce.setAttribute( 'colspan', fm.count+1);
     this.lm.wrapCloser( fm, ce.parentNode.isAux=true );
     if (i3) {$t.da.pinchOpen(fm.parentNode, ce)
     } else {ce.appendChild(fm.parentNode)}
     for (var i=0; i<fm.count; i++) fm['tb'+i].value= $t.assetVal(n2,i);
+  }
+}
+StoTabCqda = function(){
+  new AppTool().inherit( this, StoTabLo );
+  var kw=["tmp_cqdata","tmp_tcq.csv","ok"];
+  this.start= function(){
+    var at= this.cvt(this.getSto().lo.getItem(kw[0]));
+    this.asset= at;
+    this.saveAsset( this.fn=kw[1] );
+    return kw[2];
+  }
+  this.cvt= function(s){
+    var res=[], max=499;
+    for (var t,isX,i=0; !isX && i<max; i++)
+      if (!(t=this.cgi("row"+i,"",s))) isX=1
+      else res.push(unescape(t).split("^^"))
+    if (--i<1) res=["ab".split("")];
+    return res;
   }
 }
 
