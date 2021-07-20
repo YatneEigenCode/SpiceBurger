@@ -1,5 +1,5 @@
-//7-20-2021 jchoy v1.245 Fix fm.rowNum in StoTabLo.putForm
-pkg= pkg9900= { ver:'1.245' }; 
+//7-20-2021 jchoy v1.246 option /u for StoTabCqda
+pkg= pkg9900= { ver:'1.246' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -177,18 +177,8 @@ pkg.StoTabLo=function(){
     $t.putForm( $t.addEl('tr',tbl).insertCell(), tbl.rForm, this );
     tbl.rForm.getElementsByTagName('input')[0].disabled= false;
   }
-  /* this.toggleMark= function(n2, fm){
-    fm.isChgMk= false;
-    if (n2 != fm.rowNum) return n2;
-    var isMk, mk="<mk />", so= $t.assetVal(n2,0);
-    isMk= (so.indexOf(mk) >= 0);
-    $t.assetVal(n2,0, (isMk)? so.replace(mk,'') : (so+mk) );
-    fm.isChgMk= true;
-    return n2;
-  } */
   this.putForm= function( ce, fm, elc ){
     var n2= parseInt(elc.innerHTML), i3=this.da.pinchOpen;
-    // fm.rowNum= this.toggleMark(n2,fm);
     fm.rowNum= n2;
     this.insertAfter(ce.parentNode,$t.mpn(elc,2), $t.mpn(elc,3));
     ce.setAttribute( 'colspan', fm.count+1);
@@ -201,11 +191,22 @@ pkg.StoTabLo=function(){
 StoTabCqda = function(){
   new AppTool().inherit( this, StoTabLo );
   var kw=["tmp_cqdata","tmp_tcq.csv","ok"];
-  this.start= function(){
+  this.start= function(ap){
+    if (ap[1]=="/u") { this.mkLink(); return kw[2] }
     var at= this.cvt(this.getSto().lo.getItem(kw[0]));
     this.asset= at;
     this.saveAsset( this.fn=kw[1] );
     return kw[2];
+  }
+  this.mkLink= function(){
+    var res="/tu.htm?yec=tcq&title="+kw[1];
+    this.getAsset(kw[1]);
+    for (var i=0; i<this.asset.length; i++){
+      res+= "&row"+i+"=";
+      for (var j=0; j<this.asset[i].length; j++)
+        res+= ((j)?"^^":"")+ escape(this.assetVal(i,j));
+    }
+    new LinkMaker().start(["",res]);
   }
   this.cvt= function(s){
     var res=[], max=499;
