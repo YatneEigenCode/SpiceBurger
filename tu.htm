@@ -8,20 +8,26 @@
 
 </body>
 <script>
-//7-13-2021 jchoy v0.123 cq, threadHd, fix typo yec, remove unused strings
-//4-6-2019 jchoy v0.116 echo back invalid param, add cmt for rip tu via sutu/rsu
+//7-20-2021 jchoy v0.124 yec=tcq forwards to rsu111
 var as=["http://spiceburger.okdaily.com/",
-  "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"];
+  "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
+  ,"?cts=622,rsu&u=1&t=1&"
+       ];
 var pail=["?cts=622,rsu&u=1&t=1&tca=$b/2CDTAAU",
 "?cts=622,rsu&u=1&t=1&tca=$b/2OxhDGa",
 "?cts=622,rsu&u=1&t=1&tca=$b/2CGb1R6"
 ,"?cts=622,rsu&u=1&t=1&tca=$t/y3u6c6wo"
+,as[2]+"&tca=$t/y3u6c6wo"
          ]
 var sThreads= "_,OTT/3hBCVCO,Tutorial/3yTIkuR,Milestone 2500/2VEkIfj";
          
 function start(){
   var i, cgi= (location+'').split('?').pop();
   if (cgi.indexOf("yec=cq&")==0) location= as[1]+cgi;
+  if ((cgi.indexOf("yec=tcq&")==0) && (Storage)) {
+      LocalStorage.setItem("tmp_cqdata",location+"&");
+      location= as[0]+as[2]+"&rca=rsu111";
+    }
   i=parseInt(cgi);
   if (i>2000)
     location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
