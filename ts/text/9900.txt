@@ -1,5 +1,5 @@
-//7-20-2021 jchoy v1.241 StoTabCqda; disable toggleMk
-pkg= pkg9900= { ver:'1.241' }; 
+//7-20-2021 jchoy v1.243 improve button appearance
+pkg= pkg9900= { ver:'1.243' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -77,9 +77,10 @@ pkg.StoTabBud= function(){
       if (am=r0[i].match(/:(\d+)/)) this._.size= parseInt(am[1]);
     }
     var btn, ce= tbl2.insertRow().insertCell(0);
-    this.prepButton(this.addEl('input',ce.parentNode.insertCell(1)),'Add Row');
-    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'Del Row');
-    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'Add Col');
+this.prepButton(this.addEl('input',ce.parentNode.insertCell(1)),'+Row');
+    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'DEL Row');
+    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'+Col');
+    this._.style="margin-top:15px";
     return tbl2.parentNode;
   }
   this.prepButton= function( btn, val ){
@@ -100,10 +101,10 @@ pkg.StoTabBud= function(){
   this.doButton= function( el ){
     var tbl=this.mpn(el.form,5), nn=el.form.rowNum+1;
     while (tbl.rows.length>0) { tbl.rows[0].isAux= null; tbl.deleteRow(0); }
-    if (el.value=="Add Row")
+    if (el.value=="+Row")
       this.asset.splice( nn, 0, el.form.clearForm());
-    if (el.value=="Del Row") this.asset.splice( nn-1, 1 );
-    if (el.value=="Add Col") 
+    if (el.value=="DEL Row") this.asset.splice( nn-1, 1 );
+    if (el.value=="+Col") 
       { this.asset[0].push('New'); tbl.rForm=this.prepForm(this.asset[0]); }
     this.fillTable( tbl, this.saveAsset(), el.form.rowNum=null );
   }
