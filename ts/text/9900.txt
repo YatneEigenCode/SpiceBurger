@@ -1,5 +1,5 @@
-//7-20-2021 jchoy v1.243 improve button appearance
-pkg= pkg9900= { ver:'1.243' }; 
+//7-20-2021 jchoy v1.245 Fix fm.rowNum in StoTabLo.putForm
+pkg= pkg9900= { ver:'1.245' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -189,6 +189,7 @@ pkg.StoTabLo=function(){
   this.putForm= function( ce, fm, elc ){
     var n2= parseInt(elc.innerHTML), i3=this.da.pinchOpen;
     // fm.rowNum= this.toggleMark(n2,fm);
+    fm.rowNum= n2;
     this.insertAfter(ce.parentNode,$t.mpn(elc,2), $t.mpn(elc,3));
     ce.setAttribute( 'colspan', fm.count+1);
     this.lm.wrapCloser( fm, ce.parentNode.isAux=true );
