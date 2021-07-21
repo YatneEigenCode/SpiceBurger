@@ -1,5 +1,5 @@
-//7-20-2021 jchoy v1.246 option /u for StoTabCqda
-pkg= pkg9900= { ver:'1.246' }; 
+//7-20-2021 jchoy v1.251 Recall button in StoTabBud
+pkg= pkg9900= { ver:'1.251' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -44,6 +44,7 @@ pkg.StoTabEnv= function(){
 pkg.StoTabBud= function(){
   new AppTool().inherit( this, AppTool );
   var $t= this;
+  const kw=["+Row","DEL row","+Col","Recall"];
   this.stoEnv= new StoTabEnv();
   if (typeof(TabTmpl) !== 'undefined') this.ttpl= new TabTmpl();
   this.mpn= function(el,n){
@@ -77,9 +78,11 @@ pkg.StoTabBud= function(){
       if (am=r0[i].match(/:(\d+)/)) this._.size= parseInt(am[1]);
     }
     var btn, ce= tbl2.insertRow().insertCell(0);
-this.prepButton(this.addEl('input',ce.parentNode.insertCell(1)),'+Row');
-    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'DEL Row');
-    this.prepButton(this.addEl('input',ce.parentNode.cells[1]),'+Col');
+    this.prepButton(this.addEl("input",ce.parentNode.insertCell(1)),kw[0]);
+    this.prepButton(this.addEl("input",ce.parentNode.cells[1]),kw[1]);
+    this.prepButton(this.addEl("input",ce.parentNode.cells[1]),kw[2]);
+    this.prepButton(this.addEl("input",ce.parentNode.cells[1]),kw[3]);
+    this._.disabled= (this.delDa)? 0 : 1;
     this._.style="margin-top:15px";
     return tbl2.parentNode;
   }
@@ -100,11 +103,17 @@ this.prepButton(this.addEl('input',ce.parentNode.insertCell(1)),'+Row');
    { par.insertBefore(nu,ref);  par.insertBefore(ref,nu); }
   this.doButton= function( el ){
     var tbl=this.mpn(el.form,5), nn=el.form.rowNum+1;
+    if ((el.value==kw[3]) && (this.delDa)) {
+      for (var i=0,ab=this.delDa[0]; i<ab.length; i++)
+        el.form.elements["tb"+i].value= ab[i];
+      return;
+    }
     while (tbl.rows.length>0) { tbl.rows[0].isAux= null; tbl.deleteRow(0); }
-    if (el.value=="+Row")
+    if (el.value==kw[0])
       this.asset.splice( nn, 0, el.form.clearForm());
-    if (el.value=="DEL Row") this.asset.splice( nn-1, 1 );
-    if (el.value=="+Col") 
+    if (el.value==kw[1])
+      this.delDa= this.asset.splice( nn-1, 1 );
+    if (el.value==kw[2]) 
       { this.asset[0].push('New'); tbl.rForm=this.prepForm(this.asset[0]); }
     this.fillTable( tbl, this.saveAsset(), el.form.rowNum=null );
   }
