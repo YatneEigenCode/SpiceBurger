@@ -1,10 +1,10 @@
-//7-20-2021 jchoy v1.251 Recall button in StoTabBud
-pkg= pkg9900= { ver:'1.251' }; 
+//7-28-2021 jchoy v1.252 Use second param in StoTabCqda
+pkg= pkg9900= { ver:'1.252' }; 
 
 //----
 pkg.CsvBud=function(){
   new AppTool().inherit( this, AppTool );
-  this.asset= [['name','link','search','note'],['hello'],['phone']];
+  this.asset= [["A","B","C","D"],["ola"],["i.zsz"]];
   this.getSto= function(){ if (!this.sto)this.sto=new Sto(); return this.sto }
   this.getAsset= function(fn){
     if ((!this.getSto().isOk) || (!fn)) return;
@@ -43,8 +43,7 @@ pkg.StoTabEnv= function(){
 }
 pkg.StoTabBud= function(){
   new AppTool().inherit( this, AppTool );
-  var $t= this;
-  const kw=["+Row","DEL row","+Col","Recall"];
+  const $t=this, kw=["+Row","DEL row","+Col","Recall"];
   this.stoEnv= new StoTabEnv();
   if (typeof(TabTmpl) !== 'undefined') this.ttpl= new TabTmpl();
   this.mpn= function(el,n){
@@ -87,8 +86,7 @@ pkg.StoTabBud= function(){
     return tbl2.parentNode;
   }
   this.prepButton= function( btn, val ){
-    btn.type= "button";
-    btn.value= val;
+    btn.type= "button"; btn.value= val;
     btn.onclick= function(){ $t.doButton(this) }
   }
   this.autoLink= function( el, so ) {
@@ -201,6 +199,7 @@ StoTabCqda = function(){
   new AppTool().inherit( this, StoTabLo );
   var kw=["tmp_cqdata","tmp_tcq.csv","ok"];
   this.start= function(ap){
+    if (ap.length>2) kw[1]=ap[2];
     if (ap[1]=="/u") { this.mkLink(); return kw[2] }
     var at= this.cvt(this.getSto().lo.getItem(kw[0]));
     this.asset= at;
