@@ -1,6 +1,5 @@
 FuseInput=function(){
-//7-19-2021 jkc v0.435 removed popf1
-//todo: /all, /last;
+//7-29-2021 jkc v0.451 TuiFr
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
     var e1= this.findInfuse("textarea");
@@ -189,5 +188,14 @@ TabFillBee= function(){
     var k=sel.selectedIndex;
     for (var i=0,at=this.form.elements; i<at.length; i++)
       if (!at[i].value) return at[i].value= sel.options[k].text;
+  }
+}
+TuIfr=function(){
+  var sc, kw= ["iframe","ok ","TuIfr","/tu.htm"];
+  const lm= new LinkMaker();
+  this.start= function(ap){
+    lm.addEl(kw[0]).src= sc= (ap.length>1)?ap[1]:kw[3];
+    lm.wrapCloser(lm._,1,sc);
+    return kw[1] + sc;
   }
 }
