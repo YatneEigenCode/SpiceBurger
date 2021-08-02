@@ -1,5 +1,5 @@
-//7-28-2021 jchoy v1.252 Use second param in StoTabCqda
-pkg= pkg9900= { ver:'1.252' }; 
+//8-2-2021 jchoy v1.253 defcmd StoTabCqda
+pkg= pkg9900= { ver:'1.253' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -195,7 +195,7 @@ pkg.StoTabLo=function(){
     for (var i=0; i<fm.count; i++) fm['tb'+i].value= $t.assetVal(n2,i);
   }
 }
-StoTabCqda = function(){
+pkg.StoTabCqda = function(){
   new AppTool().inherit( this, StoTabLo );
   var kw=["tmp_cqdata","tmp_tcq.csv","ok"];
   this.start= function(ap){
@@ -228,7 +228,7 @@ StoTabCqda = function(){
 
 pkg.contents=[
  { name:"pkg.startup"
-   ,text:"defcmd tab StoTab"
+   ,text:"defcmd tab StoTab\ndefcmd tabcqda StoTabCqda"
  }
 ,{ name:"pkg9900notes"
    ,text:"v"+pkg.ver
