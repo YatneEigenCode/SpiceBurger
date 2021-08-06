@@ -8,7 +8,7 @@
 
 </body>
 <script>
-//7-28-2021 jchoy v0.126 title
+//8-6-2021 jchoy v0.127 yec=vcq cues rsu111.valleytekgroup7.com
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
@@ -28,6 +28,10 @@ function start(){
       localStorage.setItem("tmp_cqdata",location+"&");
       location= as[0]+as[2]+"&rca=rsu111";
     }
+  if ((cgi.indexOf("yec=vcq&")==0) && (Storage)) {
+      localStorage.setItem("tmp_cqdata",location+"&");
+      location= "http://rsu111.valleytekgroup7.com/";
+  }
   i=parseInt(cgi);
   if (i>2000)
     location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
