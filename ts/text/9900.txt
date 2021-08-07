@@ -1,5 +1,5 @@
-//8-2-2021 jchoy v1.253 defcmd StoTabCqda
-pkg= pkg9900= { ver:'1.253' }; 
+//8-6-2021 jchoy v1.254 prepare StoTabCqda.mkLink() for SaveRip /tcq
+pkg= pkg9900= { ver:'1.254' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -215,6 +215,7 @@ pkg.StoTabCqda = function(){
         res+= ((j)?"^^":"")+ escape(this.assetVal(i,j));
     }
     new LinkMaker().start(["",res]);
+    return res;
   }
   this.cvt= function(s){
     var res=[], max=499;
