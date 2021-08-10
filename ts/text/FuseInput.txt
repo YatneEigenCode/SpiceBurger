@@ -1,5 +1,5 @@
 FuseInput=function(){
-//7-29-2021 jkc v0.451 TuiFr
+//8-10-2021 jkc v0.452 set iframe width in TuiFr
   var kw=["ok","infuse","idle","#CCDDDD"];
   this.start=function(at){
     var e1= this.findInfuse("textarea");
@@ -195,6 +195,7 @@ TuIfr=function(){
   const lm= new LinkMaker();
   this.start= function(ap){
     lm.addEl(kw[0]).src= sc= (ap.length>1)?ap[1]:kw[3];
+    lm._.width="400";
     lm.wrapCloser(lm._,1,sc);
     return kw[1] + sc;
   }
