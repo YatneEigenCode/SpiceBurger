@@ -1,4 +1,4 @@
-//5-12-2018 jchoy v0.311 saverip
+//8-10-2012 jchoy v0.321 saverip /tcq
 WMPost= function(){
   //post a form defined via windows message
   var $o= new WMsgPost(flopi);
@@ -52,9 +52,15 @@ SaveRip= function(){
     if (len>mx) return 'err - size '+len+' over limit '+mx;
     var isGo= (flopi.m[ap[2]]) ? true : confirm('Are you sure: '+ap[2]);
     if (isGo){
+      var url;
       flopi.m[ap[2]]="Y";
-      var url=this.sendPkgUrl.replace("{0}",ap[2])+"&data="
-        +encodeURIComponent("pkg="+JSON.stringify({asset:this.asset}) );
+      if ((ap.length>3) && (ap[3]=="/tcq"))
+        url=this.sendPkgUrl.replace("{0}",ap[2])+"&data="
+          +encodeURIComponent("location=\""
+          +new StoTabCqda().mkLink(ap[1])+"\"" );
+      else
+        url=this.sendPkgUrl.replace("{0}",ap[2])+"&data="
+          +encodeURIComponent( "pkg="+JSON.stringify({asset:this.asset}) );
       console.log("wmpost "+url);
       new WMPost().hitUrl( url );
     }
