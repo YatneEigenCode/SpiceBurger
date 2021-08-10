@@ -1,5 +1,5 @@
-//8-6-2021 jchoy v1.254 prepare StoTabCqda.mkLink() for SaveRip /tcq
-pkg= pkg9900= { ver:'1.254' }; 
+//8-6-2021 jchoy v1.256 align center; isQuiet
+pkg= pkg9900= { ver:'1.256' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -156,6 +156,7 @@ pkg.StoTabLo=function(){
     for (var i=0,at=tbl.rows; i<at.length; i++) this.prepRow(at[i],i);
     tbl.rows[0].style.backgroundColor= 'lightgray';
     tbl.border='1';
+    tbl.align="center";
     tbl.style.borderCollapse= 'collapse';
     tbl.rForm= this.prepForm(this.asset[0] );
   }
@@ -206,7 +207,7 @@ pkg.StoTabCqda = function(){
     this.saveAsset( this.fn=kw[1] );
     return kw[2];
   }
-  this.mkLink= function(){
+  this.mkLink= function(isQuiet){
     var res="/tu.htm?yec=tcq&title="+kw[1];
     this.getAsset(kw[1]);
     for (var i=0; i<this.asset.length; i++){
@@ -214,6 +215,7 @@ pkg.StoTabCqda = function(){
       for (var j=0; j<this.asset[i].length; j++)
         res+= ((j)?"^^":"")+ escape(this.assetVal(i,j));
     }
+    if (isQuiet) return res;
     new LinkMaker().start(["",res]);
     return res;
   }
