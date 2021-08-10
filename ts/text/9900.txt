@@ -1,5 +1,5 @@
-//8-6-2021 jchoy v1.256 align center; isQuiet
-pkg= pkg9900= { ver:'1.256' }; 
+//8-10-2021 jchoy v1.257 filename instead of isQuiet parameter
+pkg= pkg9900= { ver:'1.257' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -207,7 +207,8 @@ pkg.StoTabCqda = function(){
     this.saveAsset( this.fn=kw[1] );
     return kw[2];
   }
-  this.mkLink= function(isQuiet){
+  this.mkLink= function(fn){
+    if (fn) kw[1]=fn;
     var res="/tu.htm?yec=tcq&title="+kw[1];
     this.getAsset(kw[1]);
     for (var i=0; i<this.asset.length; i++){
@@ -215,7 +216,7 @@ pkg.StoTabCqda = function(){
       for (var j=0; j<this.asset[i].length; j++)
         res+= ((j)?"^^":"")+ escape(this.assetVal(i,j));
     }
-    if (isQuiet) return res;
+    if (fn) return res;
     new LinkMaker().start(["",res]);
     return res;
   }
