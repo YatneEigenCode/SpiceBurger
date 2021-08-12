@@ -1,4 +1,4 @@
-pkg= pkg622={ver:'CETB 1.425'} //no hashcmd cmd 5-18-2018 jchoy
+pkg= pkg622={ver:'CETB 1.426'} //change default startup msg 8-11-2021 jchoy
 //----
 window.onhashchange= function(){
   var ce1= new CmdEngine().ce1;
@@ -157,7 +157,7 @@ pkg.CmdAutostart= function(){
     if (!st.isOk) return;
     if (pl= st.lo.getItem(nc)) this.parse(ce, pl);
     else 
-        this.parse(ce, "link . See sample startup\nlink startup_ex.txt\nlink . type 'edit startup' to create startup");
+        this.parse(ce, "link . no startup script available");
   }
   this.parse= function(ce,sf){
     for (var i=0,at=sf.split('\n'); i<at.length; i++)
