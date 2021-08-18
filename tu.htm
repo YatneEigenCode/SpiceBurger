@@ -7,8 +7,24 @@
 </form>
 
 </body>
+<script>//destination TuSuggest.txt
+TuSuggest= function(){
+  var $_,addEl= function(tag){
+    return $_=document.body.appendChild(document.createElement(tag));
+  }
+  this.start= function(k){
+    if (!isNaN(k)) return "number is valid";
+    var at="3006,3010,3019,3023".split(",");
+    for (var i=0; i<at.length); i++){
+      addEl("a").href= "?"+at[i];
+      $_.innerHTML= at[i];
+    }
+    return "ok";
+  }
+}
+</script>
 <script>
-//8-18-2021 jchoy v0.128 refactor strings
+//8-18-2021 jchoy v0.131 TuSuggest
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
@@ -36,6 +52,7 @@ function start(){
       location= as[4];
   }
   i=parseInt(cgi);
+  is (showSuggest(i)) then retun;
   if (i>2000)
     location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
          //just make sure content is formatted as js parseable
@@ -50,6 +67,11 @@ function threadHd(){
   for (var i=1, res=as[0]+kw[1]; i<at.length; i++)
       res+= "&row"+i+"="+escape(at[i].replace("/",kw[0]));
   location= res;
+}
+function showSuggest(){
+  var tus= new TuSuggest();
+  if (typeof(tus)!="undefined") return false;
+  return tus.start(i)=="ok";
 }
 start();
 </script>
