@@ -13,9 +13,11 @@ TuSuggest= function(){
     return $_=document.body.appendChild(document.createElement(tag));
   }
   this.start= function(k){
+    console.log( "TuSuggest.start", k );
     if (!isNaN(k)) return "number is valid";
     var at="3006,3010,3019,3023".split(",");
     for (var i=0; i<at.length; i++){
+      console.log( "adding", at[i] );
       addEl("a").href= "?"+at[i];
       $_.innerHTML= at[i];
     }
@@ -24,7 +26,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-18-2021 jchoy v0.135 TuSuggest; fix typos
+//8-18-2021 jchoy v0.136 TuSuggest; debug
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
