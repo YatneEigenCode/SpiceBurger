@@ -15,7 +15,7 @@ TuSuggest= function(){
   }
   this.start= function(k){
     console.log( "TuSuggest.start", k );
-    if (!isNaN(k)) return kw[1]";
+    if (!isNaN(k)) return kw[1];
     var sl= localStorage.getItem(kw[2]);
     var at=sl.split(",");
     for (var i=0; i<at.length; $_.innerHTML= at[i++])
@@ -33,7 +33,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-18-2021 jchoy v0.139 use storage in TuSuggest
+//8-18-2021 jchoy v0.141 use storage in TuSuggest; fix typo
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
@@ -65,7 +65,7 @@ function start(){
   if (i>2000)
   {
     var tus= new TuSuggest();
-    if (typeof(tus)=!="undefined") tus.addData(i);
+    if (typeof(tus)!="undefined") tus.addData(i);
     location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
          //just make sure content is formatted as js parseable
   }
