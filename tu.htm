@@ -17,6 +17,7 @@ TuSuggest= function(){
     console.log( "TuSuggest.start", k );
     if (!isNaN(k)) return kw[1];
     var sl= localStorage.getItem(kw[2]);
+    if (!sl) sl= "3006,3010,3019,3023";
     var at=sl.split(",");
     for (var i=0; i<at.length; $_.innerHTML= at[i++])
       addEl("a",addEl("br")).href= "?"+at[i];
@@ -24,8 +25,8 @@ TuSuggest= function(){
   }
   this.addData= function(s){
     var sp= localStorage.getItem(kw[2]);
-    sp |= "";
-    if (sp.indexOf(s)>00) return;
+    if (!sp) sp = "";
+    if (sp.indexOf(s)>0) return;
     sp+= ","+s;
     if (sp.length>20) sp= sp.substr(sp.indexOf(",")+1);
     localStorage.setItem(ks[2],sp);
@@ -33,7 +34,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-18-2021 jchoy v0.141 use storage in TuSuggest; fix typo
+//8-18-2021 jchoy v0.142 use storage in TuSuggest; fix typo
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
