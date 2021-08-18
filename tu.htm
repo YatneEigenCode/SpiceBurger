@@ -8,16 +8,19 @@
 
 </body>
 <script>
-//8-6-2021 jchoy v0.127 yec=vcq cues rsu111.valleytekgroup7.com
+//8-18-2021 jchoy v0.128 refactor strings
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
+  ,"tmp_cqdata"
+  ,"http://rsu111.valleytekgroup7.com/"
+  ,"^^http://bit.ly/"
        ];
-var pail=["?cts=622,rsu&u=1&t=1&tca=$b/2CDTAAU",
-"?cts=622,rsu&u=1&t=1&tca=$b/2OxhDGa",
-"?cts=622,rsu&u=1&t=1&tca=$b/2CGb1R6"
-,"?cts=622,rsu&u=1&t=1&tca=$t/y3u6c6wo"
-,as[2]+"&tca=$t/y3u6c6wo"
+var pail=[as[2]+"tca=$b/2CDTAAU"
+,as[2]+"tca=$b/2OxhDGa"
+,as[2]+"tca=$b/2CGb1R6"
+,as[2]+"tca=$t/y3u6c6wo"
+,as[2]+"tca=$t/y3u6c6wo"
          ]
 var sThreads= "_,OTT/3hBCVCO,Tutorial/3yTIkuR,Milestone 2500/2VEkIfj";
          
@@ -25,12 +28,12 @@ function start(){
   var i, cgi= (location+'').split('?').pop();
   if (cgi.indexOf("yec=cq&")==0) location= as[1]+cgi;
   if ((cgi.indexOf("yec=tcq&")==0) && (Storage)) {
-      localStorage.setItem("tmp_cqdata",location+"&");
+      localStorage.setItem(as[3],location+"&");
       location= as[0]+as[2]+"&rca=rsu111";
     }
   if ((cgi.indexOf("yec=vcq&")==0) && (Storage)) {
-      localStorage.setItem("tmp_cqdata",location+"&");
-      location= "http://rsu111.valleytekgroup7.com/";
+      localStorage.setItem(as[3],location+"&");
+      location= as[4];
   }
   i=parseInt(cgi);
   if (i>2000)
@@ -42,7 +45,7 @@ function start(){
     location= ((pail[i].indexOf("://")>-1)? "" : as[0]) +pail[i];
 }
 function threadHd(){
-  const kw=["^^http://bit.ly/", "tu.htm?yec=cq&row0=A^^B"];
+  const kw=[as[5], "tu.htm?yec=tcq&row0=A^^B"];
   var res, at= sThreads.split(",");
   for (var i=1, res=as[0]+kw[1]; i<at.length; i++)
       res+= "&row"+i+"="+escape(at[i].replace("/",kw[0]));
