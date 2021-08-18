@@ -26,7 +26,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-18-2021 jchoy v0.137 TuSuggest; enable
+//8-18-2021 jchoy v0.138 TuSuggest; pass param i
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
@@ -70,7 +70,7 @@ function threadHd(){
       res+= "&row"+i+"="+escape(at[i].replace("/",kw[0]));
   location= res;
 }
-function showSuggest(){
+function showSuggest(i){
   var tus= new TuSuggest();
   if (typeof(tus)=="undefined") return false;
   return tus.start(i)=="ok";
