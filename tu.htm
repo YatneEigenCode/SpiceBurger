@@ -29,12 +29,12 @@ TuSuggest= function(){
     if (sp.indexOf(s)>0) return;
     sp+= ","+s;
     if (sp.length>20) sp= sp.substr(sp.indexOf(",")+1);
-    localStorage.setItem(ks[2],sp);
+    localStorage.setItem(kw[2],sp);
   }
 }
 </script>
 <script>
-//8-18-2021 jchoy v0.142 use storage in TuSuggest; fix typo
+//8-18-2021 jchoy v0.143 use storage in TuSuggest; fix typo
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
