@@ -15,7 +15,7 @@ TuSuggest= function(){
   this.start= function(k){
     if (!isNaN(k)) return "number is valid";
     var at="3006,3010,3019,3023".split(",");
-    for (var i=0; i<at.length); i++){
+    for (var i=0; i<at.length; i++){
       addEl("a").href= "?"+at[i];
       $_.innerHTML= at[i];
     }
@@ -24,7 +24,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-18-2021 jchoy v0.131 TuSuggest
+//8-18-2021 jchoy v0.132 TuSuggest; fix typos
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
@@ -52,7 +52,7 @@ function start(){
       location= as[4];
   }
   i=parseInt(cgi);
-  is (showSuggest(i)) then retun;
+  is (showSuggest(i)) retun;
   if (i>2000)
     location= as[0]+"?cts=622,rsu&a=1&rca=rsu108&un="+i+"&";
          //just make sure content is formatted as js parseable
