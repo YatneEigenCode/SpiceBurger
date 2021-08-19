@@ -6,7 +6,7 @@
   <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.124]:</div>
 </body>
 <script>
-//4-8-2019 jchoy json body
+//8-19-2012 jchoy v0.121 log catch
 function tf(url){
   var at= url.split(/[&?](.*?)=/), D=document;
   var data= (at.length<3)? "ping" : at[2];
@@ -16,7 +16,8 @@ function tf(url){
     div.innerHTML= s;
     if (res= JSON.parse(s).body) div.innerHTML= res;
   }
-  try { addDiv(decodeURIComponent(data)); } catch {}
+  try { addDiv(decodeURIComponent(data)); } catch {
+    console.log("error decodeURIComponent") }
   window.parent.postMessage( decodeURIComponent(data), redm );
 };
 tf(location+"");
