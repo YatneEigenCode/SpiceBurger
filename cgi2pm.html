@@ -3,12 +3,11 @@
 .c1 {font-size:9px; color:gray}
 </style>  
 <body>
-  <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.127]:</div>
+  <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.128]:</div>
 </body>
 <script>
-//8-20-2021 jchoy v0.127 log url length; catch(ex)
+//8-20-2021 jchoy v0.128 catch(ex), now works on Safari
 function tf(url){
-  console.log( "tf", url.length );
   var at= url.split(/[&?](.*?)=/), D=document;
   var data= (at.length<3)? "ping" : at[2];
   var redm= "*", ad=["appendChild","createElement"];  //optionally decode from url
