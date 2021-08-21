@@ -3,10 +3,10 @@
 .c1 {font-size:9px; color:gray}
 </style>  
 <body>
-  <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.126]:</div>
+  <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.127]:</div>
 </body>
 <script>
-//8-20-2021 jchoy v0.126 log url length
+//8-20-2021 jchoy v0.127 log url length; catch(ex)
 function tf(url){
   console.log( "tf", url.length );
   var at= url.split(/[&?](.*?)=/), D=document;
@@ -17,8 +17,8 @@ function tf(url){
     div.innerHTML= s;
     if (res= JSON.parse(s).body) div.innerHTML= res;
   }
-  try { addDiv(decodeURIComponent(data)); } catch {
-    console.log("error decodeURIComponent") }
+  try { addDiv(decodeURIComponent(data)); } catch(ex) {
+    console.log("error decodeURIComponent",ex) }
   window.parent.postMessage( decodeURIComponent(data), redm );
 };
 tf(location+"");
