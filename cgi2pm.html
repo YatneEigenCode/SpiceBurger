@@ -3,11 +3,12 @@
 .c1 {font-size:9px; color:gray}
 </style>  
 <body>
-  <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.125]:</div>
+  <div class="c1" alt="Pass cgi data to parent window via postMessage.">Msg [v0.126]:</div>
 </body>
 <script>
-//8-19-2012 jchoy v0.125 log catch; align ver
+//8-20-2021 jchoy v0.126 log url length
 function tf(url){
+  console.log( "tf", url.length );
   var at= url.split(/[&?](.*?)=/), D=document;
   var data= (at.length<3)? "ping" : at[2];
   var redm= "*", ad=["appendChild","createElement"];  //optionally decode from url
