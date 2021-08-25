@@ -2,7 +2,7 @@
 <style type="text/css"></style>
 <body>
 <title>TU</title>
-<form>
+<form align="center">
          Number: <input name=num size=8>
          <input type=button value=Go 
          onclick="location='tu.htm?'+this.form.num.value">
@@ -26,7 +26,7 @@ TuSuggest= function(){
   this.addData= function(s){
     var sp= localStorage.getItem(kw[2]);
     if (!sp) sp = "";
-    if (sp.indexOf(s)>0) return;
+    if (sp.indexOf(s)>0) sp=sp.replace(","+s, ""); //remove LRA when full
     sp+= ","+s;
     if (sp.length>50) sp= sp.substr(sp.indexOf(",")+1);
     localStorage.setItem(kw[2],sp);
@@ -34,7 +34,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-20-2021 jchoy v0.146 add viewport meta
+//8-25-2021 jchoy v0.147 center, LRA
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
