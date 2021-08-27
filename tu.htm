@@ -7,6 +7,9 @@
          <input type=button value=Go 
          onclick="location='tu.htm?'+this.form.num.value">
 </form>
+<center>
+         <div id="d1"></div>
+</center>
 
 </body>
 <script>//destination TuSuggest.txt
@@ -34,13 +37,15 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-25-2021 jchoy v0.147 center, LRA
+//8-27-2021 jchoy v0.151 showLinks waffle
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
   ,"tmp_cqdata"
   ,"http://rsu111.valleytekgroup7.com/"
   ,"^^http://bit.ly/"
+  ,"suggest"
+  ,"waffle"
        ];
 var pail=[as[2]+"tca=$b/2CDTAAU"
 ,as[2]+"tca=$b/2OxhDGa"
@@ -61,8 +66,9 @@ function start(){
       localStorage.setItem(as[3],location+"&");
       location= as[4];
   }
+  showLinks(cgi,as[7]);
   i=parseInt(cgi);
-  if (showSuggest(i)) return;
+  if (showLinks(i,as[6])) return;
   if (i>2000)
   {
     var tus= new TuSuggest();
@@ -82,7 +88,20 @@ function threadHd(){
       res+= "&row"+i+"="+escape(at[i].replace("/",kw[0]));
   location= res;
 }
-function showSuggest(i){
+function showLinks(i,op){
+  var $_, addEl= function(tag,p){
+    return $_=((p)? p:document.body).appendChild(document.createElement(tag));
+  }
+  if (op==as[7]) {
+    var d1=document.getElementById("d1");
+    if (i.charAt(0)==",") 
+      for (var k=1,at=i.split(","); k<at.length; k++) {
+        addEl("a",d1).href= "tu.htm/?"+at[k];
+        $_.innerHTML= at[k];
+        addEl("br",d1);
+      }
+    return;
+  }
   var tus= new TuSuggest();
   if (typeof(tus)=="undefined") return false;
   return tus.start(i)=="ok";
