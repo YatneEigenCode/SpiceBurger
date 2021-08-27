@@ -37,7 +37,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-27-2021 jchoy v0.151 showLinks waffle
+//8-27-2021 jchoy v0.152 showLinks waffle, no slash
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
@@ -66,7 +66,7 @@ function start(){
       localStorage.setItem(as[3],location+"&");
       location= as[4];
   }
-  showLinks(cgi,as[7]);
+  if (showLinks(cgi,as[7]) return;
   i=parseInt(cgi);
   if (showLinks(i,as[6])) return;
   if (i>2000)
@@ -94,13 +94,13 @@ function showLinks(i,op){
   }
   if (op==as[7]) {
     var d1=document.getElementById("d1");
-    if (i.charAt(0)==",") 
-      for (var k=1,at=i.split(","); k<at.length; k++) {
-        addEl("a",d1).href= "tu.htm/?"+at[k];
+    if (i.charAt(0)!=",") return false;
+    for (var k=1,at=i.split(","); k<at.length; k++) {
+        addEl("a",d1).href= "tu.htm?"+at[k];
         $_.innerHTML= at[k];
         addEl("br",d1);
-      }
-    return;
+    }
+    return true;
   }
   var tus= new TuSuggest();
   if (typeof(tus)=="undefined") return false;
