@@ -1,4 +1,4 @@
-pkg= pkg622={ver:'CETB 1.426'} //change default startup msg 8-11-2021 jchoy
+pkg= pkg622={ver:'CETB 1.427'} //use LinkMaker in EvalJsLine 8-30-2021 jchoy
 //----
 window.onhashchange= function(){
   var ce1= new CmdEngine().ce1;
@@ -70,11 +70,13 @@ pkg.EvalJs= function(){
   EvalJsLine=function(){
     this.start=function(at){ 
       return this.eval(new Sto().lo.getItem($f),'')+this.eval(at.slice(1).join(' '),$m); }
-    this.ejl1= $evaljsline_the_one;
+    //this.ejl1= $evaljsline_the_one;
     this.eval=function(s,mOk){
-      try{ return [mOk,eval(s)][0]; } catch (e){return e.message+'\n'} }
+      try{ new LinkMaker().start(["",".",eval(s)]); return mOk 
+      } catch (e){return e.message+'\n'} 
+    }
   }
-  $evaljsline_the_one=new EvalJsLine();
+  //$evaljsline_the_one=new EvalJsLine();
 })()
 pkg.EvalJsLine=EvalJsLine;
 //----
