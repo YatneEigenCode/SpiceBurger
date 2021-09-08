@@ -1,8 +1,11 @@
-pkg= pkg622={ver:'CETB 1.427'} //use LinkMaker in EvalJsLine 8-30-2021 jchoy
+pkg= pkg622={ver:'CETB 1.428'} //=cmd/ easy separator 9-8-2021 jchoy
 //----
 window.onhashchange= function(){
-  var ce1= new CmdEngine().ce1;
-  ce1.ce.parse(unescape(location.hash.replace('#://cmd/',''))); 
+  var ce1= new CmdEngine().ce1, slh=location.hash+"";
+  if (slh.startsWith("#://=cmd/")
+    ce1.ce.parse(unescape(slh.replace("#://=cmd/","").replace(/=/g," "))); 
+  else
+    ce1.ce.parse(unescape(slh.replace('#://cmd/',''))); 
   ce1.isHashChanged=1;
 }
 setTimeout( "if (!new CmdEngine().ce1.isHashChanged) location=\"#://noop\"", 5000 );
