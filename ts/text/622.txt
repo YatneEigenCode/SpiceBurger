@@ -1,8 +1,8 @@
-pkg= pkg622={ver:'CETB 1.428'} //=cmd/ easy separator 9-8-2021 jchoy
+pkg= pkg622={ver:'CETB 1.429'} //=cmd/ easy separator 9-8-2021 jchoy
 //----
 window.onhashchange= function(){
   var ce1= new CmdEngine().ce1, slh=location.hash+"";
-  if (slh.startsWith("#://=cmd/")
+  if (slh.startsWith("#://=cmd/"))
     ce1.ce.parse(unescape(slh.replace("#://=cmd/","").replace(/=/g," "))); 
   else
     ce1.ce.parse(unescape(slh.replace('#://cmd/',''))); 
