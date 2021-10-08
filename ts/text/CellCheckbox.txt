@@ -1,4 +1,4 @@
-//10-3-2019 jchoy v0.162 CellYT 2.jpg, strip ?t=
+//10-8-2021 jchoy v0.171 TabCbUpd
 CellAlign=function(mod){
   this.align="textAlign";
   this.enhance=function(el,so,aa){
@@ -124,6 +124,23 @@ stoTabExtend= function( cow ){
     $belt.hht[cic]= (window[clsName])? clsName : $as[0];
   }
   return cow;
+}
+//-----
+TabCbUpd=function(){
+  var kw=["ok, items updated: ","[x]","tmp_tcq.csv","[ ]"];
+  this.start= function(at){
+    var tab= new StoTab();
+    tab.getAsset(tab.fn=kw[2]);
+    var n=0,s,p,cols= tab.asset[0].length;
+    for (var i=1; i<tab.asset.length; i++)
+      for (var j=0; j<cols; j++){
+        s= tab.assetVal(i,j);
+        if ((p= s.indexOf(kw[1]))>=0) n++;
+        if (p>=0) tab.assetVal(i+0,j, s.substr(0,p)+kw[3]+at[1]);
+      }
+    tab.saveAsset();
+    return kw[0]+n;
+  }
 }
 //-----
 StoTabLoDev=function(){
