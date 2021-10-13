@@ -1,8 +1,10 @@
-Ancestree=function (){  //v0.94 enableCloser() 3069 and Spiceburger
+Ancestree=function (){  //v0.97 LayoutTool.addImg; file param 3069 and Spiceburger
+  //TODO: spouseFmt
+  //TODO-maybe: buttonLook, layoutDef
   var kw=["ok! ","tmp_tcq.csv"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
-    tab.getAsset(kw[1]);
+    tab.getAsset( (at.length>1)? at[1]:kw[1]);
     for (var z=1,i=1,ap=tab.asset; (i<ap.length) && z; i++)
       if ( (ap[i].length>1) && (z=(ap[i][0]!="")) )
         sky.addCh( new Ftu(ap[i]) ).init(ap[0]);
@@ -52,6 +54,18 @@ Ancestree=function (){  //v0.94 enableCloser() 3069 and Spiceburger
   }
   var cot= new CollapseTool();
 
+  var LayoutTool= function(){
+    var ato= new AppTool(), kw=["img","64","/img/"];
+    this.addImg= function(ce, url){
+      if (!url) return;
+      var pref= (url.indexOf("://")>0)? "":kw[2]
+      ato.addEl(kw[0],ce).src= kw[2]+url;
+      ato._.width= kw[1];
+      ato._.height= kw[1];
+    }
+  }
+  var lot= new LayoutTool();
+
   var Ftu= function(at){
     var kw=["<br>","&#9746;"];
     this.data= at;
@@ -97,8 +111,10 @@ Ancestree=function (){  //v0.94 enableCloser() 3069 and Spiceburger
       return res;
     }
     this.formatCell= function(ce){
-      ce.innerHTML= this.name+kw[0]+this.yob+kw[0]+this.dh.addl;
+      ce.innerHTML= this.name+kw[0]+this.yob+kw[0];
+      if (this.dh.addl) ce.innerHTML +=this.dh.addl+kw[0];
       ce.align="center";
+      lot.addImg( ce, this.dh.img );
       ce.colSpan= this.getSpanDeep();
       cot.prep(ce);
     }
