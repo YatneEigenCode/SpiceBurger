@@ -1,16 +1,14 @@
-FamTree=function (){  //v0.92 3069 and 3072
+FamTree=function (){  //v0.93 init 3069 and 3072
   var kw=["ok! ","tmp_tcq.csv"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
     tab.getAsset(kw[1]);
     for (var z=1,i=1,ap=tab.asset; (i<ap.length) && z; i++)
-      if ( (ap[i].length>1) && (z=(ap[i][0]!="")) ){
-        sky.addCh( new Ftu(ap[i]) );
-    }
-    for (var r,i=0; i<sky.ach.length; i++){
+      if ( (ap[i].length>1) && (z=(ap[i][0]!="")) )
+        sky.addCh( new Ftu(ap[i]) ).init(ap[0]);
+    for (var r,i=0; i<sky.ach.length; i++)
       if (r=sky.ach[i].findParents(sky.ach,i))
         tops.push(r);
-    }
     var tb, au= new AppTool();
     (tb= au.addEl("table")).border=1;
     tb.insertRow(0).insertCell(0).ftu= tops[0];
@@ -20,8 +18,7 @@ FamTree=function (){  //v0.92 3069 and 3072
   }
 
   var CollapseTool= function(){
-    //var ato= new AppTool(), kw=["&#928;","&#926;","<br>"];
-    var ato= new AppTool(), kw=["&#x2610;&#x2610;","&#x2630;","<br>"];
+    var ato= new AppTool(), kw=["&#9637;","&#x2630;","<br>"];
     this.prep= function(ce){
       if (ce.ftu.ach.length==0) return;
       var el=ato.addEl("div",ce);
@@ -30,8 +27,9 @@ FamTree=function (){  //v0.92 3069 and 3072
       el.onmouseover= this.bgGrey;
       el.onmouseout= this.bgWhite;
     }
-    this.bgGrey= function(){ this.style.backgroundColor="lightgrey";}
-    this.bgWhite= function(){ this.style.backgroundColor="white";}
+    var bgbn= function(cn,el){ el.style.backgroundColor=cn;}
+    this.bgWhite= function(){ bgbn("white",this) }
+    this.bgGrey= function(){ bgbn("lightgrey",this) }
     this.handleClick= function(){
       var tb, od= this.parentNode.ftu;
       od.isCollapsed= !od.isCollapsed;
@@ -54,18 +52,26 @@ FamTree=function (){  //v0.92 3069 and 3072
 
   var Ftu= function(at){
     var kw=["<br>"];
-    if (this.data=at) {
-      this.name= at[0];
-      this.parent1= at[1];
-      this.parent2= at[2];
-      this.spouse= at[4];
-      this.asp=[];
-    }
+    this.data= at;
     this.ach= [];
+    this.dh= {};
+    this.init= function(labels){
+      if (!this.data) return;
+      var ab= (labels)? labels : [];
+      this.name= this.data[0];
+      this.parent1= this.data[1];
+      this.parent2= this.data[2];
+      this.yob= this.data[3];
+      this.spouse= this.data[4];
+      this.asp=[];
+      for (var i=0; (i<ab.length) && (i<this.data.length); i++)
+        this.dh[ab[i]]= this.data[i];
+    }
     this.addCh= function(ftu){
       this.ach.push(ftu);
       this.ach.sort( function(a,b){return (a.yob>b.yob)?1:-1} );
       ftu.isLeaf= 1;
+      return ftu;
     }
     this.findParents= function(at,i){
       for (var j=0,x=this.isLeaf=0; j<at.length; j++)
@@ -89,7 +95,7 @@ FamTree=function (){  //v0.92 3069 and 3072
       return res;
     }
     this.formatCell= function(ce){
-      ce.innerHTML= this.name+kw[0]+this.yob;
+      ce.innerHTML= this.name+kw[0]+this.yob+kw[0]+this.dh.addl;
       ce.align="center";
       ce.colSpan= this.getSpanDeep();
       cot.prep(ce);
@@ -123,3 +129,4 @@ console.log( "showRow -res", r, res );
     }
   }
 }
+//evaljs-ok
