@@ -1,6 +1,7 @@
-Ancestree=function (){  //v0.97 LayoutTool.addImg; file param 3069 and Spiceburger
+Ancestree=function (){  //v1.112 fix typo in addSpouse; format spouse 3069 and Spiceburger
   //TODO: spouseFmt
   //TODO-maybe: buttonLook, layoutDef
+  var safety=499;
   var kw=["ok! ","tmp_tcq.csv"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
@@ -55,19 +56,19 @@ Ancestree=function (){  //v0.97 LayoutTool.addImg; file param 3069 and Spiceburg
   var cot= new CollapseTool();
 
   var LayoutTool= function(){
-    var ato= new AppTool(), kw=["img","64","/img/"];
+    var toa= this.toa= new AppTool(), kw=["img","64","/img/"];
     this.addImg= function(ce, url){
       if (!url) return;
       var pref= (url.indexOf("://")>0)? "":kw[2]
-      ato.addEl(kw[0],ce).src= kw[2]+url;
-      ato._.width= kw[1];
-      ato._.height= kw[1];
+      toa.addEl(kw[0],ce).src= kw[2]+url;
+      toa._.width= kw[1];
+      toa._.height= kw[1];
     }
   }
   var lot= new LayoutTool();
 
   var Ftu= function(at){
-    var kw=["<br>","&#9746;"];
+    var kw=["<br>","&#9746; Close"];
     this.data= at;
     this.ach= [];
     this.dh= {};
@@ -94,13 +95,15 @@ Ancestree=function (){  //v0.97 LayoutTool.addImg; file param 3069 and Spiceburg
         if (i==j) {}
         else {
           if (at[j].name==this.spouse)
-            this.addSpouse( at[i].addSpouse(this) );
+            this.addSpouse( at[j].addSpouse(this) );
           if (at[j].name==this.parent1) at[j].addCh(this)
           else if (at[j].name==this.parent2) at[j].addCh(this);
         }
       return (this.isLeaf)? null : this;
     }
     this.addSpouse= function(ftu){
+      for (var i=0; i<this.asp.length; i++)
+        if (this.asp[i]==ftu) return this;
       this.asp.push(ftu);
       return this;
     }
@@ -110,13 +113,23 @@ Ancestree=function (){  //v0.97 LayoutTool.addImg; file param 3069 and Spiceburg
         res+= this.ach[i].getDeepChCount();
       return res;
     }
-    this.formatCell= function(ce){
-      ce.innerHTML= this.name+kw[0]+this.yob+kw[0];
-      if (this.dh.addl) ce.innerHTML +=this.dh.addl+kw[0];
+    this.formatCell= function(ce, isSub){  //text, img
+console.log( "formatCell", isSub );
+if (--safety<0) return;
       ce.align="center";
-      lot.addImg( ce, this.dh.img );
-      ce.colSpan= this.getSpanDeep();
-      cot.prep(ce);
+      if (isSub) {
+        ce.innerHTML= this.name+kw[0]+this.yob+kw[0];
+        if (this.dh.addl) ce.innerHTML +=this.dh.addl+kw[0];
+        lot.addImg( ce, this.dh.img );
+      } else {
+        ce.colSpan= this.getSpanDeep();
+        var row= lot.toa.addEl("table",ce).insertRow();
+        this.formatCell( row.insertCell(), 1 );
+        for (var i=0; i<this.asp.length; i++) {
+          this.asp[i].formatCell( row.insertCell(), 1 );
+        }
+        cot.prep(ce);
+      }//else
     }
     this.getSpanDeep= function(){
       if (this.isCollapsed) return 1;
@@ -140,6 +153,7 @@ Ancestree=function (){  //v0.97 LayoutTool.addImg; file param 3069 and Spiceburg
     this.showRow= function( tb, r ){
       var res=0, nr= tb.insertRow( );
       if (r==0) this.enableCloser(tb);
+      if (r==0) tb.rows[0].cells[0].innerHTML= "";
       for (var ftu,i=0,at=tb.rows[r].cells; i<at.length; i++) {
         var ftu=at[i].ftu;
         if (ftu) { 
@@ -161,4 +175,3 @@ console.log( "showRow -res", r, res );
   }
 }
 FamTree= Ancestree;
-//evaljs-ok
