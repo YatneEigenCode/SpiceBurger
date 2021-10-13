@@ -1,4 +1,4 @@
-FamTree=function (){  //v0.93 init 3069 and 3072
+Ancestree=function (){  //v0.94 enableCloser() 3069 and Spiceburger
   var kw=["ok! ","tmp_tcq.csv"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
@@ -37,8 +37,10 @@ FamTree=function (){  //v0.93 init 3069 and 3072
       tb= this.parentNode.parentNode.parentNode;
       var ft0= tb.rows[0].cells[0].ftu, n=tb.rows.length;
       while (tb.rows.length>1) tb.deleteRow(1);
-      for (var i=0; i<n-1; i++)
+      var nIgnore= (tb.isClosable)? 2:1;
+      for (var i=0; i<n-nIgnore; i++)
         ft0.showRow(tb,i);
+      tb.isClosable= 0;
     }
     this.formatCollapsedCh= function(ce,ach){
       ce.colSpan= 1;
@@ -51,7 +53,7 @@ FamTree=function (){  //v0.93 init 3069 and 3072
   var cot= new CollapseTool();
 
   var Ftu= function(at){
-    var kw=["<br>"];
+    var kw=["<br>","&#9746;"];
     this.data= at;
     this.ach= [];
     this.dh= {};
@@ -107,8 +109,21 @@ FamTree=function (){  //v0.93 init 3069 and 3072
         res +=this.ach[i].getSpanDeep();
       return (res)? res : 1;
     }
+    this.enableCloser= function(tb){
+      tb.rows[0].cells[0].onmouseover= function(){
+        var cc, tb= this.parentNode.parentNode;
+        if (tb.isClosable) return;
+        (cc=tb.insertRow().insertCell()).innerHTML= kw[1];
+        cc.onclick= function(){
+          var tb= this.parentNode.parentNode.parentNode;
+          tb.parentNode.removeChild(tb);
+        }
+        tb.isClosable= 1;
+      }
+    }
     this.showRow= function( tb, r ){
       var res=0, nr= tb.insertRow( );
+      if (r==0) this.enableCloser(tb);
       for (var ftu,i=0,at=tb.rows[r].cells; i<at.length; i++) {
         var ftu=at[i].ftu;
         if (ftu) { 
@@ -129,4 +144,5 @@ console.log( "showRow -res", r, res );
     }
   }
 }
+FamTree= Ancestree;
 //evaljs-ok
