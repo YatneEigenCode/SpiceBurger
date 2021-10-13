@@ -1,4 +1,4 @@
-FamTree=function (){  //v0.91 3069
+FamTree=function (){  //v0.92 3069 and 3072
   var kw=["ok! ","tmp_tcq.csv"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
@@ -54,12 +54,12 @@ FamTree=function (){  //v0.91 3069
 
   var Ftu= function(at){
     var kw=["<br>"];
-    if (at) {
+    if (this.data=at) {
       this.name= at[0];
       this.parent1= at[1];
       this.parent2= at[2];
-      this.yob= at[3];
-      if (this.name=="Wujian Dow") this.isCollapsed=0;
+      this.spouse= at[4];
+      this.asp=[];
     }
     this.ach= [];
     this.addCh= function(ftu){
@@ -70,9 +70,17 @@ FamTree=function (){  //v0.91 3069
     this.findParents= function(at,i){
       for (var j=0,x=this.isLeaf=0; j<at.length; j++)
         if (i==j) {}
-        else if (at[j].name==this.parent1) at[j].addCh(this)
-        else if (at[j].name==this.parent2) at[j].addCh(this);
+        else {
+          if (at[j].name==this.spouse)
+            this.addSpouse( at[i].addSpouse(this) );
+          if (at[j].name==this.parent1) at[j].addCh(this)
+          else if (at[j].name==this.parent2) at[j].addCh(this);
+        }
       return (this.isLeaf)? null : this;
+    }
+    this.addSpouse= function(ftu){
+      this.asp.push(ftu);
+      return this;
     }
     this.getDeepChCount= function(){
       var res= this.ach.length;
