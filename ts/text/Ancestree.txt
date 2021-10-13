@@ -1,0 +1,117 @@
+FamTree=function (){  //v0.91 3069
+  var kw=["ok! ","tmp_tcq.csv"];
+  this.start= function(at){
+    var tops=[], tab= new StoTab(), sky=new Ftu();
+    tab.getAsset(kw[1]);
+    for (var z=1,i=1,ap=tab.asset; (i<ap.length) && z; i++)
+      if ( (ap[i].length>1) && (z=(ap[i][0]!="")) ){
+        sky.addCh( new Ftu(ap[i]) );
+    }
+    for (var r,i=0; i<sky.ach.length; i++){
+      if (r=sky.ach[i].findParents(sky.ach,i))
+        tops.push(r);
+    }
+    var tb, au= new AppTool();
+    (tb= au.addEl("table")).border=1;
+    tb.insertRow(0).insertCell(0).ftu= tops[0];
+    for (var r=0,isZ=0; !isZ; r++)
+      isZ= !(tops[0].showRow( tb, r ));
+    return kw[0]+sky.ach.length;
+  }
+
+  var CollapseTool= function(){
+    //var ato= new AppTool(), kw=["&#928;","&#926;","<br>"];
+    var ato= new AppTool(), kw=["&#x2610;&#x2610;","&#x2630;","<br>"];
+    this.prep= function(ce){
+      if (ce.ftu.ach.length==0) return;
+      var el=ato.addEl("div",ce);
+      el.innerHTML= kw[(ce.ftu.isCollapsed)? 1:0];
+      el.onclick= this.handleClick;
+      el.onmouseover= this.bgGrey;
+      el.onmouseout= this.bgWhite;
+    }
+    this.bgGrey= function(){ this.style.backgroundColor="lightgrey";}
+    this.bgWhite= function(){ this.style.backgroundColor="white";}
+    this.handleClick= function(){
+      var tb, od= this.parentNode.ftu;
+      od.isCollapsed= !od.isCollapsed;
+      this.innerHTML= kw[(od.isCollapsed)? 1:0];
+      tb= this.parentNode.parentNode.parentNode;
+      var ft0= tb.rows[0].cells[0].ftu, n=tb.rows.length;
+      while (tb.rows.length>1) tb.deleteRow(1);
+      for (var i=0; i<n-1; i++)
+        ft0.showRow(tb,i);
+    }
+    this.formatCollapsedCh= function(ce,ach){
+      ce.colSpan= 1;
+      var res= "";
+      for (var i=0; i<ach.length; i++)
+        res+= ach[i].name+kw[2];
+      ce.innerHTML= res;
+    }
+  }
+  var cot= new CollapseTool();
+
+  var Ftu= function(at){
+    var kw=["<br>"];
+    if (at) {
+      this.name= at[0];
+      this.parent1= at[1];
+      this.parent2= at[2];
+      this.yob= at[3];
+      if (this.name=="Wujian Dow") this.isCollapsed=0;
+    }
+    this.ach= [];
+    this.addCh= function(ftu){
+      this.ach.push(ftu);
+      this.ach.sort( function(a,b){return (a.yob>b.yob)?1:-1} );
+      ftu.isLeaf= 1;
+    }
+    this.findParents= function(at,i){
+      for (var j=0,x=this.isLeaf=0; j<at.length; j++)
+        if (i==j) {}
+        else if (at[j].name==this.parent1) at[j].addCh(this)
+        else if (at[j].name==this.parent2) at[j].addCh(this);
+      return (this.isLeaf)? null : this;
+    }
+    this.getDeepChCount= function(){
+      var res= this.ach.length;
+      for (var i=0; i<this.ach.length; i++)
+        res+= this.ach[i].getDeepChCount();
+      return res;
+    }
+    this.formatCell= function(ce){
+      ce.innerHTML= this.name+kw[0]+this.yob;
+      ce.align="center";
+      ce.colSpan= this.getSpanDeep();
+      cot.prep(ce);
+    }
+    this.getSpanDeep= function(){
+      if (this.isCollapsed) return 1;
+      var n=this.ach.length, res=0;
+      for (var i=0; i<n; i++) 
+        res +=this.ach[i].getSpanDeep();
+      return (res)? res : 1;
+    }
+    this.showRow= function( tb, r ){
+      var res=0, nr= tb.insertRow( );
+      for (var ftu,i=0,at=tb.rows[r].cells; i<at.length; i++) {
+        var ftu=at[i].ftu;
+        if (ftu) { 
+          ftu.formatCell(at[i]);
+          if (!ftu.isCollapsed) {
+            for (var j=0,ap=ftu.ach; j<ap.length; j++)
+              nr.insertCell().ftu= ap[j];
+            if (ftu.ach.length==0) nr.insertCell();
+            res |= (ftu.ach.length>0);
+          } else {
+            cot.formatCollapsedCh(nr.insertCell(),ftu.ach);
+          }
+        } else 
+          nr.insertCell();
+      }
+console.log( "showRow -res", r, res );
+      return res;
+    }
+  }
+}
