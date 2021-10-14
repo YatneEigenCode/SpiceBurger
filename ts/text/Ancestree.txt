@@ -1,8 +1,8 @@
-Ancestree=function (){  //v1.114 display multiple tops; 3069 and Spiceburger
-  //TODO: addl=start
+Ancestree=function (){  //v1.115 #start! as flag; 3069 and Spiceburger
+  //TODO:
   //TODO-maybe: buttonLook, layoutDef
   var safety=9999;
-  var kw=["ok! ","tmp_tcq.csv"," persons "," trees "];
+  var kw=["ok! ","tmp_tcq.csv"," persons "," trees ","#start!"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
     tab.getAsset( (at.length>1)? at[1]:kw[1]);
@@ -13,6 +13,8 @@ Ancestree=function (){  //v1.114 display multiple tops; 3069 and Spiceburger
       if (r=sky.ach[i].findParents(sky.ach,i))
         tops.push(r);
     var tb, au= new AppTool();
+    for (var j=0; j<tops.length; j++)
+      if (tops[j].dh.addl.indexOf(kw[4])>=0) tops=[tops[j]];
     for (var j=0; j<tops.length; j++){
       (tb= au.addEl("table")).border=1;
       tb.insertRow(0).insertCell(0).ftu= tops[j];
