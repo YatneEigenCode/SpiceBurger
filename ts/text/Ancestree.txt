@@ -1,8 +1,8 @@
-Ancestree=function (){  //v1.113 dash border for spouse; 3069 and Spiceburger
-  //TODO: 
+Ancestree=function (){  //v1.114 display multiple tops; 3069 and Spiceburger
+  //TODO: addl=start
   //TODO-maybe: buttonLook, layoutDef
   var safety=9999;
-  var kw=["ok! ","tmp_tcq.csv"];
+  var kw=["ok! ","tmp_tcq.csv"," persons "," trees "];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
     tab.getAsset( (at.length>1)? at[1]:kw[1]);
@@ -13,11 +13,13 @@ Ancestree=function (){  //v1.113 dash border for spouse; 3069 and Spiceburger
       if (r=sky.ach[i].findParents(sky.ach,i))
         tops.push(r);
     var tb, au= new AppTool();
-    (tb= au.addEl("table")).border=1;
-    tb.insertRow(0).insertCell(0).ftu= tops[0];
-    for (var r=0,isZ=0; !isZ; r++)
-      isZ= !(tops[0].showRow( tb, r ));
-    return kw[0]+sky.ach.length;
+    for (var j=0; j<tops.length; j++){
+      (tb= au.addEl("table")).border=1;
+      tb.insertRow(0).insertCell(0).ftu= tops[j];
+      for (var r=0,isZ=0; !isZ; r++)
+        isZ= !(tops[j].showRow( tb, r ));
+    }
+    return kw[0]+sky.ach.length+kw[2]+tops.length+kw[3];
   }
 
   var CollapseTool= function(){
