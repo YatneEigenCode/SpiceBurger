@@ -1,7 +1,7 @@
-Ancestree=function (){  //v1.112 fix typo in addSpouse; format spouse 3069 and Spiceburger
-  //TODO: spouseFmt
+Ancestree=function (){  //v1.113 dash border for spouse; 3069 and Spiceburger
+  //TODO: 
   //TODO-maybe: buttonLook, layoutDef
-  var safety=499;
+  var safety=9999;
   var kw=["ok! ","tmp_tcq.csv"];
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
@@ -114,19 +114,22 @@ Ancestree=function (){  //v1.112 fix typo in addSpouse; format spouse 3069 and S
       return res;
     }
     this.formatCell= function(ce, isSub){  //text, img
-console.log( "formatCell", isSub );
-if (--safety<0) return;
+//if (--safety<0) return;
       ce.align="center";
       if (isSub) {
         ce.innerHTML= this.name+kw[0]+this.yob+kw[0];
         if (this.dh.addl) ce.innerHTML +=this.dh.addl+kw[0];
         lot.addImg( ce, this.dh.img );
+        if (isSub==2) {
+          ce.style.borderStyle="dashed";
+          ce.style.borderWidth=1;
+        }
       } else {
         ce.colSpan= this.getSpanDeep();
         var row= lot.toa.addEl("table",ce).insertRow();
         this.formatCell( row.insertCell(), 1 );
         for (var i=0; i<this.asp.length; i++) {
-          this.asp[i].formatCell( row.insertCell(), 1 );
+          this.asp[i].formatCell( row.insertCell(), 2 );
         }
         cot.prep(ce);
       }//else
@@ -169,7 +172,7 @@ if (--safety<0) return;
         } else 
           nr.insertCell();
       }
-console.log( "showRow -res", r, res );
+      console.log( "showRow -res", r, res );
       return res;
     }
   }
