@@ -1,8 +1,9 @@
-Ancestree=function (){  //v1.115 #start! as flag; 3069 and Spiceburger
+Ancestree=function (){  //v1.118 buildTree(); center table; buttonLook() 3069 and Spiceburger
   //TODO:
-  //TODO-maybe: buttonLook, layoutDef
+  //TODO-maybe: layoutDef
   var safety=9999;
-  var kw=["ok! ","tmp_tcq.csv"," persons "," trees ","#start!"];
+  var kw=["ok! ","tmp_tcq.csv"," persons "," trees ","#start!","center"];
+  var au= new AppTool();
   this.start= function(at){
     var tops=[], tab= new StoTab(), sky=new Ftu();
     tab.getAsset( (at.length>1)? at[1]:kw[1]);
@@ -12,16 +13,20 @@ Ancestree=function (){  //v1.115 #start! as flag; 3069 and Spiceburger
     for (var r,i=0; i<sky.ach.length; i++)
       if (r=sky.ach[i].findParents(sky.ach,i))
         tops.push(r);
-    var tb, au= new AppTool();
     for (var j=0; j<tops.length; j++)
-      if (tops[j].dh.addl.indexOf(kw[4])>=0) tops=[tops[j]];
-    for (var j=0; j<tops.length; j++){
+      if (tops[j].dh.addl.indexOf(kw[4])>=0)
+        (tops=[tops[j]])[0].dh.addl= tops[0].dh.addl.replace(kw[4],"");
+    this.buildTree(tb, tops);
+    return kw[0]+sky.ach.length+kw[2]+tops.length+kw[3];
+  }
+  this.buildTree= function(tb,tops){
+    for (var tb, j=0; j<tops.length; j++)
       (tb= au.addEl("table")).border=1;
+      tb.align=kw[5];
       tb.insertRow(0).insertCell(0).ftu= tops[j];
       for (var r=0,isZ=0; !isZ; r++)
         isZ= !(tops[j].showRow( tb, r ));
     }
-    return kw[0]+sky.ach.length+kw[2]+tops.length+kw[3];
   }
 
   var CollapseTool= function(){
@@ -31,6 +36,13 @@ Ancestree=function (){  //v1.115 #start! as flag; 3069 and Spiceburger
       var el=ato.addEl("div",ce);
       el.innerHTML= kw[(ce.ftu.isCollapsed)? 1:0];
       el.onclick= this.handleClick;
+      this.buttonLook(el);
+      el.style.width= "50%";
+    }
+    this.buttonLook= function(el){
+      el.style.borderStyle= "solid";
+      el.style.borderWidth= 1;
+      el.style.borderRadius= "5px";
       el.onmouseover= this.bgGrey;
       el.onmouseout= this.bgWhite;
     }
@@ -154,6 +166,7 @@ Ancestree=function (){  //v1.115 #start! as flag; 3069 and Spiceburger
           var tb= this.parentNode.parentNode.parentNode;
           tb.parentNode.removeChild(tb);
         }
+        cot.buttonLook(cc);
         tb.isClosable= 1;
       }
     }
