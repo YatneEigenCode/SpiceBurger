@@ -1,4 +1,4 @@
-Ancestree=function (){  //v1.119 fix typo in buildTree();  3069 and Spiceburger
+Ancestree=function (){  //v1.121 fix typo in start();  3069 and Spiceburger
   //TODO: __ //maybe: layoutDef
   var safety=9999;
   var kw=["ok! ","tmp_tcq.csv"," persons "," trees ","#start!","center"];
@@ -15,10 +15,10 @@ Ancestree=function (){  //v1.119 fix typo in buildTree();  3069 and Spiceburger
     for (var j=0; j<tops.length; j++)
       if (tops[j].dh.addl.indexOf(kw[4])>=0)
         (tops=[tops[j]])[0].dh.addl= tops[0].dh.addl.replace(kw[4],"");
-    this.buildTree(tb, tops);
+    this.buildTree( tops);
     return kw[0]+sky.ach.length+kw[2]+tops.length+kw[3];
   }
-  this.buildTree= function(tb,tops){
+  this.buildTree= function(tops){
     for (var tb, j=0; j<tops.length; j++) {
       (tb= au.addEl("table")).border=1;
       tb.align=kw[5];
@@ -193,4 +193,3 @@ Ancestree=function (){  //v1.119 fix typo in buildTree();  3069 and Spiceburger
     }
   }
 }
-FamTree= Ancestree;
