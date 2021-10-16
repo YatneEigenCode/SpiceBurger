@@ -1,6 +1,5 @@
-Ancestree=function (){  //v1.118 buildTree(); center table; buttonLook() 3069 and Spiceburger
-  //TODO:
-  //TODO-maybe: layoutDef
+Ancestree=function (){  //v1.119 fix typo in buildTree();  3069 and Spiceburger
+  //TODO: __ //maybe: layoutDef
   var safety=9999;
   var kw=["ok! ","tmp_tcq.csv"," persons "," trees ","#start!","center"];
   var au= new AppTool();
@@ -20,7 +19,7 @@ Ancestree=function (){  //v1.118 buildTree(); center table; buttonLook() 3069 an
     return kw[0]+sky.ach.length+kw[2]+tops.length+kw[3];
   }
   this.buildTree= function(tb,tops){
-    for (var tb, j=0; j<tops.length; j++)
+    for (var tb, j=0; j<tops.length; j++) {
       (tb= au.addEl("table")).border=1;
       tb.align=kw[5];
       tb.insertRow(0).insertCell(0).ftu= tops[j];
