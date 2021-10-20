@@ -1,5 +1,5 @@
-//8-10-2021 jchoy v1.257 filename instead of isQuiet parameter
-pkg= pkg9900= { ver:'1.257' }; 
+//10-20-2021 jchoy v1.261 Mydata
+pkg= pkg9900= { ver:'1.261' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -144,6 +144,7 @@ pkg.StoTabLo=function(){
   this.da= new DomAni();
   this.start= function(at){
     if (at[1]=='/web') return ['ok',this.webGet( at[2] )][0];
+    if (at[1]=="/new") return new Mydata().start(["myd"]);
     var tbl, x=this.getAsset( this.fn= at[1] );
     ($t.lm=new LinkMaker()).wrapCloser(tbl=this.addEl('table'),0,at[1]);
     $t.lm= $t.lm.initForRow();
@@ -229,10 +230,42 @@ pkg.StoTabCqda = function(){
     return res;
   }
 }
+Mydata= function(){  //3076
+  var kw=["ok","myd",".csv"," will be copied to ",
+    "#://=cmd/tab=","/clearall","Copy tmp_tcq.csv to here"]
+  var lo=new Sto().lo, tab=new StoTab();
+  var tabdat= "A,B,C\n"+kw[6]+",#://=cmd/myd=tmp_tcq=";
+  this.start= function(at){
+    if (at.length>2) {
+      this.copyTable( at[1]+kw[2], at[2]+kw[2] );
+    } else if ((at.length>1) && (at[1]==kw[5])) {
+      this.clearAll();
+    } else {
+      var fn= kw[1]+this.findFreeNum();
+      lo.setItem(fn+kw[2],tabdat+fn);
+      location.hash= kw[4]+fn+kw[2];
+    }
+    return kw[0];
+  }
+  this.copyTable= function( s, d ){
+      if (!confirm( s+kw[3]+d )) return;
+      tab.saveAsset(tab.fn=d, tab.getAsset(s));
+      location.hash= kw[4]+d;
+  }
+  this.findFreeNum= function(){
+    for (var i=1; i<1000; i++)
+      if (!lo.getItem(kw[1]+i+kw[2])) return i;
+    return 999;
+  }
+  this.clearAll= function(){
+    for (var s,i=1; i<1000; i++)
+      if (lo.getItem(s=kw[1]+i+kw[2])) lo.removeItem(s,"");
+  }
+}
 
 pkg.contents=[
  { name:"pkg.startup"
-   ,text:"defcmd tab StoTab\ndefcmd tabcqda StoTabCqda"
+   ,text:"defcmd tab StoTab\ndefcmd tabcqda StoTabCqda\ndefcmd myd Mydata"
  }
 ,{ name:"pkg9900notes"
    ,text:"v"+pkg.ver
