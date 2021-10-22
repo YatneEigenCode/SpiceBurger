@@ -27,6 +27,7 @@ TuSuggest= function(){
     return kw[0];
   }
   this.addData= function(s){
+    if (s=="2824") return;
     var sp= localStorage.getItem(kw[2]);
     if (!sp) sp = "";
     if (sp.indexOf(s)>0) sp=sp.replace(","+s, ""); //remove LRA when full
@@ -37,7 +38,7 @@ TuSuggest= function(){
 }
 </script>
 <script>
-//8-27-2021 jchoy v0.153 showLinks waffle, no slash
+//10-21-2021 jchoy v0.154 excl 2824 (sr)
 var as=["http://spiceburger.okdaily.com/",
   "https://yatneeigencode.github.io/dentre-ortega/dufurlo-b/okdaily/svc/amdisk/cq/tabulofl.htm?"
   ,"?cts=622,rsu&u=1&t=1&"
