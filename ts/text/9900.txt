@@ -1,5 +1,5 @@
-//10-20-2021 jchoy v1.261 Mydata
-pkg= pkg9900= { ver:'1.261' }; 
+//10-24-2021 jchoy v1.262 StoTabEnv.editRowByName()
+pkg= pkg9900= { ver:'1.262' }; 
 
 //----
 pkg.CsvBud=function(){
@@ -39,6 +39,17 @@ pkg.StoTabEnv= function(){
     for (var i=1, ae=this.asset; i<ae.length; i++)
       res=res.replace('{'+ae[i][0]+'}',ae[i][1]);
     return res;
+  }
+  this.editRowByName= function(k,v){
+    var rg= "{"+k+"}";
+    if (this.exp(rg)!=rg) {
+      for (var i=1, ae=this.asset; i<ae.length; i++)
+        if (k==ae[i][0]) 
+          ae[i]= [k,v,new Date().toDateString()];
+    } else
+      this.asset.push([k,v,new Date().toDateString()]);
+    this.saveAsset(this.fn=this.fileName);
+    return "ok "+this.asset.length;
   }
 }
 pkg.StoTabBud= function(){
@@ -145,6 +156,8 @@ pkg.StoTabLo=function(){
   this.start= function(at){
     if (at[1]=='/web') return ['ok',this.webGet( at[2] )][0];
     if (at[1]=="/new") return new Mydata().start(["myd"]);
+    if (at[1]=="/edtabenv")
+      return new StoTabEnv().editRowByName(at[2],at[3]);    
     var tbl, x=this.getAsset( this.fn= at[1] );
     ($t.lm=new LinkMaker()).wrapCloser(tbl=this.addEl('table'),0,at[1]);
     $t.lm= $t.lm.initForRow();
